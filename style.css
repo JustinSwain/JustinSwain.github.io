@@ -1,46 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Justin Swain - HOME</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-<div id="container"><div id="topBar">
-    <!--<marquee>Welcome!</marquee>-->
-</div>
-<div id="headerArea">
-    <div id="header" style="height: 159px;"></div>
-    <nav id="navbar" style="margin-bottom: 10px;">
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="publications.html">Publications</a></li>
-            <li><a href="teaching.html">Teaching</a></li>
-            <li><a href="misc.html">Math</a></li>
-            <li><a href="misc.html">Books</a></li>
-            <li><a href="music.html">Music</a></li>
-            <li><a href="cats.html">Cats</a></li>
-        </ul>
-    </nav>
-</div>
-
-<div id="flex">
-
-    <main>
-    <center>
-        <img src="images/catConfused.GIF" alt="I am lost" style="width:70%">
-        <h1>404 Error</h1>
-        <p>There doesn't seem to be anything here. Return <a href="index.html">home!</a></p>
-
-    </center>
-
-    </main>
-</div>
-<footer id="footer" style="margin-top: 10px;">Copyright &copy; Justin Swain 2024</footer>
-</div>
-<!-- THIS IS THE CSS !-->
-<style>
 :root {
     --header-image: url("images/num.gif");
     --body-bg-image: url('images/bluespace.gif');
@@ -112,6 +69,12 @@ body {
     background-size: auto;
     color: #fceaff;
     background-image: var(--body-bg-image);
+}
+body:has(input[value="Georgia"]:checked) {
+  font-family: Georgia;
+}
+body:has(input[value="Arial"]:checked) {
+  font-family: Arial;
 }
 
 * {
@@ -301,6 +264,3 @@ feel free to play around with the order!
         flex-wrap: wrap;
     }
 }
-</style>
-</body>
-</html>

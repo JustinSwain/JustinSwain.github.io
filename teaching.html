@@ -1,30 +1,37 @@
 <!DOCTYPE html>
-<body style="background-color:lightsteelblue;">
-<head>
-    <title>
-        Justin Swain - Teaching
-    </title>
-</head>
-
-<body>
-    <h1 align="center">
-        Teaching
-    </h1>
-    <hr>
-    <nav>
-        <table cellspacing="5" cellpadding="5">
-            <tr>
-                <td><a href="index.html">Home</a></td>
-                <td><a href="publications.html">Publications</a></td>
-                <td><a href="teaching.html">Teaching</a></td>
-                <td><a href="misc.html">Miscellaneous</a></td>
-            </tr>
-        </table>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justin Swain - HOME</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+<div id="container"><div id="topBar">
+    <!--<marquee>Welcome!</marquee>-->
+</div>
+<div id="headerArea">
+    <div id="header" style="height: 159px;"></div>
+    <nav id="navbar" style="margin-bottom: 10px;">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="publications.html">Publications</a></li>
+            <li><a href="teaching.html">Teaching</a></li>
+            <li><a href="math.html">Math</a></li>
+            <li><a href="books.html">Books</a></li>
+            <li><a href="music.html">Music</a></li>
+            <li><a href="cats.html">Cats</a></li>
+        </ul>
     </nav>
-    <hr>
-    <p>While working on my PhD at UNT I have had to opportunity to teach several courses both as the instructor (Teaching Fellow), and as assistant (Teaching Assistant).</p>
-    <img src="images/teachingMath.gif">
-    <h2>Current Teaching</h2>
+</div>
+
+<div id="flex">
+
+    <main>
+        <h1>Teaching</h1>
+        <div class="box">
+            <p>While working on my PhD at UNT I have had to opportunity to teach several courses both as the instructor (Teaching Fellow), and as assistant (Teaching Assistant).</p>
+            <h2>Current Teaching</h2>
     <ul>
         <li>MATH 1780: Probability Models - Teaching Fellow - Spring 2024</li>
     </ul>
@@ -40,9 +47,39 @@
         <li>MATH 1710: Calculus I - Teaching Assistant - Spring 2020</li>
         <li>MATH 1710: Calculus I - Teaching Assistant - Fall 2019</li>
     </ul>
-    <hr>
-    <footer>
-        Copyright &copy; Justin Swain 2024
-        <img src="images/catRunning.gif" width="100%">
-    </footer>
+    You can find my syllabi and student evaluations <a href="https://facultyinfo.unt.edu/faculty-profile?profile=js1245">here.</a>
+        </div>
+    </main>
+    <aside id="rightSidebar" style="margin-left: 10px;">
+        <h2>Updates</h2>
+        <div class="box">
+            <p>This website is brand new in Jan. 2024!</p>
+            <ul style="padding-left:10px;">
+                <li>New HTML, new CSS!</li>
+                <li>Blue outerspace theme!</li>
+                <li>New pages!</li>
+                <li>A marquee element!</li>
+                <li>Arcade font!</a></li>
+            </ul>
+        </div>
+        <h2>Hi there!</h2>
+        <p>Do you have a suggestion for a feature? Let me know!</p>
+        <h2>Contact Information:</h2>
+            <div class = "box">
+            <ul style="padding-left:10px;">
+                <li>Email: Justin dot Swain at unt dot edu</li>
+                <li>Office: General Academic Building (GAB) 477</li>
+            </ul>
+            </div>
+        <h3>Hard to read?</h3>
+        <div class = "box">
+            <p>Change the font here:</p>
+            <input type="checkbox" id="font" name="font" value="Georgia"><label style="font-family: Georgia">Georgia (serif)</label><br>
+            <input type="checkbox" id="font" name="font" value="Arial" ><label style="font-family: Arial">Arial (sans serif)</label><br>
+        </div>
+    </aside>
+</div>
+<footer id="footer" style="margin-top: 10px;"> <marquee>Copyright &copy; Justin Swain 2024 </marquee></footer>
+</div>
 </body>
+</html>

@@ -1,45 +1,86 @@
 <!DOCTYPE html>
-<body style="background-color:lightsteelblue;"></body>
-<head>
-    <title>
-        Justin Swain - Publications
-    </title>
-</head>
-
-<body>
-    <h1 align="center">
-        Publications
-    </h1>
-    <hr>
-    <nav>
-        <table cellspacing="5" cellpadding="5">
-            <tr>
-                <td><a href="index.html">Home</a></td>
-                <td><a href="publications.html">Publications</a></td>
-                <td><a href="teaching.html">Teaching</a></td>
-                <td><a href="misc.html">Miscellaneous</a></td>
-            </tr>
-        </table>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justin Swain - HOME</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+<div id="container"><div id="topBar">
+    <!--<marquee>Welcome!</marquee>-->
+</div>
+<div id="headerArea">
+    <div id="header" style="height: 159px;"></div>
+    <nav id="navbar" style="margin-bottom: 10px;">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="publications.html">Publications</a></li>
+            <li><a href="teaching.html">Teaching</a></li>
+            <li><a href="math.html">Math</a></li>
+            <li><a href="books.html">Books</a></li>
+            <li><a href="music.html">Music</a></li>
+            <li><a href="cats.html">Cats</a></li>
+        </ul>
     </nav>
-    <hr>
-    <h2>Publications</h2>
-    <ul>
-        <li>T. Pawale, <u>J. Swain</u>, M. R. Hashemi, G. Tierra, X. Li, Dynamic Motions of Topological Defects in Nematic Liquid Crystals under Spatial Confinement. Adv. Mater. Interfaces 2023, 10, 2300136. DOI:<a href="https://doi.org/10.1002/admi.202300136">10.1002/admi.202300136</a></li>
-        <li>Layton, S. R., Hemenway, R. M., Munyoki, C. M., Barnes, E. B., Barnett, S. E., Bond, A. M., Narvaez, J. M., Sirisakd, C. D., Smith, B. R., <u>Swain, J.</u>, Syed, O., Bowman, C. A., Russell, D. A., Bhuiyan, S., Donegan-Quick, R., Benjamin, R. C., & Hughes, L. E. (2016). Genome Sequences of Streptomyces Phages Amela and Verse. Genome announcements, 4(1), e01589-15. DOI: <a href="https://doi.org/10.1128/genomeA.01589-15">10.1128/genomeA.01589-15</a></li>
-    </ul>
+</div>
 
-    <h2>Conference Presentations</h2>
-    <ul>
-        <li><i>Linear Numerical Schemes for a <b>Q</b>-Tensor Model of Nematic Liquid Crystals</i>, SIAM TX-LA Sectional Meeting, Lafyette LA, November 3, 2023 - Oral Presentation</li>
-        <li><i>Energy Stable Numerical Schemes for Nematic Liquid Crystals</i>, SIAM Annual Meeting 2022, Pittsburgh PA, July 11, 2022 - Poster Presentation</li>
-        <li><i>New Numerical Schemes for the <b>Q</b>-Tensor Model of Nematic Liquid Crystals</i>, SIAM TX-LA Sectional Meeting 2022, Houston TX, November 5, 2022- Poster Presentation</li>
-    </ul>
-    <center><img src="images/posterPresentation.jpeg"></center>
-    <br>
-    <p align="center">Presenting my poster at SIAM TXLA 22 in Houston, TX.</p>
-    <hr>
-    <footer>
-        Copyright &copy; Justin Swain 2024
-        <img src="images/catRunning.gif" width="100%">
-    </footer>
+<div id="flex">
+
+    <main>
+        <h1>Publications</h1>
+        <div class="box">
+            <ul>
+                <li style="font-family: Arial">T. Pawale, <u>J. Swain</u>, M. R. Hashemi, G. Tierra, X. Li, Dynamic Motions of Topological Defects in Nematic Liquid Crystals under Spatial Confinement. Adv. Mater. Interfaces 2023, 10, 2300136. DOI:<a href="https://doi.org/10.1002/admi.202300136">10.1002/admi.202300136</a></li>
+                <li style="font-family: Arial">Layton, S. R., Hemenway, R. M., Munyoki, C. M., Barnes, E. B., Barnett, S. E., Bond, A. M., Narvaez, J. M., Sirisakd, C. D., Smith, B. R., <u>Swain, J.</u>, Syed, O., Bowman, C. A., Russell, D. A., Bhuiyan, S., Donegan-Quick, R., Benjamin, R. C., & Hughes, L. E. (2016). Genome Sequences of Streptomyces Phages Amela and Verse. Genome announcements, 4(1), e01589-15. DOI: <a href="https://doi.org/10.1128/genomeA.01589-15">10.1128/genomeA.01589-15</a></li>
+            </ul>
+        </div>
+        <br>
+        <h1>Conference Presentations</h1>
+        <div class="box">
+        <ul>
+            <li style="font-family: Arial"><i>Linear Numerical Schemes for a <b>Q</b>-Tensor Model of Nematic Liquid Crystals</i>, SIAM TX-LA Sectional Meeting, Lafyette LA, November 3, 2023 - Oral Presentation</li>
+            <li style="font-family: Arial"><i>Energy Stable Numerical Schemes for Nematic Liquid Crystals</i>, SIAM Annual Meeting 2022, Pittsburgh PA, July 11, 2022 - Poster Presentation</li>
+            <li style="font-family: Arial"><i>New Numerical Schemes for the <b>Q</b>-Tensor Model of Nematic Liquid Crystals</i>, SIAM TX-LA Sectional Meeting 2022, Houston TX, November 5, 2022- Poster Presentation</li>
+        </ul>
+        </div>
+        <center>
+            <figure>
+                <img src="images/posterPresentation.jpeg" alt="SIAM TXLA Poster" style="width:70%">
+                <figcaption>Presenting my poster at SIAM TXLA 2022 in Houston, TX.</figcaption>
+              </figure> 
+        </center>
+    </main>
+    <aside id="rightSidebar" style="margin-left: 10px;">
+        <h2>Updates</h2>
+        <div class="box">
+            <p>This website is brand new in Jan. 2024!</p>
+            <ul style="padding-left:10px;">
+                <li>New HTML, new CSS!</li>
+                <li>Blue outerspace theme!</li>
+                <li>New pages!</li>
+                <li>A marquee element!</li>
+                <li>Arcade font!</a></li>
+            </ul>
+        </div>
+        <h2>Hi there!</h2>
+        <p>Do you have a suggestion for a feature? Let me know!</p>
+        <h2>Contact Information:</h2>
+            <div class = "box">
+            <ul style="padding-left:10px;">
+                <li>Email: Justin dot Swain at unt dot edu</li>
+                <li>Office: General Academic Building (GAB) 477</li>
+            </ul>
+            </div>
+        <h3>Hard to read?</h3>
+        <div class = "box">
+            <p>Change the font here:</p>
+            <input type="checkbox" id="font" name="font" value="Georgia"><label style="font-family: Georgia">Georgia (serif)</label><br>
+            <input type="checkbox" id="font" name="font" value="Arial" ><label style="font-family: Arial">Arial (sans serif)</label><br>
+        </div>
+    </aside>
+</div>
+<footer id="footer" style="margin-top: 10px;"> <marquee>Copyright &copy; Justin Swain 2024 </marquee></footer>
+</div>
 </body>
+</html>
