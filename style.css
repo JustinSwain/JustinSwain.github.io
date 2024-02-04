@@ -31,31 +31,6 @@
 }
 
 /* FONTS */
-
-@font-face {
-    font-family: Nunito;
-    src: url('https://sadhost.neocities.org/fonts/Nunito-Regular.ttf');
-}
-
-@font-face {
-    font-family: Nunito;
-    src: url('https://sadhost.neocities.org/fonts/Nunito-Bold.ttf');
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: Nunito;
-    src: url('https://sadhost.neocities.org/fonts/Nunito-Italic.ttf');
-    font-style: italic;
-}
-
-@font-face {
-    font-family: Nunito;
-    src: url('https://sadhost.neocities.org/fonts/Nunito-BoldItalic.ttf');
-    font-style: italic;
-    font-weight: bold;
-}
-
 @font-face {
     font-family: "Arcade";
     src: url('fonts/JMH\ Cthulhumbus\ Arcade.otf') format("opentype");
@@ -83,7 +58,7 @@ body:has(input[value="Arial"]:checked) {
 
 /* below this line is CSS for the layout */
 #container {
-    max-width: 900px;
+    max-width: 60%;
     margin: 0 auto;
 }
 
@@ -96,33 +71,30 @@ body:has(input[value="Arial"]:checked) {
 #header {
     width: 100%;
     background-color: var(--space6);
-    /* header color here! */
-    height: 150px;
-    /* this is only for a background image! */
-    /* if you want to put images IN the header,
-you can add them directly to the <div id="header"></div> element! */
-    /*background-image: var(--header-image);*/
-    /*background-size: 100%;*/
-    background-image: url("images/catRunning.gif");
+    height: 100px;
+    /*background-image: url("images/catRunning.gif");
     background-position-y: center;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat;*/
     background-size: 100%;
+    margin-bottom: 10px;
+    padding: 20px;
+    text-align: right;
 }
 
 /* navigation section!! */
 #navbar {
-    height: 40px;
-    background-color: var(--space6);
-    /* navbar color */
-    width: 100%;
+    height: auto;
 }
 
 #navbar ul {
     display: flex;
-    padding: 0;
+    flex-direction: column;
+    padding: 10px;
     margin: 0;
     list-style-type: none;
     justify-content: space-evenly;
+    text-decoration: underline;
+    text-decoration-color: var(--space1)
 }
 
 #navbar li {
@@ -131,11 +103,9 @@ you can add them directly to the <div id="header"></div> element! */
 
 /* navigation links*/
 #navbar li a {
-    color: var(--space1);
-    /* navbar text color */
+    color: var(--space0);
     font-weight: 800;
     text-decoration: none;
-    /* this removes the underline */
 }
 
 /* navigation link when a link is hovered over */
@@ -148,32 +118,22 @@ you can add them directly to the <div id="header"></div> element! */
     display: flex;
 }
 
-/* this colors BOTH sidebars
-if you want to style them separately,
-create styles for #leftSidebar and #rightSidebar */
+/* sidebar */
 aside {
-    background-color: var(--space5);/*#241445;*/
-    width: 200px;
+    background-color: var(--space5);
+    width: 30%;
     padding: 20px;
     font-size: smaller;
-    /* this makes the sidebar text slightly smaller */
+    margin-left: 10px;
 }
 
-
-/* this is the color of the main content area,
-between the sidebars! */
+/* main content */
 main {
     background-color: var(--space5);
     flex: 1;
     padding: 20px;
     order: 2;
 }
-
-/* what's this "order" stuff about??
-allow me to explain!
-if you're using both sidebars, the "order" value
-tells the CSS the order in which to display them.
-left sidebar is 1, content is 2, and right sidebar is 3! */
 
 */ #leftSidebar {
     order: 1;
@@ -185,12 +145,10 @@ left sidebar is 1, content is 2, and right sidebar is 3! */
 
 footer {
     background-color: var(--space5);
-    /* background color for footer */
     width: 100%;
     height: 40px;
     padding: 10px;
     text-align: center;
-    /* this centers the footer text */
 }
 
 h1,
@@ -204,11 +162,10 @@ h1 {
 }
 
 strong {
-    /* this styles bold text */
     color: var(--space1);
 }
 
-/* this is just a cool box, it's the darker colored one */
+/* text box */
 .box {
     background-color: var(--space7);
     border: 1px solid var(--space1);
@@ -235,19 +192,18 @@ and then subtrack it by 100. use this new number as the
 "max-width" value below
 */
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 1000px) {
     #flex {
-        flex-wrap: wrap;
+        flex-direction: column;
     }
-
+    #container {
+        max-width: 100%;
+        margin: 10px;
+    }
     aside {
         width: 100%;
     }
 
-    /* the order of the items is adjusted here for responsiveness!
-since the sidebars would be too small on a mobile device.
-feel free to play around with the order!
-*/
     main {
         order: 1;
     }
@@ -259,8 +215,17 @@ feel free to play around with the order!
     #rightSidebar {
         order: 3;
     }
-
+    #navbar {
+        text-align: center;
+    }
     #navbar ul {
+        height: 100px;
+        display: flex;
+        flex-direction: column;
         flex-wrap: wrap;
+    }
+    aside {
+        margin-left: 0px;
+        margin-top: 10px;
     }
 }

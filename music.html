@@ -11,18 +11,9 @@
     <!--<marquee>Welcome!</marquee>-->
 </div>
 <div id="headerArea">
-    <div id="header" style="height: 159px;"></div>
-    <nav id="navbar" style="margin-bottom: 10px;">
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="publications.html">Publications</a></li>
-            <li><a href="teaching.html">Teaching</a></li>
-            <li><a href="math.html">Math</a></li>
-            <li><a href="books.html">Books</a></li>
-            <li><a href="music.html">Music</a></li>
-            <li><a href="cats.html">Cats</a></li>
-        </ul>
-    </nav>
+    <div id="header">
+    <h1>justinswain.github.io </h1>
+    </div>
 </div>
 
 <div id="flex">
@@ -34,16 +25,20 @@
         </div>
     </main>
     <aside id="rightSidebar" style="margin-left: 10px;">
-        <h2>Updates</h2>
+        <h2>Navigation</h2>
         <div class="box">
-            <p>This website is brand new in Jan. 2024!</p>
-            <ul style="padding-left:10px;">
-                <li>New HTML, new CSS!</li>
-                <li>Blue outerspace theme!</li>
-                <li>New pages!</li>
-                <li>A marquee element!</li>
-                <li>Arcade font!</a></li>
-            </ul>
+            <nav id="navbar" style="margin-bottom: 10px;">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="publications.html">Research</a></li>
+                    <li><a href="teaching.html">Teaching</a></li>
+                    <li><a href="math.html">Math</a></li>
+                    <li><a href="books.html">Books</a></li>
+                    <li><a href="music.html">Music</a></li>
+                    <li><a href="cats.html">Cats</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </nav>
         </div>
         <h2>Hi there!</h2>
         <p>Do you have a suggestion for a feature? Let me know!</p>
@@ -57,8 +52,9 @@
         <h3>Hard to read?</h3>
         <div class = "box">
             <p>Change the font here:</p>
-            <input type="checkbox" id="font" name="font" value="Georgia"><label style="font-family: Georgia">Georgia (serif)</label><br>
-            <input type="checkbox" id="font" name="font" value="Arial" ><label style="font-family: Arial">Arial (sans serif)</label><br>
+            <input type="radio" id="font" name="font" value="None" checked><label>Arcade (default)</label><br>
+            <input type="radio" id="font" name="font" value="Georgia"><label style="font-family: Georgia">Georgia (serif)</label><br>
+            <input type="radio" id="font" name="font" value="Arial" ><label style="font-family: Arial">Arial (sans serif)</label><br>
         </div>
     </aside>
 </div>
