@@ -146,7 +146,7 @@ main {
 footer {
     background-color: var(--space5);
     width: 100%;
-    height: 40px;
+    height: auto;
     padding: 10px;
     text-align: center;
 }
@@ -205,15 +205,15 @@ and then subtrack it by 100. use this new number as the
     }
 
     main {
-        order: 1;
-    }
-
-    #leftSidebar {
         order: 2;
     }
 
-    #rightSidebar {
+    #leftSidebar {
         order: 3;
+    }
+
+    #rightSidebar {
+        order: 1;
     }
     #navbar {
         text-align: center;
@@ -226,6 +226,6 @@ and then subtrack it by 100. use this new number as the
     }
     aside {
         margin-left: 0px;
-        margin-top: 10px;
+        margin-bottom: 10px;
     }
 }
