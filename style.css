@@ -10,15 +10,6 @@
     --arcadeRed: #ff5847;
     --arcadeBlack: #000000;
 
-    --kiwi0: #d6e9c3;
-    --kiwi1: #6cb224;
-    --kiwi2: #478f00;
-    --kiwi3: #1d6c00;
-    --kiwi4: #004b00;
-    --kiwi5: #002d00;
-    --kiwi6: #001d00;
-    --kiwi7: #041304;
-
     --space0: #bfc9e7;
     --space1: #4a70e2;
     --space2: #0137d9;
@@ -94,7 +85,7 @@ body:has(input[value="Arial"]:checked) {
     list-style-type: none;
     justify-content: space-evenly;
     text-decoration: underline;
-    text-decoration-color: var(--space1)
+    text-decoration-color: var(--space1);
 }
 
 #navbar li {
@@ -223,6 +214,10 @@ and then subtrack it by 100. use this new number as the
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
+        list-style-image: none;
+    }
+    #navbar ul > ul {
+        display: none;
     }
     aside {
         margin-left: 0px;
