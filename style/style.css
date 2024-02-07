@@ -1,15 +1,8 @@
 :root {
-    --header-image: url("images/num.gif");
-    --body-bg-image: url('images/bluespace.gif');
+    --header-image: url("/images/num.gif");
+    --body-bg-image: url('/images/bluespace.gif');
 
     /* colors */
-    --content: #43256E;
-    --arcadeBlue: #6b81c3;
-    --arcadeGreen: #00dbbd;
-    --arcadeYellow: #feab34;
-    --arcadeRed: #ff5847;
-    --arcadeBlack: #000000;
-
     --space0: #bfc9e7;
     --space1: #4a70e2;
     --space2: #0137d9;
@@ -24,7 +17,7 @@
 /* FONTS */
 @font-face {
     font-family: "Arcade";
-    src: url('fonts/JMH\ Cthulhumbus\ Arcade.otf') format("opentype");
+    src: url('/style/fonts/JMH\ Cthulhumbus\ Arcade.otf') format("opentype");
 }
 
 body {
