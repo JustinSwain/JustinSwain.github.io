@@ -24,11 +24,11 @@ body {
     font-family: 'Arcade';
     margin: 0;
     background-color: var(--space7);
-    /* you can delete the line below if you'd prefer to not use an image */
     background-size: auto;
     color: #fceaff;
     background-image: var(--body-bg-image);
 }
+/* Alternate Fonts */
 body:has(input[value="Georgia"]:checked) {
   font-family: Georgia;
 }
@@ -40,32 +40,33 @@ body:has(input[value="Arial"]:checked) {
     box-sizing: border-box;
 }
 
-/* below this line is CSS for the layout */
 #container {
     max-width: 60%;
     margin: 0 auto;
 }
 
-/*Links*/
+/* Links */
 #container a {
-    color: var(--space1);
+    color: var(--space0);
     font-weight: bold;
 }
 
+/* Header */
 #header {
     width: 100%;
     background-color: var(--space6);
-    height: 100px;
-    /*background-image: url("images/catRunning.gif");
-    background-position-y: center;
-    background-repeat: no-repeat;*/
-    background-size: 100%;
+    height: 128px;
+    background-image: url("/images/spaceKitty.png");
+    background-position-y: bottom;
+    background-position-x: left;
+    background-repeat: no-repeat;
+    background-size: 88px;
     margin-bottom: 10px;
     padding: 20px;
     text-align: right;
 }
 
-/* navigation section!! */
+/* Navigation */
 #navbar {
     height: auto;
 }
@@ -85,14 +86,14 @@ body:has(input[value="Arial"]:checked) {
     padding-top: 10px;
 }
 
-/* navigation links*/
+/* Navigation links*/
 #navbar li a {
     color: var(--space0);
     font-weight: 800;
     text-decoration: none;
 }
 
-/* navigation link when a link is hovered over */
+/* Navigation links mouse hovers over */
 #navbar li a:hover {
     color: var(--space0);
     text-decoration: underline;
@@ -102,7 +103,7 @@ body:has(input[value="Arial"]:checked) {
     display: flex;
 }
 
-/* sidebar */
+/* Sidebar */
 aside {
     background-color: var(--space5);
     width: 30%;
@@ -111,7 +112,7 @@ aside {
     margin-left: 10px;
 }
 
-/* main content */
+/* Main content */
 main {
     background-color: var(--space5);
     flex: 1;
@@ -119,7 +120,7 @@ main {
     order: 2;
 }
 
-*/ #leftSidebar {
+#leftSidebar {
     order: 1;
 }
 
@@ -127,6 +128,7 @@ main {
     order: 3;
 }
 
+/* Footer */
 footer {
     background-color: var(--space6);
     width: 100%;
@@ -135,6 +137,7 @@ footer {
     text-align: center;
 }
 
+/* Headings */
 h1,
 h2,
 h3 {
@@ -149,15 +152,14 @@ strong {
     color: var(--space1);
 }
 
-/* text box */
+/* Text box */
 .box {
     background-color: var(--space7);
     border: 1px solid var(--space1);
     padding: 10px;
 }
 
-/* CSS for extras */
-
+/* Top Bar */
 #topBar {
     width: 100%;
     height: 30px;
@@ -167,14 +169,7 @@ strong {
 }
 
 
-/* BELOW THIS POINT IS MEDIA QUERY */
-
-/* so you wanna change the width of your page?
-by default, the container width is 900px.
-in order to keep things responsive, take your new height,
-and then subtrack it by 100. use this new number as the
-"max-width" value below
-*/
+/* Mobile Displays */
 
 @media only screen and (max-width: 1000px) {
     #flex {
