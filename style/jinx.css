@@ -1,0 +1,170 @@
+:root {
+    --text_bg_image: url('/images/redweb.gif');
+    --body-bg-image: url('/images/bluebrick.jpg');
+
+    /* colors */
+    --space0: #ff8e8e; /* Links */
+    --space1: #c50000; /* Headings */
+    --space2: #9a0000; /* Box Border */
+    --space3: #710000;
+    --space4: #420808;
+    --space5: #353535;
+    --space6: #1a1a1a; /* Box Bakground */
+    --space7: #080808; 
+
+}
+
+/* FONTS */
+@font-face {
+    font-family: "Arcade";
+    src: url('/style/fonts/JMH\ Cthulhumbus\ Arcade.otf') format("opentype");
+}
+
+body {
+    font-family: 'Arcade';
+    margin: 0;
+    background-color: var(--space7);
+    background-size: auto;
+    color: #fceaff;
+    background-image: var(--body-bg-image);
+}
+/* Alternate Fonts */
+body:has(input[value="Georgia"]:checked) {
+  font-family: Georgia;
+}
+body:has(input[value="Arial"]:checked) {
+  font-family: Arial;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+#container {
+    max-width: 60%;
+    margin: 0 auto;
+}
+
+/* Links */
+#container a {
+    color: var(--space0);
+    font-weight: bold;
+}
+
+#flex {
+    display: flex;
+}
+
+/* Sidebar */
+aside {
+    /* background-image: var(--text_bg_image);*/
+    width: 30%;
+    padding: 10px;
+    font-size: smaller;
+    margin-top: 20px;
+}
+
+/* Main content */
+main {
+    /*background-color: var(--space4);*/
+    /*background-image: var(--text_bg_image);*/
+    flex: 1;
+    padding: 20px;
+    order: 2;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: x-large;
+}
+
+#leftSidebar {
+    order: 3;
+}
+
+#rightSidebar {
+    order: 1;
+}
+
+/* Headings */
+h1,
+h2,
+h3 {
+    color: var(--space1);
+}
+
+h1 {
+    font-size: 25px;
+}
+
+strong {
+    color: var(--space1);
+}
+
+/* Text box */
+.box {
+    background-color: var(--space7);
+    border: 1px solid var(--space2);
+    padding: 10px;
+}
+
+.jinxbox {
+    background-color: var(--space7);
+    border: 1px solid var(--space2);
+    padding: 10px;
+    position: sticky;
+    top: 20px;
+}
+
+/* Top Bar */
+#topBar {
+    width: 100%;
+    height: 30px;
+    padding: 10px;
+    font-size: smaller;
+    background-color: var(--space6);
+}
+
+
+/* Mobile Displays */
+
+@media only screen and (max-width: 1000px) {
+    #flex {
+        flex-direction: column;
+    }
+    #container {
+        max-width: 100%;
+        margin: 10px;
+    }
+    aside {
+        width: 100%;
+    }
+
+    main {
+        order: 2;
+    }
+
+    #leftSidebar {
+        order: 3;
+    }
+
+    #rightSidebar {
+        order: 1;
+    }
+    #navbar {
+        text-align: center;
+    }
+    #navbar ul {
+        height: 100px;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        list-style-image: none;
+    }
+    #navbar ul > ul {
+        display: none;
+    }
+    aside {
+        margin-left: 0px;
+        margin-bottom: 10px;
+    }
+}
