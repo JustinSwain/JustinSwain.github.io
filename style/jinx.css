@@ -55,6 +55,13 @@ body:has(input[value="Arial"]:checked) {
     display: flex;
 }
 
+#flexgallery {
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: space-evenly; 
+    align-items: center;
+}
+
 /* Sidebar */
 aside {
     /* background-image: var(--text_bg_image);*/
@@ -97,7 +104,7 @@ h1 {
 }
 
 strong {
-    color: var(--space1);
+    color: white;
 }
 
 /* Text box */
