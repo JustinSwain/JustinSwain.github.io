@@ -28,13 +28,6 @@ body {
     color: #fceaff;
     background-image: var(--body-bg-image);
 }
-/* Alternate Fonts */
-body:has(input[value="Georgia"]:checked) {
-  font-family: Georgia;
-}
-body:has(input[value="Arial"]:checked) {
-  font-family: Arial;
-}
 
 * {
     box-sizing: border-box;
@@ -157,6 +150,10 @@ h1 {
     font-size: 25px;
 }
 
+figcaption {
+    font-size: x-small;
+}
+
 strong {
     color: var(--space1);
 }
@@ -167,6 +164,33 @@ strong {
     border: 1px solid var(--space1);
     padding: 10px;
     border-radius: 10px;
+}
+
+
+#content1, #content2, #content3, #content4
+{
+    display:none;
+    font-family: 'Arial';
+}
+
+#toggle1:checked ~ #content1
+{
+  display: block;
+}
+
+#toggle2:checked ~ #content2
+{
+  display: block;
+}
+
+#toggle3:checked ~ #content3
+{
+  display: block;
+}
+
+#toggle4:checked ~ #content4
+{
+  display: block;
 }
 
 /* Top Bar */

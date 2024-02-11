@@ -65,9 +65,9 @@ body:has(input[value="Arial"]:checked) {
 /* Sidebar */
 aside {
     /* background-image: var(--text_bg_image);*/
-    width: 30%;
+    width: 35%;
     padding: 10px;
-    font-size: smaller;
+    font-size: small;
     margin-top: 20px;
 }
 
@@ -112,14 +112,16 @@ strong {
     background-color: var(--space7);
     border: 1px solid var(--space2);
     padding: 10px;
+    border-radius: 10px;
 }
 
 .jinxbox {
-    background-color: var(--space7);
-    border: 1px solid var(--space2);
+    border: 10px solid var(--space7);
     padding: 10px;
     position: sticky;
     top: 20px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--space3), var(--space6),var(--space7));
 }
 
 /* Top Bar */
