@@ -149,7 +149,7 @@ strong {
     }
 
     main {
-        order: 2;
+        order: 1;
     }
 
     #leftSidebar {
@@ -157,7 +157,7 @@ strong {
     }
 
     #rightSidebar {
-        order: 1;
+        order: 2;
     }
     #navbar {
         text-align: center;
@@ -174,6 +174,12 @@ strong {
     }
     aside {
         margin-left: 0px;
-        margin-bottom: 10px;
+        margin-bottom: 70px;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .jinxbox {
+        max-width: 350px;
     }
 }
