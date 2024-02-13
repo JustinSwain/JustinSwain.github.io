@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justin Swain | Steal This Website!</title>
+    <link rel="stylesheet" href="/style/stw.css">
+    <link rel="icon" href="/images/spaceKitty.png">
+  </head>
+
+<body>
+
+<div id="container">
+
+    <div id="headerArea">
+        <div id="header">
+            <h1>justinswain.github.io/stw</h1>
+        </div>
+    </div>
+
+<div id="flex">
+
+    <main>
+        <h1>Getting Started</h1>
+
+        <div class="box">
+            Goals for this lesson are
+            <ol>
+                <li>Download the necessary software</li>
+                <li>Create your first webpage</li>
+                <li>Set up and publish a GitHub pages website</li>
+            </ol>
+        </div>
+
+        <br>
+
+        <div class="box">
+            <strong>1. Download the necessary software</strong>
+            <p>
+                First, we need to get some software to help make this easier. In genergal, you do not need any of this. If you wanted, you could just use a simple text editor such as notepad to make your website. However, for the purpose of a tutorial it is much easier if you are using the same software that I am.
+            </p>
+            <p>
+                It is not extremely important, but for your reference I am using an m2 Macbook Air running macOS v.14. Everything here should work fine on Windows, and if you are running Linux then figure it out yourself!
+            </p>
+            <p>
+                Here is our shopping list: (everything is free)
+            </p>
+            <ul>
+                <li><a href="https://visualstudio.microsoft.com/downloads/">Microsoft Visual Studio Code</a> (VS Code)</li>
+                <li><a = href="https://www.mozilla.org/en-US/firefox/new/">Firefox web browser</a></li>
+                <li><a href="https://desktop.github.com/">GitHub Desktop</a></li>
+            </ul>
+            <p>
+                Basically, we will write our code in VS Code and view our work in Firefox. To publish our website we will use a GitHub sevice called GitHub Pages which will use GitHub Desktop. If you don't have a GitHub account you can create one now. Be sure to choose a good username because your website's url will be <code>username.github.io</code>
+            </p>
+            <p>
+                Before we finish here we need to install an extension in VS Code. Press <kbd>Command + Shift + X</kbd> to open the extensions menu. Search for the extension called "Live Preview" and install it. You can also find it <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server">here.</a>
+            </p>
+            <p>
+                This extension will allow us to view our website locally on our computer in the browser and see our changes updated in real time. Cool!
+            </p>
+        </div>
+
+        <br>
+
+        <div class="box">
+            <strong>2. My first website</strong>
+            <p>
+                Now that you have everything installed lets make a (very) simple website!
+            </p>
+            <p>
+                Lets go to our documents folder and create a new folder called "webTest".
+            </p>
+            <p>
+                Next, open VS Code and click <code>File &gt Open Folder</code>. Find your webTest folder and open it. On your left is the "EXPLORER" window. Near the top you can find a button called New File... Click this and create a new file called index.html.
+            </p>
+            <p>
+                Now write the following into your file.
+            </p>
+            <pre>
+                <code>
+&lt!DOCTYPE html&gt
+&lthtml lang="en"&gt
+&lthead&gt
+    &ltmeta charset="UTF-8"&gt
+    &lttitle>My first website!&lt/title&gt
+&lt/head&gt
+&ltbody&gt
+&ltp&gt My first website! &lt/p&gt
+&lt/body&gt
+&lt/html&gt
+                </code>
+            </pre>
+            
+            <p>
+                This is a what a website looks like in HTML. Let's view this new page in the browser! Click on the preview button near the top right of the window. This will open your website in a small window next to your code. If you want to see it in another window you can copy and paste the URL from the preview into Firefox. 
+            </p>
+            <p>
+                Try erasing the phrase "My first website!" and typing something else between the &ltp&gt and &lt/p&gt. As you type, you will notice your changes in your Firefox window (or the preview if you still have it open). Very cool!
+            </p>
+            <p>
+                This is only a preview of your website. It only exists temporarily and is not "published."
+            </p>
+        </div>
+
+        <br>
+
+        <div class="box">
+            <h3>3. Set up GitHub pages</h3>
+            <p>
+                To publish a website you would need to purchase the rights to a domain name, then host your site there. However, GitHub allows us to host one website for free! Let's set one up now.
+            </p>
+            <p>
+                Follow this guide: <a href="https://pages.github.com/">https://pages.github.com/</a>
+            </p>
+            <p>
+                After step 1 you should select the option to view the tutorial using GitHub Desktop (we downloaded this earlier!)
+            </p>
+            <p>
+                After you create your new repository, you can create a new index.html file like the guide asks, or you can copy and paste the index.html file we created before. It is up to you! We will completely start over in the next step in this guide.
+            </p>
+            <p>
+                Once you commit and push your changes, you should try to visit your new website in you browser.
+            </p>
+        </div>
+
+        <br>
+
+        <div class="box">
+            <h3>Congratulations!</h3>
+            <p>You are now the owner of a working website!</p>
+            <p>Go to the next part of the tutorial: <a href="/stw/stw-2.html">Copy this code!</a></p>
+        </div>
+    </main>
+
+    <aside id="sidebar">
+        <div class="navbox">
+            <h3 style="margin: 0;">Steal This Website!</h3>
+            <nav id="navbar">
+                <ul>
+                    <li><a href="/stw/stw.html">Home</a></li>
+                    <ul style="padding-left:20px; padding-top: 0px; padding-bottom: 0px;">
+                        <li><a href="/stw/stw-1.html">Getting set up</a></li>
+                        <li><a href="/stw/stw-2.html">Copy this code!</a></li>
+                    </ul>
+                    <li><a href="/pages/about.html">Return to About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+
+</div>
+
+<footer id="footer"> 
+<marquee> Steal This Website! Anit-Copyright &copy; Justin Swain 2024 </marquee>
+</footer>
+
+</div>
+</body>
+</html>
