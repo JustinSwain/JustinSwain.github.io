@@ -60,14 +60,13 @@ body:has(input[value="Arial"]:checked) {
     width: 100%;
     background-color: var(--space6);
     height: 128px;
-    background-image: url("/images/spaceKitty.png");
+    /*background-image: url("/images/spaceKitty.png");
     background-position-y: bottom;
     background-position-x: left;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat; */
     background-size: 88px;
     margin-bottom: 10px;
-    padding: 20px;
-    text-align: right;
+    padding: 0px;
 }
 
 /* Navigation */
@@ -204,10 +203,17 @@ strong {
     }
     #navbar ul {
         height: 100px;
-        display: flex;
+        /*display: flex;
         flex-direction: column;
         flex-wrap: wrap;
-        list-style-image: none;
+        justify-content: space-between;
+        list-style-image: none;*/
+        display: grid;
+        grid-template-columns: 30% 30% 30%; /* 2 rows of 50px */
+        grid-auto-flow: row;  /* a column flow */
+        grid-auto-columns: 30%; /* each column will 100px of width */
+        grid-gap: 5%;
+        overflow: auto;
     }
     #navbar ul > ul {
         display: none;
