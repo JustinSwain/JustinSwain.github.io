@@ -19,9 +19,13 @@
     font-family: "Arcade";
     src: url('/style/fonts/JMH\ Cthulhumbus\ Arcade.otf') format("opentype");
 }
+@font-face {
+    font-family: "Dos";
+    src: url('/style/fonts/Perfect\ DOS\ VGA\ 437.ttf') format("truetype");
+}
 
 body {
-    font-family: 'Arcade';
+    font-family: 'Dos';
     margin: 0;
     background-color: var(--space7);
     background-size: auto;
@@ -145,9 +149,14 @@ footer {
     text-align: center;
 }
 
+footer > marquee {
+    font-family: 'Arcade';
+}
+
 /* Headings */
 h1, h2, h3 {
     color: var(--space1);
+    font-family: 'Arcade';
 }
 
 h1 {
