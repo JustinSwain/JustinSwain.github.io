@@ -26,6 +26,7 @@
 
 body {
     font-family: 'Dos';
+    font-size: large;
     margin: 0;
     background-color: var(--space7);
     background-size: auto;
