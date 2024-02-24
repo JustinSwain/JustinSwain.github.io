@@ -175,6 +175,14 @@ strong {
     border-radius: 10px;
 }
 
+.zoom {
+    transition: transform .2s; /* Animation */
+  }
+  
+  .zoom:hover {
+    transform: scale(2.0);
+  }
+
 /* Top Bar */
 #topBar {
     width: 100%;
