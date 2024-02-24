@@ -204,6 +204,9 @@ strong {
     main {
         order: 2;
     }
+    #header {
+        height: auto;
+    }
     #rightSidebar {
         order: 1;
     }
