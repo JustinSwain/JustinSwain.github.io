@@ -1,0 +1,180 @@
+:root {
+    --colorBG1: #1a1a1a;
+    --colorBG2: #000088;
+    --colorMain: #00002a;
+    --colorSide: #00002a;
+    --colorHead: #00002a;
+    --colorFoot: #00002a;
+}
+
+body {
+    font-family: 'Arial';
+    margin: 0;
+    background-color: black;
+    color: white;
+    background: var(--colorBG1);
+    font-size: large;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+#container {
+    max-width: 60%;
+    margin: 0 auto;
+}
+
+/* Links */
+#container a {
+    color: whitesmoke;
+    text-decoration: underline;
+}
+
+#container a:hover {
+    color: white;
+}
+
+/* Header */
+#header {
+    width: 100%;
+    height: 148px;
+    top: 0%;
+    background-color: var(--colorHead);
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+/* Navigation */
+#navbar {
+    height: auto;
+}
+
+#navbar ul {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    justify-content: space-evenly;
+    padding: 0px;
+}
+
+#navbar li {
+    padding-top: 10px;
+    text-decoration: underline;
+}
+
+.navbox {
+    position: sticky;
+    top: 10px;
+}
+
+/* Navigation links*/
+#navbar li a {
+    font-weight: 800;
+    text-decoration: none;
+}
+
+/* Navigation links mouse hovers over */
+#navbar li a:hover {
+    color: lightblue;
+}
+
+#flex {
+    display: flex;
+}
+
+/* Sidebar */
+aside {
+    background-color: var(--colorSide);
+    width: 30%;
+    max-width: 300px;
+    padding: 20px;
+    margin-left: 10px;
+}
+
+/* Main content */
+main {
+    background-color: var(--colorMain);
+    flex: 1;
+    padding: 20px;
+    order: 1;
+}
+
+#sidebar {
+    order: 2;
+}
+
+/* Footer */
+footer {
+    background-color: var(--colorFoot);
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Headings */
+h1, h2, h3 {
+    color: white;
+    font-style: oblique;
+}
+
+h1 {
+    font-size: 25px;
+}
+
+strong {
+    color: white;
+}
+
+/* Text box */
+.box {
+    background-color: var(--colorBG1);
+    border: 3px solid var(--colorBG2);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+
+/* Mobile Displays */
+/* the following styles apply only if the display is less than 1000px wide */
+@media only screen and (max-width: 1000px) {
+    #flex {
+        flex-direction: column;
+    }
+    #container {
+        max-width: 100%;
+        margin: 10px;
+    }
+
+    main {
+        order: 2;
+    }
+
+    #sidebar {
+        order: 1;
+    }
+
+    #navbar {
+        text-align: center;
+    }
+    #navbar ul {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        list-style-image: none;
+    }
+    #navbar ul > ul {
+        display: none;
+    }
+    .navbox {
+        text-align: center;
+    }
+    aside {
+        width: 100%;
+        max-width: none;
+        margin-left: 0px;
+        margin-bottom: 10px;
+    }
+}
