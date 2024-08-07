@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Justin Swain - Math</title>
+    <title>Justin Swain - Links</title>
     <link rel="stylesheet" href="/style/style.css">
     <link rel="icon" href="/images/spaceKitty.png">
   </head>
   <body>
-<div id="container">
-    <div id="topBar">
+
+<div id="container"><div id="topBar">
     <!--<marquee>Welcome!</marquee>-->
 </div>
 <div id="headerArea">
@@ -22,10 +22,19 @@
 <div id="flex">
 
     <main>
-        <h1>Math</h1>
+        <h1>Toys</h1>
         <div class="box">
-            <marquee>THIS PAGE UNDER CONSTRUCTION</marquee>
-            <p>Here I plan to share some interesting mathematics that I have learned in graduate school.</p>
+            <h3>Pong</h3>
+            <canvas id="canvas" height="300"></canvas>
+        <div>
+        <div style="display:none;">
+            <img id="source" src="/images/toys/cat.png" width="300"/>
+        </div>
+            <p>Difficulty: <output id="value"></output></p><input type="range" id="select" value="1" min="1" max="5" step="1"/>
+            <button id="start">Start</button>
+            <button id="restart">Restart</button>
+        </div>
+        <script src="script.js"></script>
         </div>
     </main>
     <aside id="rightSidebar">
@@ -43,7 +52,6 @@
                         <li><a href="/p/fun/books/">Books</a></li>
                         <li><a href="/p/fun/links/">Links</a></li>
                         <li><a href="/p/fun/music/">Music</a></li>
-                        <li><a href="/p/fun/toys/">Toys</a></li>
                      </ul>   
                     <li><a href="/p/about/">About</a></li>
                 </ul>

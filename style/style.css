@@ -193,6 +193,16 @@ strong {
     background-color: var(--space6);
 }
 
+button {
+    background-color: var(--space6);
+    color: white;
+    font-family: 'Arcade'; 
+}
+button:hover {
+    background-color: var(--space3);
+    cursor: pointer;
+}
+
 
 /* Mobile Displays */
 
