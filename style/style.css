@@ -203,6 +203,13 @@ button:hover {
     cursor: pointer;
 }
 
+canvas {
+    width: 100%;
+    max-width: 500px;
+    display: block;
+    margin: auto;
+}
+
 
 /* Mobile Displays */
 

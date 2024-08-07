@@ -1,7 +1,7 @@
 class GameView {
     constructor() {
         let canvas =document.querySelector("#canvas");
-        canvas.style.width = "100%";
+        // canvas.style.width = "100%";
         canvas.width = canvas.offsetWidth;
         const image = document.getElementById("source");
         this.image = image;
@@ -233,7 +233,7 @@ class Game {
                 this.draw();
                 this.gameView.drawGameOver(this.scores);
             } else {
-                setTimeout(() => this.loop(), 20);
+                setTimeout(() => this.loop(), 16);
             }
         } else {
             return;
