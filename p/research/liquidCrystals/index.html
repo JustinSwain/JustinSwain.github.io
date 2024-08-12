@@ -4,9 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Justin Swain - Liquid Crystals</title>
-    <link rel="stylesheet" href="/style/lc-style.css">
     <link rel="stylesheet" href="/style/style.css">
     <link rel="icon" href="/images/spaceKitty.png">
+    <style>
+        .equation {
+            width: 100%;
+            overflow-x: auto;
+        }
+    </style>
   </head>
   <body>
 <div id="container"><div id="topBar">
@@ -40,36 +45,45 @@
                 <h3>\(\mathbf{Q}\) Tensor</h3>
                     <p>
                         The Landau-de Gennes model of liquid crystals is popular because it can describe a large class of material deformations. The model uses a tensor order parameter \(\mathbf{Q}\) to describe the local average orientation of the nematic molecules and in one state, called the uniaxial state, it is written
-                        $$
+                        <div class="equation">
+                            $$
                             \mathbf{Q} = s \left( \mathbf{n}\otimes\mathbf{n} - \frac{1}3\mathbb{I} \right),
-                        $$
+                            $$
+                        </div>
                         where \(\mathbf{n}\) is the dominant eigenvector of \(\mathbf{Q}\), \(s\) is a scalar order parameter related to the largest eigenvalue, and \(\mathbb{I}\) is the identity matrix. Because of this we have that \(\mathbf{Q}\) is symmetric and traceless and therefore contains only five degrees of freedom. Additionally, the eigenvalues satisfy \(-1/3 \leq \lambda_i \leq 2/3\), and \(\sum_i \lambda_i = 0\), and so we can write the tensor in its eigenframe as
-                        $$
-                        \mathbf{Q} 
-                        \,=\, 
-                        s_1 \left( \mathbf{n}_1\otimes\mathbf{n}_1\right)
-                        + s_2 \left( \mathbf{n}_2\otimes\mathbf{n}_2\right)
-                        - \frac{1}3 (s_1 + s_2) \mathbb{I}
-                        $$
+                        <div class="equation">
+                            $$
+                            \mathbf{Q} 
+                            \,=\, 
+                            s_1 \left( \mathbf{n}_1\otimes\mathbf{n}_1\right)
+                            + s_2 \left( \mathbf{n}_2\otimes\mathbf{n}_2\right)
+                            - \frac{1}3 (s_1 + s_2) \mathbb{I}
+                            $$
+                        </div>
                         where \(\mathbf{n}_i\) are the orthonormal eigenvectors, and 
-                        $$
+                        <div class="equation">
+                            $$
                             \lambda_1 = \frac{1}{3}(2s_1 - s_2), \quad \quad \lambda_2 = -\frac{1}{3}(s_1 + s_2), \quad \quad \mbox{and} \quad \quad \lambda_3 = \frac{1}{3}(2s_2 - s_1).
-                        $$
+                            $$
+                        </div>
                         This later form is more general, and can describe molecular orientations in both the uniaxial and biaxial phases.
                     </p>
                 <h3>Landau-de Gennes Energy</h3>
                     <p>
                         Let \(\Omega\subset\mathbb{R}^d, d=2,3\), be a bounded domain with polyhedral boundary \(\partial\Omega \). The Landau-de Gennes free energy functional is commonly written
-                        $$
+                        <div class="equation">
+                            $$
                             \mathcal{E}(\mathbf{Q})
                             \, = \,
                             \int_\Omega \mathcal{W}(\mathbf{Q} , \nabla\mathbf{Q} )
                             + \frac{1}{\varepsilon} \Psi(\mathbf{Q}) d\mathbf{x}
-                        $$
+                            $$
+                        </div>    
                         where \(\mathcal{W}(\mathbf{Q} , \nabla\mathbf{Q} ) \) is the elastic energy, and \( \Psi(\mathbf{Q}) \) is the thermotropic contribution.
                     </p>
                     <p>
                         One way to write the elastic energy is
+                        <div class="equation">
                         $$
                             \mathcal{W}(\mathbf{Q} , \nabla\mathbf{Q} )
                             \, = \,
@@ -80,27 +94,33 @@
                                 + L_1 q_0 \nabla \mathbf{Q} \,\vdots\, (\epsilon\cdot\mathbf{Q})
                             \right)
                         $$
+                        </div>
                         where \(L_i \) and \(q_0 \) are material parameters, and \(\epsilon\) is the Levi-Civita permutation symbol. It is common, and for the rest of this summary, to have\(L_2,L_3,q_0 = 0\) and \(L_1=1\) to get the one-constant approximation.
                         </p>
                         <p>
                         The thermotropic energy is written as
-                        $$
+                        <div class="equation">
+                            $$
                             \Psi (\mathbf{Q})
                             \, = \,
                             \frac{A}{2} \texttt{tr}(\mathbf{Q}^2)
                             - \frac{B}{3} \texttt{tr}(\mathbf{Q}^2)
                             + \frac{C}{4} \texttt{tr}(\mathbf{Q}^2)^2
-                        $$
+                            $$
+                        </div>    
                         where \(A,B,C\) are material parameters with \(B,C \geq 0\).
                     </p>
                 <h3>Gradient Flow</h3>
                     <p>
                         System dynamics can be modeled by an \(L^2\)-gradient flow:
-                        $$
+                        <div class="equation">
+                            $$
                             \mathbf{Q}_t = -\gamma\frac{\partial \mathcal{E}}{\partial\mathbf{Q}}
-                        $$
+                            $$
+                        </div>    
                         where \(\gamma>0\) is a relaxation constant and the variational derivative of the energy is given by
-                        $$
+                        <div class="equation">
+                            $$
                             \frac{\partial \mathcal{E}}{\partial\mathbf{Q}}
                             \, = \,
                             -\Delta \mathbf{Q} + \frac{1}{\varepsilon} \left(
@@ -108,14 +128,17 @@
                                 - B\left(\mathbf{Q}^2 - \frac{\texttt{tr}(\mathbf{Q}^2)}{3}\mathbb{I} \right)
                                 + C\texttt{tr}(\mathbf{Q}^2)\mathbf{Q}
                             \right)
-                        $$
+                            $$
+                        </div>    
                     </p>
                 <h3>Energy Law</h3>
                     <p>
                         A useful property of the PDE is the following energy law
-                        $$
+                        <div class="equation">
+                            $$
                             \frac{d}{dt}\mathcal{E}(\mathbf{Q}) + \frac{1}{\gamma} \| \mathbf{Q}_t \|^2 = 0
-                        $$
+                            $$
+                        </div>
                         which implies that the energy is always decreasing in time.
                     </p>
                 <h2>Designing Numerical Schemes</h2>
