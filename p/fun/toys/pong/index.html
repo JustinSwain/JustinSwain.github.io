@@ -3,11 +3,12 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Justin Swain - Math</title>
+    <title>Justin Swain - Links</title>
     <link rel="stylesheet" href="/style/style.css">
     <link rel="icon" href="/images/spaceKitty.png">
   </head>
   <body>
+
 <div id="container"><div id="topBar">
     <!--<marquee>Welcome!</marquee>-->
 </div>
@@ -21,35 +22,19 @@
 <div id="flex">
 
     <main>
-        <h1>Fun</h1>
+        <h1>Toys</h1>
         <div class="box">
-            <p>This page provides links to pages on this site that are less work and more fun.
-            </p>
-            <br>
-            <ul style="list-style-type: none;">
-                <li><a href="/p/fun/cats/">Cats</a>
-                    <p style="padding-left: 40px; ">
-                    Here you will find a gallery of my cats, cool cat facts, and some other interesting surprises.
-                    </p>
-                </li>
-                <li><a href="/p/fun/books/">Books</a>
-                    <p style="padding-left: 40px; ">
-                    Here you will find some of my most favorite books, some book reviews, and reading lists.
-                    </p>
-                </li>
-                <li><a href="/p/fun/links/">Links</a>
-                    <p style="padding-left: 40px; ">
-                    A directory of websites I think are worth sharing.
-                    </p>
-                </li>
-                <li><a href="/p/fun/music/">Music</a>
-                    <p style="padding-left: 40px; ">
-                    Here you will find some of my drum transcriptions, favorite music, and playlists.
-                    </p>
-                </li>
-                <li><a href="/p/fun/toys/">Toys</a></li>
-                <p style="padding-left: 40px;">Simple games and tools.</p>
-            </ul>
+            <h3>Pong</h3>
+            <canvas id="canvas" height="300"></canvas>
+        <div>
+        <div style="display:none;">
+            <img id="source" src="/images/toys/cat.png" width="300"/>
+        </div>
+            <p>Difficulty: <output id="value"></output></p><input type="range" id="select" value="1" min="1" max="5" step="1"/>
+            <button id="start">Start</button>
+            <button id="restart">Restart</button>
+        </div>
+        <script src="script.js"></script>
         </div>
     </main>
     <aside id="rightSidebar">

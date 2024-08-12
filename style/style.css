@@ -65,10 +65,6 @@ body:has(input[value="Arial"]:checked) {
     width: 100%;
     background-color: var(--space6);
     height: 128px;
-    /*background-image: url("/images/spaceKitty.png");
-    background-position-y: bottom;
-    background-position-x: left;
-    background-repeat: no-repeat; */
     background-size: 88px;
     margin-bottom: 10px;
     padding: 0px;
@@ -155,13 +151,15 @@ footer > marquee {
 }
 
 /* Headings */
-h1, h2, h3 {
+h2, h3 {
     color: var(--space1);
     font-family: 'Arcade';
 }
 
 h1 {
-    font-size: 25px;
+    font-family: 'Arcade';
+    color: white;
+    font-size: xx-large;
 }
 
 strong {
@@ -191,6 +189,23 @@ strong {
     padding: 10px;
     font-size: smaller;
     background-color: var(--space6);
+}
+
+button {
+    background-color: var(--space6);
+    color: white;
+    font-family: 'Arcade'; 
+}
+button:hover {
+    background-color: var(--space3);
+    cursor: pointer;
+}
+
+canvas {
+    width: 100%;
+    max-width: 490px;
+    display: block;
+    margin: auto;
 }
 
 

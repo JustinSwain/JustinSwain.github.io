@@ -3,11 +3,12 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Justin Swain - Math</title>
+    <title>Justin Swain - Links</title>
     <link rel="stylesheet" href="/style/style.css">
     <link rel="icon" href="/images/spaceKitty.png">
   </head>
   <body>
+
 <div id="container"><div id="topBar">
     <!--<marquee>Welcome!</marquee>-->
 </div>
@@ -21,35 +22,33 @@
 <div id="flex">
 
     <main>
-        <h1>Fun</h1>
+        <h1>Toys</h1>
         <div class="box">
-            <p>This page provides links to pages on this site that are less work and more fun.
-            </p>
+            <h3>Sierpinski Carpet Fractal</h3>
+            <canvas id="canvas" height="300" width="300"></canvas>
             <br>
-            <ul style="list-style-type: none;">
-                <li><a href="/p/fun/cats/">Cats</a>
-                    <p style="padding-left: 40px; ">
-                    Here you will find a gallery of my cats, cool cat facts, and some other interesting surprises.
-                    </p>
+            <strong>Controls</strong>
+            <ul>
+                <li>
+                    Click to iterate the fractal (Limited to 6)
                 </li>
-                <li><a href="/p/fun/books/">Books</a>
-                    <p style="padding-left: 40px; ">
-                    Here you will find some of my most favorite books, some book reviews, and reading lists.
-                    </p>
+                <li>
+                    Arrow up/down = Zoom in/out
                 </li>
-                <li><a href="/p/fun/links/">Links</a>
-                    <p style="padding-left: 40px; ">
-                    A directory of websites I think are worth sharing.
-                    </p>
+                <li>
+                    WASD = Move camera
                 </li>
-                <li><a href="/p/fun/music/">Music</a>
-                    <p style="padding-left: 40px; ">
-                    Here you will find some of my drum transcriptions, favorite music, and playlists.
-                    </p>
+                <li>
+                    f = toggle fractal to Vicsek Cross Fractal
                 </li>
-                <li><a href="/p/fun/toys/">Toys</a></li>
-                <p style="padding-left: 40px;">Simple games and tools.</p>
+                <li>
+                    c = toggle color
+                </li>
+                <li>
+                    r = RESET
+                </li>
             </ul>
+        <script src="sierpinskiCarpet.js"></script>
         </div>
     </main>
     <aside id="rightSidebar">

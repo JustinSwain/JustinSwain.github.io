@@ -4,9 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Justin Swain - Liquid Crystals</title>
-    <link rel="stylesheet" href="/style/lc-style.css">
     <link rel="stylesheet" href="/style/style.css">
     <link rel="icon" href="/images/spaceKitty.png">
+    <style>
+        .equation {
+            width: 100%;
+            overflow-x: auto;
+        }
+    </style>
   </head>
   <body>
 <div id="container"><div id="topBar">
@@ -22,126 +27,147 @@
 <div id="flex">
 
     <main>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <h1>Liquid Crystals</h1>
-            <strong>I want to read at the level of a(n):</strong>
-            <br>
-
-        <input type=radio id="toggle1" name="toggle">5 year old<br>
-            <input type=radio id="toggle2" name="toggle" checked >High School Student<br>
-            <input type=radio id="toggle3" name="toggle">College Student<br>
-            <input type=radio id="toggle4" name="toggle">Math PhD<br>
-        
+            <div class="box">
+                <p>
+                    Liquid crystals are materials made of molecules with shapes that allow them to take on intermediate phases between liquid and solid hence the name liquid crystal. <a href="https://electronics.howstuffworks.com/lcd.htm">[1]</a>
+                </p>
+                <p>
+                    Liquid crystals are the technology behind liquid crystal displays or LCD screens which use electricity to change the orientation of a small layer of liquid crystals in your screen to direct light for making images. Other interesting technology that uses liquid crystals includes: medical biosensors for detecting disease<a href="https://www.nature.com/articles/s41598-023-31668-8">[2]</a>, microscopic robots <a href="https://physicsworld.com/a/liquid-crystals-bring-robotics-to-the-microscale/">[3]</a>, adaptive 3D printing materials<a href="https://phys.org/news/2021-08-liquid-crystal-ink-3d.html">[4]</a>, smart fabric <a href="https://www.popsci.com/technology/fiberobo-smart-textiles-mit/">[5]</a>, and more.
+                </p>
+            </div>
+        <h1>Liquid Crystals Mathematical Modeling</h1>
+            <div class="box">
+                <p>
+                    Below is a summary of the summary that we provided in <a href="https://doi.org/10.1016/j.cma.2024.117190">this paper</a> on modeling nematic liquid crystals using the Landau-de Gennes \(\mathbf{Q}\) tensor theory, and all references are included there.
+                </p>
+                <h3>\(\mathbf{Q}\) Tensor</h3>
+                    <p>
+                        The Landau-de Gennes model of liquid crystals is popular because it can describe a large class of material deformations. The model uses a tensor order parameter \(\mathbf{Q}\) to describe the local average orientation of the nematic molecules and in one state, called the uniaxial state, it is written
+                        <div class="equation">
+                            $$
+                            \mathbf{Q} = s \left( \mathbf{n}\otimes\mathbf{n} - \frac{1}3\mathbb{I} \right),
+                            $$
+                        </div>
+                        where \(\mathbf{n}\) is the dominant eigenvector of \(\mathbf{Q}\), \(s\) is a scalar order parameter related to the largest eigenvalue, and \(\mathbb{I}\) is the identity matrix. Because of this we have that \(\mathbf{Q}\) is symmetric and traceless and therefore contains only five degrees of freedom. Additionally, the eigenvalues satisfy \(-1/3 \leq \lambda_i \leq 2/3\), and \(\sum_i \lambda_i = 0\), and so we can write the tensor in its eigenframe as
+                        <div class="equation">
+                            $$
+                            \mathbf{Q} 
+                            \,=\, 
+                            s_1 \left( \mathbf{n}_1\otimes\mathbf{n}_1\right)
+                            + s_2 \left( \mathbf{n}_2\otimes\mathbf{n}_2\right)
+                            - \frac{1}3 (s_1 + s_2) \mathbb{I}
+                            $$
+                        </div>
+                        where \(\mathbf{n}_i\) are the orthonormal eigenvectors, and 
+                        <div class="equation">
+                            $$
+                            \lambda_1 = \frac{1}{3}(2s_1 - s_2), \quad \quad \lambda_2 = -\frac{1}{3}(s_1 + s_2), \quad \quad \mbox{and} \quad \quad \lambda_3 = \frac{1}{3}(2s_2 - s_1).
+                            $$
+                        </div>
+                        This later form is more general, and can describe molecular orientations in both the uniaxial and biaxial phases.
+                    </p>
+                <h3>Landau-de Gennes Energy</h3>
+                    <p>
+                        Let \(\Omega\subset\mathbb{R}^d, d=2,3\), be a bounded domain with polyhedral boundary \(\partial\Omega \). The Landau-de Gennes free energy functional is commonly written
+                        <div class="equation">
+                            $$
+                            \mathcal{E}(\mathbf{Q})
+                            \, = \,
+                            \int_\Omega \mathcal{W}(\mathbf{Q} , \nabla\mathbf{Q} )
+                            + \frac{1}{\varepsilon} \Psi(\mathbf{Q}) d\mathbf{x}
+                            $$
+                        </div>    
+                        where \(\mathcal{W}(\mathbf{Q} , \nabla\mathbf{Q} ) \) is the elastic energy, and \( \Psi(\mathbf{Q}) \) is the thermotropic contribution.
+                    </p>
+                    <p>
+                        One way to write the elastic energy is
+                        <div class="equation">
+                        $$
+                            \mathcal{W}(\mathbf{Q} , \nabla\mathbf{Q} )
+                            \, = \,
+                            \frac{1}{2} \left(
+                                L_1 \mid\nabla\mathbf{Q}\mid^2
+                                + L_2 \mid\nabla \cdot \mathbf{Q}\mid^2
+                                + L_3 (\nabla \mathbf{Q})^T \,\vdots\, \nabla \mathbf{Q}
+                                + L_1 q_0 \nabla \mathbf{Q} \,\vdots\, (\epsilon\cdot\mathbf{Q})
+                            \right)
+                        $$
+                        </div>
+                        where \(L_i \) and \(q_0 \) are material parameters, and \(\epsilon\) is the Levi-Civita permutation symbol. It is common, and for the rest of this summary, to have\(L_2,L_3,q_0 = 0\) and \(L_1=1\) to get the one-constant approximation.
+                        </p>
+                        <p>
+                        The thermotropic energy is written as
+                        <div class="equation">
+                            $$
+                            \Psi (\mathbf{Q})
+                            \, = \,
+                            \frac{A}{2} \texttt{tr}(\mathbf{Q}^2)
+                            - \frac{B}{3} \texttt{tr}(\mathbf{Q}^2)
+                            + \frac{C}{4} \texttt{tr}(\mathbf{Q}^2)^2
+                            $$
+                        </div>    
+                        where \(A,B,C\) are material parameters with \(B,C \geq 0\).
+                    </p>
+                <h3>Gradient Flow</h3>
+                    <p>
+                        System dynamics can be modeled by an \(L^2\)-gradient flow:
+                        <div class="equation">
+                            $$
+                            \mathbf{Q}_t = -\gamma\frac{\partial \mathcal{E}}{\partial\mathbf{Q}}
+                            $$
+                        </div>    
+                        where \(\gamma>0\) is a relaxation constant and the variational derivative of the energy is given by
+                        <div class="equation">
+                            $$
+                            \frac{\partial \mathcal{E}}{\partial\mathbf{Q}}
+                            \, = \,
+                            -\Delta \mathbf{Q} + \frac{1}{\varepsilon} \left(
+                                A\mathbf{Q}
+                                - B\left(\mathbf{Q}^2 - \frac{\texttt{tr}(\mathbf{Q}^2)}{3}\mathbb{I} \right)
+                                + C\texttt{tr}(\mathbf{Q}^2)\mathbf{Q}
+                            \right)
+                            $$
+                        </div>    
+                    </p>
+                <h3>Energy Law</h3>
+                    <p>
+                        A useful property of the PDE is the following energy law
+                        <div class="equation">
+                            $$
+                            \frac{d}{dt}\mathcal{E}(\mathbf{Q}) + \frac{1}{\gamma} \| \mathbf{Q}_t \|^2 = 0
+                            $$
+                        </div>
+                        which implies that the energy is always decreasing in time.
+                    </p>
+                <h2>Designing Numerical Schemes</h2>
+                    <p>
+                        Several challenges arise when designing numerical schemes for this PDE: 
+                        <ol>
+                            <li>
+                                The problem is very non-linear. Linear schemes are much faster than iterative non-linear schemes, and so it is useful to find a way to approximate the problem with linear terms.
+                            </li>
+                            <li>
+                                The unknowns in \(\mathbf{Q}\) are coupled by several terms. This means that we have to solve a very large linear system which is computationally expensive especially if we want to simulate anything in three dimensions. Therefore, it is useful to decouple the unknowns in the problem.
+                            </li>
+                            <li>
+                                To recover accurate system dynamics. By this I mean that the numerical scheme should try to model the continuous energy law as closely as possible without adding too much artificial numerical dissipation into the system.
+                            </li>
+                            <li>
+                                To have energy stability. This means that the numerical scheme will have a decreasing energy law at the discrete level similar to the continuous problem. It is especially nice to have a scheme that satisfies the discrete energy law for any choice of discrete time step, \(\Delta t\), since the numerical dissipation from #3 depends on \( \Delta t\) as well.
+                            </li>
+                        </ol>
+                    </p>
+        </div>
         <br>
-
-        <!-- 5 year old-->
-        <div class="box" id="content1">
-            <p>
-                You see liquid crystals all the time, they are in your TV, computer, phone, iPad, and more! 
-            </p>
-
-            <center>
-                <figure>
-                    <img src="/images/LCs/artLCs.png" width="70%">
-                    <figcaption style="font-size: x-small">
-                        Liquid crystal art!
-                        Source: D. Adrienko - <i>Introduction to Liquid Crystals</i>
-                    </figcaption>
-                </figure>
-            </center>
-
-            <p>
-                Liquid crystals are like tiny sticks that can be moved with electricity. When you turn on your TV it uses a big light to shine through liquid crystals and electricity to move the tiny sticks around to make pictures!
-            </p>
-            <p>
-                Mathematicians like me try to make computer programs that help us learn more about liquid crystals. Then we use our programs to help engineers build things with liquid crystals. Some cool things that people are building are tiny liquid crystal robots, fake muscles made out of liquid crystals, liquid crystal lasers and more!
-            </p>
+        <div id="flex" style="align-items: center;">
+            <a href="https://www.mathjax.org">
+                <img title="Powered by MathJax"
+                src="https://www.mathjax.org/badge/badge.gif"
+                border="0" alt="Powered by MathJax"/>
         </div>
-
-        <!-- 8th Grader-->
-        <div class="box" id="content2">
-            <p>
-                What are liquid crystals? 
-            </p>
-            <p>
-                You are probably looking at some right now! Liquid crystals are used to make liquid crystal displays or LCD screens. These are used in phones, tablets, computers, TVs, watches, and more! 
-            </p>
-
-            <center>
-                <figure>
-                    <img src="/images/LCs/artLCs.png" width="70%">
-                    <figcaption style="font-size: x-small">
-                        Liquid crystal art!
-                        Source: D. Adrienko - <i>Introduction to Liquid Crystals</i>
-                    </figcaption>
-                </figure>
-            </center>
-
-            <p>
-                But how do they work?
-            </p>
-            <p>
-                Tiny objects called molecules are all around us. Molecules are the building blocks of all matter: solids, liquids, and gasses. Different objects have different molecules, with all sorts of shapes and sizes. 
-            </p>
-            <p>
-                Most things are in one of the three main states of matter: solid, liquid, and ice. Think of solid ice water that is heated up until it metls into liquid water. Liquid crystals are special because their molecules are long like a stick, or a baseball bat which causes them to form a state of matter between liquid and solid called the nematic liquid crystal phase.
-            </p>
-
-            <center>
-                <figure>
-                    <img src="/images/LCs/molecules.jpeg" width="70%">
-                    <figcaption>
-                        Source: H. K. Bisoyi, Q. Li - <i>Liquid Crystals: Versatile Self-Organized Smart Soft Materials</i>
-                    </figcaption>
-                </figure>
-            </center>
-
-            <p>
-                Think about putting a bunch of baseball bats in a box. You can stack the baseball bats on top of each other but they might not all be exactly straight. If you shake the box then the bats might slide past each other and move around in the box but as soon as you stop shaking they will line up again and stay still.
-            </p>
-            <p>
-                That is how the molecules in a liquid crystal act! They are like slippery sticks that can move past each other but they all point in the same direction. There are different ways we can make the liquid crystal molecules move: by heating them up, using electricity, adding chemicals, and more.
-            </p>
-            <p>
-                So how do LCD screens work?
-            </p>
-            <p>
-                The liquid crystals are in the screen just behind the glass. Behind the liquid crystals is a light that shines through the screen towards your eyeballs. By using electricity, the LCD screen will make the liquid crystals move to block some of the light which is how the image appears on the screen.
-            </p>
-
-            <center>
-                <figure>
-                    <img src="/images/LCs/lcd.jpg" width="60%">
-                    <figcaption>
-                        LCD screen.
-                    </figcaption>
-                </figure>
-            </center>
-
-            <p>
-                Why do mathematicans study liquid crystals?
-            </p>
-            <p>
-                Because liquid crystals are super small and very expensive! Working with the crystals can be hard because they are way too small to see in a microscope.
-            </p>
-            <p>
-                So mathematicians like me make computer programs that can do liquid crystal experiments virtually. But making these programs is not easy! It takes lots of math, physics, and computer programming to do these virtual experiments. Most people working on making these programs are professors at universities that have been studying math for many years!
-            </p>
-            <p>
-                There are more uses for liquid crystals thatn just screens. Mathematicians have worked with engineers to make some new technologies for liquid crystals like liquid crystal nano-robots, sensors that can go in your body to help doctors diagnose diseases, artificial muscles, liquid crystal lasers, and more!
-            </p>
-        </div>
-
-        <!-- Undergraduate-->
-        <div class="box" id="content3">
-            (Coming Soon)
-        </div>
-
-        <!-- MATH PHD-->
-        <div class="box" id="content4">
-            (Coming Soon)
-        </div>
-             
-
+        </a>
     </main>
 
     <aside id="rightSidebar">
@@ -159,6 +185,7 @@
                         <li><a href="/p/fun/books/">Books</a></li>
                         <li><a href="/p/fun/links/">Links</a></li>
                         <li><a href="/p/fun/music/">Music</a></li>
+                        <li><a href="/p/fun/toys/">Toys</a></li>
                      </ul>   
                     <li><a href="/p/about/">About</a></li>
                 </ul>
