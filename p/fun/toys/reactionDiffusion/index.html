@@ -24,18 +24,26 @@
     <main>
         <h1>Toys</h1>
         <div class="box">
-            <ul>
-                <li>
-                    <a href="/p/fun/toys/pong/index.html">Pong</a>
-                </li>
-                <li>
-                    <a href="/p/fun/toys/sierpinskiCarpet/index.html">Sierpinski Carpet Fractal</a>
-                </li>
-                <li>
-                    <a href="/p/fun/toys/reactionDiffusion/">Reaction Diffusion Simulation</a>
-                </li>
-            </ul>
-        </div>
+            <div>
+                <h1> Reaction Diffusion </h1>
+            </div>
+            <div>
+                <canvas id="canvas"></canvas>
+            </div>
+            <div>
+                <select id="list">
+                    <option selected value="Square">Square</option>
+                    <option value="X">X</option>
+                    <option value="Smile">:)</option>
+                  </select>
+                  <p>
+                    Initial config: <span id="changed"></span>
+                  </p>
+                  <p>
+                    Click the canvas to start/pause the simulation.
+                  </p>
+            </div>
+            <script src="reactionDiffusion.js"></script>
     </main>
     <aside id="rightSidebar">
         <div class="navbox">
