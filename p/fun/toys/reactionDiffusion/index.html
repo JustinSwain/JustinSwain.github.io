@@ -6,6 +6,17 @@
     <title>Justin Swain - Links</title>
     <link rel="stylesheet" href="/style/style.css">
     <link rel="icon" href="/images/spaceKitty.png">
+    <style>
+        select {
+            background-color: #181818;
+            color: white;
+            border-color: var(--space3);
+        }
+        select:hover {
+            cursor: pointer;
+            border-color: var(--space0);
+        }
+    </style>
   </head>
   <body>
 
@@ -27,22 +38,37 @@
             <div>
                 <h1> Reaction Diffusion </h1>
             </div>
-            <div>
-                <canvas id="canvas"></canvas>
+            <div style="margin: 10px;">
+                <canvas id="canvas" ></canvas>
             </div>
-            <div>
-                <select id="list">
+            <div id="flex" style="justify-content:center; flex-wrap: wrap;flex-direction:row;">
+                <br>
+                <select id="initialConfig" style="margin-right: 5px;">
                     <option selected value="Square">Square</option>
                     <option value="X">X</option>
                     <option value="Smile">:)</option>
-                  </select>
-                  <p>
-                    Initial config: <span id="changed"></span>
-                  </p>
-                  <p>
-                    Click the canvas to start/pause the simulation.
-                  </p>
+                    <!-- <option value="Random">Random</option> -->
+                </select>
+
+                <select id="paramConfig" style="margin-left: 5px;">
+                    <option selected value="Default">Turing Pattern</option>
+                    <option value="Bacteria">Bacteria</option>
+                    <option value="Coral">Coral</option>
+                    <option value="Spirals">Spirals</option>
+                    <option value="Zebrafish">Zebrafish</option>
+                </select>
+
+                <select id="colorConfig" style="margin-left: 5px;">
+                    <option selected value="Rainbow">Rainbow</option>
+                    <option value="Grayscale">Grayscale</option>
+                </select>
             </div>
+            <p>
+                Click the canvas to start/pause the simulation.
+            </p>
+            <p>
+                Source code: <a href="https://github.com/JustinSwain/Reaction-Diffusion.git">https://github.com/JustinSwain/Reaction-Diffusion.git</a>
+            </p>
             <script src="reactionDiffusion.js"></script>
     </main>
     <aside id="rightSidebar">

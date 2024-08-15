@@ -1,54 +1,94 @@
-const FEED = 0.055;
-const KILL = 0.062;
-const R_A = 1.0;
-const R_B = 0.5;
-const DT = 1.0;
-
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 
 canvas.width = 200;
 canvas.height = 200;
 
+let R_A = 0;
+let R_B = 0;
+let FEED = 0;
+let KILL = 0;
 let old = [];
 let next = [];
-let initial = document.getElementById('changed');
-let list = document.getElementById("list");
-initial.textContent = list.value;
+
+let list = document.getElementById("initialConfig");
 function listQ(){
-    initial.textContent = this.value;
     init();
     drawFrame();
-    console.log(initial.textContent)
 }
 list.onchange = listQ;
 
+let param = document.getElementById("paramConfig");
+function paramQ(){
+    paramInit();
+}
+param.onchange = paramQ;
+
+let colorConfig = document.getElementById("colorConfig");
+
 init();
+paramInit();
+
+function paramInit() {
+    if (param.value === "Default" || param.value === "") {
+        //Default
+        R_A = 1.0;
+        R_B = 0.5;
+        FEED = 0.055;
+        KILL = 0.062;
+        } else if (param.value === "Bacteria") {    
+        //coefficients from https://rajeshrinet.github.io/blog/2016/gray-scott/
+        //Bacteria
+        R_A = 1.4;
+        R_B = 0.6;
+        FEED = 0.035;
+        KILL = 0.065;
+        } else if (param.value === "Coral") {
+        //Coral
+        R_A = 0.12;
+        R_B = 0.08;
+        FEED = 0.02;
+        KILL = 0.05;
+        } else if (param.value === "Spirals") {
+        // Sprials
+        R_A = 0.8;
+        R_B = 0.4;
+        FEED = 0.060;
+        KILL = 0.062;
+        } else if (param.value === "Zebrafish") {
+        //Zebrafish
+        R_A = 0.16;
+        R_B = 0.08;
+        FEED = 0.035;
+        KILL = 0.06;
+        }
+}
+
 
 function init() {
-    for (var x = 0; x < canvas.width; x++) {
+    for (let x = 0; x < canvas.width; x++) {
         old[x] = [];
         next[x] = [];
-        for (var y = 0; y < canvas.height; y++) {
+        for (let y = 0; y < canvas.height; y++) {
           old[x][y] = {
             a: 1,
-            b: 0
+            b: 0.05*Math.random(1),
           };
         }
     }
 
-    if (initial.textContent === "Square" || initial.textContent === "") {
-        for(let x=100; x<110; x++) {
-            for(let y=100; y<110; y++) {
+    if (list.value === "Square" || list.value === "") {
+        for(let x=80; x<120; x++) {
+            for(let y=80; y<120; y++) {
                 old[x][y].b = 1.0;
             }
         }
-    } else if (initial.textContent === "X") {
+    } else if (list.value === "X") {
         for (let x=0; x< canvas.height; x++) {
             old[x][x].b = 1.0;
             old[x][199 - x].b = 1.0
         }
-    } else if (initial.textContent === "Smile") {
+    } else if (list.value === "Smile") {
         for(let x=80; x<90; x++) {
         for(let y=80; y<90; y++) {
             old[x][y].b = 1.0;
@@ -60,6 +100,12 @@ function init() {
         for(let x=60; x<141; x++) {
             for(let y=120; y<130; y++) {
                 old[x][y].b = 1.0;
+            }
+        }
+    } else if (list.value === "Random") {
+        for(let x=0; x<canvas.width; x++) {
+            for(let y=0; y<canvas.height; y++) {
+                old[x][y].b = 0.2 + 0.02*Math.random(1);
             }
         }
     }
@@ -74,10 +120,10 @@ function invlerp(x, y, a) {
 }
 
 function update() {
-    for (var x = 0; x < canvas.width; x++) {
-        for (var y = 0; y < canvas.height; y++) {
-          var a = old[x][y].a;
-          var b = old[x][y].b;
+    for (let x = 0; x < canvas.width; x++) {
+        for (let y = 0; y < canvas.height; y++) {
+          let a = old[x][y].a;
+          let b = old[x][y].b;
           let aa;
           let bb;
            aa= a +
@@ -129,12 +175,18 @@ function laplaceB(x,y) {
 }
 
 function drawFrame() {
-    for (var x = 1; x < canvas.width - 1; x++) {
-        for (var y = 1; y < canvas.height - 1; y++) {
+    for (let x = 0; x < canvas.width ; x++) {
+        for (let y = 0; y < canvas.height ; y++) {
             let a = old[x][y].a;
             let b = old[x][y].b;
-            let diff = clamp(a - b);
-            let color = getColorRainbow(diff);
+            let diff = clamp(a-b);
+            let color = [];
+            // let color = getColorGS(diff);
+            if (colorConfig.value === "Rainbow" || colorConfig.value === "") {
+                color = getColorRainbow(diff);
+            } else if (colorConfig.value === "Grayscale") {
+                color = getColorGS(diff);
+            }
             ctx.fillStyle = `rgba(
                 ${color[0]}, 
                 ${color[1]}, 
@@ -168,7 +220,7 @@ function getColorRainbow(val) {
 
 function getColorGS(val) {
     let grayScale = (invlerp(0,1,val));
-    grayScale = 1 - grayScale;
+    grayScale = grayScale;
     return [255*grayScale, 255*grayScale, 255*grayScale, 1];
 }
 //colormap credits - end
@@ -176,13 +228,20 @@ function getColorGS(val) {
 
 function loop() {
     ctx.reset();
-    update();
-    old = next;
+    
+    for (let i=0; i<15; i++ ){
+        update();
+        old = next;
+    }
     
     drawFrame();
     
     if (!pause) {
         window.requestAnimationFrame(loop);
+    } else if (pause) {
+        ctx.fillStyle = "aliceblue";
+        ctx.font = "24px monospace";
+        ctx.fillText("Pause",12,188);
     }
 }
 
