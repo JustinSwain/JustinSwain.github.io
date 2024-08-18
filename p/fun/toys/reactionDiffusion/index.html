@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Justin Swain - Links</title>
+    <title>Justin Swain - Reaction Diffusion</title>
     <link rel="stylesheet" href="/style/style.css">
     <link rel="icon" href="/images/spaceKitty.png">
     <style>
@@ -15,6 +15,12 @@
         select:hover {
             cursor: pointer;
             border-color: var(--space0);
+        }
+        canvas {
+            width: 100%;
+            max-width: 360px;
+            display: block;
+            margin: auto;
         }
     </style>
   </head>
@@ -66,8 +72,83 @@
             <p>
                 Click the canvas to start/pause the simulation.
             </p>
+            <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+            <p>
+                This simulation is based on the reaction diffusion model given by the following partial differential equation
+                <div class="equation">
+                    $$
+                    \frac{\partial \mathbf{u}}{\partial t} = \gamma \Delta \mathbf{u} + g(\mathbf{u})
+                    $$
+                </div>
+                where \(\mathbf{u}:\Omega \rightarrow \mathbb{R}^2\) represents the amount of two chemicals, phases, etc. that are reacting and diffusing inside of the spatial domain \(\Omega\).
+            </p>
+            <p>
+                In this case, the Gray-Scott model is used. This models the following stoichiometry
+                <div class="equation">
+                    $$
+                        \begin{array}{rcl}
+                            U + 2V &\rightarrow& 3V \quad \quad \mbox{(reaction)},\\
+                            V &\rightarrow& P   \quad \quad \mbox{(kill rate).}
+                        \end{array}
+                    $$
+                </div>
+                Here, \(U\), \(V\), and \(P\) are the concentrations of three chemicals, of which \(U\) and \(V\) react to convert the former into the later, and \(V\) degrades into chemical \(P\) with a certain kill rate, \(k\). In addition, more of material \(U\) is added to the system with a feed rate, \(f\). The Gray-Scott models this system with the following PDE:
+                <div class="equation">
+                    $$
+                    \left\{
+                    \begin{array}{rcl}
+                    \frac{\partial u}{\partial t} &=& \gamma_u \Delta u + uv^2 + f(1 - u) \\
+                    \frac{\partial v}{\partial t} &=& \gamma_v \Delta v - uv^2 - (f + k)v \, .
+                    \end{array}
+                    \right.
+                    $$
+                </div>
+                The terms \(\Delta u\) and \(\Delta v\) are the diffusion terms with diffusion coefficients \(\gamma_u\) and \(\gamma_v\).
+            </p>
+            <p>
+                To create a numerical scheme we first discretize the domain into an \(N\times N\) uniform grid of size \(h\) and employ a 9-point stencil to approximate the diffusion term. Then the time interval is discretized using a regular time step \(\Delta t\), and given \(u^n, v^n \in \mathbb{R}^{N\times N}\) a simple backwards Euler Finite Difference Method is used to compute the next time step. The scheme can be written as follows:
+                <div class="equation">
+                    $$
+                    \left\{
+                    \begin{array}{rcl}
+                    \frac{u_{i,j}^{n+1} - u_{i,j}^n}{\Delta t} 
+                    &=& 
+                    \gamma_u \frac{
+                          - u_{i,j}^n + 0.2*(u_{i+1,j}^n + u_{i-1,j}^n 
+                        + u_{i,j+1}^n + u_{i,j-1}^n) + 0.05*(u_{i+1,j+1}^n 
+                        + u_{i+1,j-1}^n + u_{i-1,j+1}^n + u_{i-1,j-1}^n)
+                    }{h^3} + u^n(v^n)^2 + f(1 - u^n) \, , \\
+                    \frac{v_{i,j}^{n+1} - v_{i,j}^n}{\Delta t} 
+                    &=& 
+                    \gamma_v \frac{
+                          - v_{i,j}^n + 0.2*(v_{i+1,j}^n + v_{i-1,j}^n 
+                        + v_{i,j+1}^n + v_{i,j-1}^n) + 0.05*(v_{i+1,j+1}^n 
+                        + v_{i+1,j-1}^n + v_{i-1,j+1}^n + v_{i-1,j-1}^n)
+                    }{h^3} - u^n(v^n)^2 - (f + k)v^n \, .
+                    \end{array}
+                    \right.
+                    $$
+                </div>
+                The scheme is complemented with periodic boundary conditions.
+            </p>
+            <p>
+                Different values for the parameters \((\gamma_u, \gamma_v, f,k)\) are provided in the second drop-down menu and named based on the patterns they produce. Note that the stability of the numerical scheme is stressed in the case of "Coral" since it often leads to all of chemical \(B\) degrading hence the reaction stops completely.
+            </p>
+            <p>
+                The color shows the value \(|a - b|\).
+            </p>
+            <p>
+                The patterns created by this kind of model are called <a href="https://en.wikipedia.org/wiki/Turing_pattern">Turing Patterns</a>.
+            </p>
             <p>
                 Source code: <a href="https://github.com/JustinSwain/Reaction-Diffusion.git">https://github.com/JustinSwain/Reaction-Diffusion.git</a>
+            </p>
+            <p>
+                Sources:
+                <ul>
+                    <li>https://groups.csail.mit.edu/mac/projects/amorphous/GrayScott/</li>
+                    <li>https://www.karlsims.com/rd.html</li>
+                </ul>
             </p>
             <script src="reactionDiffusion.js"></script>
     </main>

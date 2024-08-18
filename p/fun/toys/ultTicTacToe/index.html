@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Justin Swain - Sierpinski Carpet</title>
+    <title>Justin Swain - Ultimate Tic Tac Toe</title>
     <link rel="stylesheet" href="/style/style.css">
     <link rel="icon" href="/images/spaceKitty.png">
     <style>
@@ -30,33 +30,27 @@
 <div id="flex">
 
     <main>
-        <h1>Toys</h1>
+        <h1>Ultimate Tic Tac Toe</h1>
         <div class="box">
-            <h3>Sierpinski Carpet Fractal</h3>
-            <canvas id="canvas" height="300" width="300"></canvas>
-            <br>
-            <strong>Controls</strong>
-            <ul>
-                <li>
-                    Click to iterate the fractal (Limited to 6)
-                </li>
-                <li>
-                    Arrow up/down = Zoom in/out
-                </li>
-                <li>
-                    WASD = Move camera
-                </li>
-                <li>
-                    f = toggle fractal to Vicsek Cross Fractal
-                </li>
-                <li>
-                    c = toggle color
-                </li>
-                <li>
-                    r = RESET
-                </li>
-            </ul>
-        <script src="sierpinskiCarpet.js"></script>
+            <canvas id="game" width="360" height="360"></canvas>
+                <script src="script.js"></script>
+            <div>
+                <p>
+                    An ultimate tic tac toe game with a bot that runs a depth weighted <a href="https://en.wikipedia.org/wiki/Minimax">minimax algorithm</a> in each sub-game. This means the AI would play optimally to win or force a tie on a regular 3x3 board with alternating turns, but since turns in each board do not alternate in Ultimate Tic Tac Toe the AI can be beaten.
+                </p>
+                <p>
+                    Rules: Alternating turns. One large 3x3 grid contains a smaller sub-grid in each square. To start you may choose to move in any square in any grid. Then the AI can choose a move only in the sub-grid corresponding to the location inside the sub-grid of your previous move. Once a sub-grid is won by a player that sub-game is complete and is claimed by the winning player. If a player is sent to a sub-grid that is already won then that player may move in any sub-grid. A player winning three sub-grids in a row, column, or diagonal wins the match.
+                </p>
+                <p>
+                    For example, if your first move is in the center of the top-left grid, then the AI may move in any space in the center grid. If the AI chooses the bottom-right square in the center grid then your next move must be in the bottom-right grid. The game continues like this.
+                </p>
+                <p>
+                    Available moves are indicated by purple highlighting.
+                </p>
+                <p>
+                    On gameover, click any where to restart the game.
+                </p>
+            </div>
         </div>
     </main>
     <aside id="rightSidebar">
