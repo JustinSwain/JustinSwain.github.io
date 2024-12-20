@@ -24,19 +24,79 @@
         <h1>Research</h1>
         <div class="box">
             <p>
-                As an applied mathematics PhD student I have worked on building numerical methods for two phase-field problems.
-            </p>
-            <p> 
-                First, for nematic liquid crystals using the Landau-de Gennes Q-tensor theory. This uses a mean-field approach to model the phase transitions of materials through intermediate phases between isotropic liquid and crystalline solid. Additionally, I have also developed methods for studying cholesteric and blue phase liquid crystals.
+                As a Ph.D. student in applied mathematics I have worked in the broad area of numerical methods for partial differential equation problems (PDEs).
             </p>
             <p>
-                Second, for the Cahn-Hilliard equation. I have worked on developing a model for mixtures of three (or more) phases or components using a modified Cahn-Hillard system.
-            <p>
-                Numerical schemes for such problems are often designed to balance accuracy with efficiency, and to preserve some property of the continuous PDE problem at the discrete level. For example, it is desirable that the discrete solution will have similar energy dissipation as the true solution.
+                The key idea is to work with PDE problems that can be viewed as a gradient flow of an energy, and design numerical schemes which satisfy a dissipative energy law at the discrete level similar to the continuous problem. Another aspect is balancing the accuracy of the numerical scheme with efficiency, since I have been focusing on real-world applications. Problems like this require 3D simulations which require a lot of computational resources.
             </p>
             <p>
-                These problems are challenging since there are often several unknowns coupled through nonlinear terms in a large system of equations. Creating models which can accurately model dynamics in three dimensions efficiently is valuable to researchers in materials science to help explain their laboratory experiments.
+                I have mainly focused on three main projects.
             </p>
+            <h3>Liquid Crystals: Numerical Schemes</h3>
+            <p>
+                Liquid Crystals (LCs) are unique materials that exhibit phase transitions between crystalline solid and isotropic liquid. The molecules that make up LCs are elongated, which causes them to align parallel to each other, and induces long range orientational order in the material. This ordering gives the material the macroscopic properties of a solid, but microscopic properties of a liquid.
+            </p>
+            <p>
+                LCs are anisotropic, meaning they give different properties when observed from different directions. This is why light shining through the material can make interesting patterns.
+            </p>
+            <p>
+                Many emergent technologies use LCs. For example, Liquid Crystal Displays (LCDs) use LCs to create images on a screen like TVs, monitors, and phones. LC Biosensors have been used to detect foreign objects inside of a cell using the optical anisotropy of the material. Liquid Crystal Elastomers have been used to make smart fabrics, which can react to light or heat to change properties such as insulation. For instance, a LC sweater could be warmer when worn outside, and cooler when inside. Soft robotics using LCs is another interesting example where small robots are made with LCs which can preform actions in reseponse to light or heat.
+            </p>
+            <center>
+                <figure>
+                    <img src="/images/LCs/2dDefects.png" width="100%">
+                    <figcaption style="font-size: small;">
+                        Evolution of LC defects in 2D
+                    </figcaption>
+                </figure>
+            </center>
+            <p>
+                I have worked on building accurate, efficient, and energy stable numerical schemes for the Q-tensor model of LCs. This model can be viewed as a gradient flow of an energy which balances elastic and thermotropic contributions. and represents the average orientation of the molecules by the eigenvectors of a second order tensor Q.
+            </p>
+            <center>
+                <figure>
+                    <img src="/images/LCs/nematics.png" width="100%">
+                    <figcaption style="font-size: small;">
+                        Left: Optical microscope image of nematic LC. Middle and Right: Simulation images of LCs
+                    </figcaption>
+                </figure>
+            </center>
+            <h3>Liquid Crystals: Interdisciplinary Research</h3>
+            <p>
+                In a series of projects, I have applied my work on Liquid Crystals to collaborative projects with material scientists at UNT to provide supporting simulation data for their experimental work. 
+            </p>
+            <p>
+                The first project was focused on modeling the dynamics of defects inside small channels filled with LCs. Based on the boundary conditions and geometry of the channels we studied how stability of the defects.
+            </p>
+            <p>
+                Next, we worked on another phase of LCs called the Blue Phase. In this phase, the LCs form compicated geometric patterns of line defects inside the material. Our job was to investigate the deformation of line defects inside circular channels.
+            </p>
+            <figure>
+                <center>
+                <img src="/images/LCs/bluePhase.png" width="80%">
+                <figcaption style="font-size: small;">Blue Phase LC repeated line defect showing characteristic BPII 4-prong structure</figcaption>
+                </center>
+            </figure>
+            <p>
+                Recently, I have worked on modeling Cholesteric LCs. These materials are characterized by a balance of nematic ordering with a long range twist which is induced by molecules with high chirality.
+            </p>
+            <h3>Mixtures of Fluids: Phase-Field Modeling</h3>
+            <p>
+                I have also worked on numerical methods for mixtures of several phases or fluids by investigating an extension of the Cahn-Hilliard model to several components. This model can be viewed as a gradient flow of an energy which balances elastic energy and a double well pontential. The unknowns are concentration variables which are assumed to transition continuously between phases through a thin interfacial region.
+            </p>
+            <p>
+                Several interesting problems in math and engineering can be investigated using the Cahn-Hilliard equation. Multi-phase fluid flow is a challenging problem which uses this model. Tumor growth is another interesting and important problem. As with the classical Cahn-Hilliard equation, which was used to model metal alloy manufacturing, the multicomponent model can also be used for ternary metal alloys. Associated with this problem is the dynamics of the spinodal decomposition, or the separation of phases which are originally well mixed.
+            </p>
+            <center>
+                <figure>
+                    <img src="/images/PhaseField/spinodal2D.png" width="90%">
+                    <figcaption style="font-size: small;">2D three component spinodal decomposition</figcaption>
+                </figure>
+                <figure>
+                    <img src="/images/PhaseField/spinodal3D.png" width="90%">
+                    <figcaption style="font-size: small;">3D three component spinodal decomposition</figcaption>
+                </figure>
+            </center>
             <strong>Topic Summaries:</strong>
             <ul>
                 <li> <a href="/p/research/liquidCrystals/">Liquid Crystals</a></li>
@@ -160,12 +220,13 @@
                     <li><a href="/p/math/">Math</a></li>
                     <li><a href="/p/fun/">Fun</a></li>
                     <ul style="padding-left:20px; padding-top: 0px; padding-bottom: 0px;">
-                        <li><a href="/p/fun/cats/">Cats</a></li>
                         <li><a href="/p/fun/books/">Books</a></li>
+                        <li><a href="/p/fun/cats/">Cats</a></li>
+                        <li><a href="/p/fun/faith/">Faith</a></li>
                         <li><a href="/p/fun/links/">Links</a></li>
                         <li><a href="/p/fun/music/">Music</a></li>
                         <li><a href="/p/fun/toys/">Toys</a></li>
-                     </ul>   
+                     </ul>  
                     <li><a href="/p/about/">About</a></li>
                 </ul>
             </nav>

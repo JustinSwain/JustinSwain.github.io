@@ -46,8 +46,9 @@ body:has(input[value="Arial"]:checked) {
 }
 
 #container {
-    max-width: 60%;
     margin: 0 auto;
+    width: 960px;
+    max-width: 60%;
 }
 
 /* Links */
@@ -131,6 +132,7 @@ main {
     flex: 1;
     padding: 20px;
     order: 1;
+    max-width: 1000px;
 }
 
 #rightSidebar {
@@ -176,6 +178,8 @@ strong {
 
 .zoom {
     transition: transform .2s; /* Animation */
+    display: block;
+    margin: 0 auto;
   }
   
   .zoom:hover {
@@ -209,8 +213,9 @@ button:hover {
         flex-direction: column;
     }
     #container {
+        width: 100%;
         max-width: 100%;
-        margin: 10px;
+        margin: 0 auto;
     }
     aside {
         width: 100%;
