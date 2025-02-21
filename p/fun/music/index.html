@@ -7,26 +7,49 @@
     <link rel="stylesheet" href="/style/style.css">
     <link rel="icon" href="/images/spaceKitty.png">
 <style>
-    .book {width: 100%}
-    .zoom {
+.book {width: 100%}
+    .zoom, .zoomL, .zoomR{
             width: 25%; 
             margin: 0;
-        }
-    .zoom:hover .text-box {
+            left: 50%;
+            transition: transform .3s ease-in-out;
+    }
+    .zoom:hover {
+        z-index: 1;
+        transform: scale(2.0);
+    }
+    .zoomL:hover {
+        transform: translateX(50%) scale(2.0);
+        z-index: 1;
+    }
+    .zoomR:hover {
+        transform: translateX(-50%) scale(2.0);
+        z-index: 1;
+    }
+    .zoom:hover .book, .zoomL:hover .book, .zoomR:hover .book{
+        border: 2px solid var(--space0);
+    }
+    .zoom:hover .text-box,.zoomL:hover  .text-box,.zoomR:hover .text-box {
         display: block;
     }
     .text-box {
         display: none;
         position: absolute;
-        bottom: -30px;
+        top: 90%;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translateX(-50%) scale(0.6);
         background-color: rgba(0, 7, 27, 0.5);
         color: white;
         padding: 5px;
         border-radius: 5px;
-        white-space: nowrap;
+        white-space: normal; /* Allow text to wrap */
         text-align: center;
+    }
+    .zoomL .text-box {
+        left: 50%;
+    }
+    .zoomR .text-box {
+        left: 50%;
     }
 </style>  
 </head>
@@ -108,7 +131,7 @@
 
             <strong>2025</strong>
             <div id="flex" style="flex-wrap: wrap; flex-direction: row; align-items: center;">
-                <div class="zoom">
+                <div class="zoomL">
                     <img class="book" src="/images/shows/meshuggah2025.webp" width="25%" alt="Meshuggah 2025">
                     <div class="text-box">Meshuggah</div>
                 </div>
@@ -120,9 +143,9 @@
 
             <strong>2024</strong>
             <div id="flex" style="flex-wrap: wrap; flex-direction: row; align-items: center;">
-                <div class="zoom">
+                <div class="zoomL">
                     <img class="book" src="/images/shows/badOmens24.JPG" width="25%">
-                    <div class="text-box">BadOmens</div>
+                    <div class="text-box">Bad Omens</div>
                 </div>
                 <div class="zoom">
                     <img class="book" src="/images/shows/knockedLoose24.jpeg" width="25%">
@@ -132,11 +155,11 @@
                     <img class="book" src="/images/shows/FiR2024.png" width="25%">
                     <div class="text-box">Falling in Reverse</div>
                 </div>
-                <div class="zoom">
+                <div class="zoomR">
                     <img class="book" src="/images/shows/bilmuri2024.png" width="25%">
                     <div class="text-box">Bilmuri</div>
                 </div>
-                <div class="zoom">
+                <div class="zoomL">
                     <img class="book" src="/images/shows/Animals2024.jpg" width="25%">
                     <div class="text-box">Animals as Leaders</div>
                 </div>
@@ -150,7 +173,7 @@
 
             <strong>2023</strong>
             <div id="flex" style="flex-wrap: wrap; flex-direction: row; align-items: center;">
-                <div class="zoom">
+                <div class="zoomL">
                     <img class="book" src="/images/shows/gojiraMastadon23.jpg" width="25%">
                     <div class="text-box">Gojira and Mastadon</div>
                 </div>
@@ -162,11 +185,11 @@
                     <img class="book" src="/images/shows/ghost23.jpg" width="25%">
                     <div class="text-box">Ghost</div>
                 </div>
-                <div class="zoom">
+                <div class="zoomR">
                     <img class="book" src="/images/shows/avengeSevenfold23.webp" width="25%">
                     <div class="text-box">Avenge Sevenfold</div>
                 </div>
-                <div class="zoom">
+                <div class="zoomL">
                     <img class="book" src="/images/shows/dgd23.webp" width="25%">
                     <div class="text-box">Dance Gavin Dance</div>
                 </div>
@@ -178,7 +201,7 @@
                     <img class="book" src="/images/shows/motionless23.jpg" width="25%">
                     <div class="text-box">Motionless in White</div>
                 </div>
-                <div class="zoom">
+                <div class="zoomR">
                     <img class="book" src="/images/shows/periphery23.jpg" width="25%">
                     <div class="text-box">Periphery</div>
                 </div>
@@ -188,7 +211,7 @@
 
             <strong>2022</strong>
             <div id="flex" style="flex-wrap: wrap; flex-direction: row; align-items: center;">
-                <div class="zoom">
+                <div class="zoomL">
                     <img class="book" src="/images/shows/animalsAsLeaders22.jpg" width="25%">
                     <div class="text-box">Animals as Leaders</div>
                 </div>

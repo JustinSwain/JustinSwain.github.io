@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justin Swain - Pong</title>
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="icon" href="/images/spaceKitty.png">
+    <style>
+        canvas {
+            border: 1px solid black;
+            max-width: 100%;
+        }
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #container { max-width: 1200px;}
+    </style>
+  </head>
+  <body>
+<div id="container"><div id="topBar">
+    <!--<marquee>Welcome!</marquee>-->
+</div>
+<div id="headerArea">
+    <div id="header">
+        <a href="/"><img src="/images/spaceKitty.png" height="120px"></a>
+            <a href="/" style="text-decoration: none;"><strong style="font-size: x-large;">justinswain.github.io</strong></a>
+    </div>
+</div>
+<main>
+<canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = 1200;
+        canvas.height = 800;
+
+        const textureImg = new Image();
+        textureImg.src = '/images/example.jpg';
+        let textureLoaded = false;
+        textureImg.onload = () => textureLoaded = true;
+
+        const spriteImgJinx = new Image();
+        spriteImgJinx.src = '/images/jinx.png';
+        let spriteLoadedJinx = false;
+        spriteImgJinx.onload = () => spriteLoadedJinx = true;
+
+        const spriteImgPluto = new Image();
+        spriteImgPluto.src = '/images/pluto.png';
+        let spriteLoadedPluto = false;
+        spriteImgPluto.onload = () => spriteLoadedPluto = true;
+
+        const spriteImgBeans = new Image();
+        spriteImgBeans.src = '/images/beans.png';
+        let spriteLoadedBeans = false;
+        spriteImgBeans.onload = () => spriteLoadedBeans = true;
+
+        const spriteImgNinja = new Image();
+        spriteImgNinja.src = '/images/ninja.png';
+        let spriteLoadedNinja = false;
+        spriteImgNinja.onload = () => spriteLoadedNinja = true;
+
+        const spriteImgZed = new Image();
+        spriteImgZed.src = '/images/zed.png';
+        let spriteLoadedZed = false;
+        spriteImgZed.onload = () => spriteLoadedZed = true;
+
+        const handsImg = new Image();
+        handsImg.src = '/images/pole.png';
+        let handsLoaded = false;
+        handsImg.onload = () => handsLoaded = true;
+
+        const toyImg = new Image();
+        toyImg.src = '/images/ball.png';
+        let toyLoaded = false;
+        toyImg.onload = () => toyLoaded = true;
+
+        const player = {
+            x: 2,
+            y: 2,
+            angle: 0,
+            speed: 0.1,
+            rotSpeed: 0.05,
+            moveTime: 0
+        };
+
+        const map = [ //y across, x down
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1], // Top wall
+            [1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1], // Room 1 top
+            [1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1],
+            [1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1], // Hallway top
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1], // Hallway middle
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1], // Room 2 bottom
+            [1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1],
+            [1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1], // Room 3 bottom
+            [1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1],
+            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]  // Bottom wall
+        ];
+
+        const sprites = [
+            { 
+                x: 10, y: 8, z: -0.5, texture: spriteImgJinx, loaded: () => spriteLoadedJinx, scale: 1.5, chase: true, name: 'Jinx'
+            },
+            { 
+                x: 3, y: 12, z: -0.5, texture: spriteImgBeans, loaded: () => spriteLoadedBeans, scale: 1.7, chase: true, name: 'Beans'
+            },
+            { 
+                x: 8, y: 12, z: -0.5, texture: spriteImgPluto, loaded: () => spriteLoadedPluto, scale: 1.5, chase: true, name: 'Pluto'
+
+            },
+            { 
+                x: 8, y: 3, z: -0.5, texture: spriteImgNinja, loaded: () => spriteLoadedNinja, scale: 1.5, chase: true, name: 'Ninja'
+            },
+            { 
+                x: 11, y: 12, z: -0.5, texture: spriteImgZed, loaded: () => spriteLoadedZed, scale: 1.5, chase: true, name: 'Zed'
+            },
+        ];
+
+        let toy = null;
+
+        const fog = {
+            color: 'rgba(150, 150, 150, ',
+            density: 0.0,
+            maxDistance: 10
+        };
+
+        const mapWidth = map[0].length;
+        const mapHeight = map.length;
+
+        const keys = {};
+        document.addEventListener('keydown', (e) => keys[e.key.toLowerCase()] = true);
+        document.addEventListener('keyup', (e) => keys[e.key.toLowerCase()] = false);
+
+        function raycast() {
+            const fov = Math.PI / 3;
+            const resolution = canvas.width;
+            const planeDist = (canvas.width / 2) / Math.tan(fov / 2);
+            const sliceWidth = Math.ceil(canvas.width / resolution);
+
+            ctx.fillStyle = '#87CEEB';
+            ctx.fillRect(0, 0, canvas.width, canvas.height / 2);
+            ctx.fillStyle = '#666';
+            ctx.fillRect(0, canvas.height / 2, canvas.width, canvas.height / 2);
+
+            const zBuffer = new Array(resolution);
+            for (let i = 0; i < resolution; i++) {
+                const cameraX = (2 * i / resolution) - 1;
+                const rayDirX = Math.cos(player.angle) + Math.sin(player.angle) * cameraX;
+                const rayDirY = Math.sin(player.angle) - Math.cos(player.angle) * cameraX;
+
+                let distance = 0;
+                let hit = false;
+                let rayX = player.x;
+                let rayY = player.y;
+                let textureX;
+                let side;
+
+                while (!hit && distance < 20) {
+                    distance += 0.05;
+                    rayX = player.x + rayDirX * distance;
+                    rayY = player.y + rayDirY * distance;
+
+                    const mapX = Math.floor(rayX);
+                    const mapY = Math.floor(rayY);
+
+                    if (mapX < 0 || mapX >= mapWidth || mapY < 0 || mapY >= mapHeight) {
+                        hit = true;
+                    } else if (map[mapY][mapX] === 1) {
+                        hit = true;
+                        const wallX = rayX - mapX;
+                        const wallY = rayY - mapY;
+                        side = (Math.abs(wallX - 0.5) > Math.abs(wallY - 0.5)) ? 0 : 1;
+                        textureX = side === 0 ? wallY : wallX;
+                        textureX = textureX * textureImg.width;
+                    }
+                }
+
+                zBuffer[i] = distance;
+                const wallHeight = Math.min(canvas.height, (canvas.height / distance) * 1.5);
+                const wallTop = (canvas.height - wallHeight) / 2;
+
+                if (textureLoaded) {
+                    ctx.drawImage(
+                        textureImg,
+                        Math.floor(textureX), 0, 1, textureImg.height,
+                        i * sliceWidth, wallTop, sliceWidth, wallHeight
+                    );
+                    const fogOpacity = Math.min(1, distance * fog.density);
+                    ctx.fillStyle = `${fog.color}${fogOpacity})`;
+                    ctx.fillRect(i * sliceWidth, wallTop, sliceWidth, wallHeight);
+                } else {
+                    const baseColor = `rgb(${20 - distance * 2}, ${100 - distance * 10}, ${100 - distance * 5})`;
+                    const fogOpacity = Math.min(1, distance * fog.density);
+                    ctx.fillStyle = baseColor;
+                    ctx.fillRect(i * sliceWidth, wallTop, sliceWidth, wallHeight);
+                    ctx.fillStyle = `${fog.color}${fogOpacity})`;
+                    ctx.fillRect(i * sliceWidth, wallTop, sliceWidth, wallHeight);
+                }
+            }
+
+            const allSprites = [...sprites];
+            if (toy && toyLoaded) {
+                allSprites.push(toy);
+            }
+
+            const sortedSprites = allSprites.map(sprite => {
+                const dx = sprite.x - player.x;
+                const dy = sprite.y - player.y;
+                return { ...sprite, distance: Math.sqrt(dx * dx + dy * dy) };
+            }).sort((a, b) => b.distance - a.distance);
+
+            sortedSprites.forEach(sprite => {
+                if (sprite.loaded()) {
+                    const spriteX = sprite.x - player.x;
+                    const spriteY = sprite.y - player.y;
+
+                    const dirX = Math.cos(player.angle);
+                    const dirY = Math.sin(player.angle);
+                    const planeX = Math.sin(player.angle);
+                    const planeY = -Math.cos(player.angle);
+
+                    const transformX = planeX * spriteX + planeY * spriteY;
+                    const transformY = dirX * spriteX + dirY * spriteY;
+
+                    if (transformY > 0) {
+                        const spriteScreenX = (canvas.width / 2) * (1 + transformX / transformY);
+                        const spriteHeight = Math.abs(canvas.height / transformY) * 0.5 * sprite.scale;
+                        const spriteWidth = spriteHeight * (sprite.texture.width / sprite.texture.height);
+
+                        const heightOffset = (sprite.z * canvas.height) / transformY;
+                        const drawStartY = (canvas.height - spriteHeight) / 2 - heightOffset;
+
+                        const drawStartX = Math.max(0, spriteScreenX - spriteWidth / 2);
+                        const drawEndX = Math.min(canvas.width, spriteScreenX + spriteWidth / 2);
+
+                        for (let x = Math.floor(drawStartX); x < drawEndX; x++) {
+                            const stripe = Math.floor(x / sliceWidth);
+                            if (x >= 0 && x < canvas.width && stripe < resolution && transformY < zBuffer[stripe]) {
+                                const texX = Math.floor(((x - (spriteScreenX - spriteWidth / 2)) * sprite.texture.width) / spriteWidth);
+                                ctx.drawImage(
+                                    sprite.texture,
+                                    texX, 0, 1, sprite.texture.height,
+                                    x, drawStartY, 1, spriteHeight
+                                );
+                                const fogOpacity = Math.min(1, transformY * fog.density);
+                                ctx.fillStyle = `${fog.color}${fogOpacity})`;
+                                ctx.fillRect(x, drawStartY, 1, spriteHeight);
+                            }
+                        }
+
+                        // Draw name if close
+                        if (sprite.name && sprite.distance < 2) {
+                            ctx.font = '20px Arial';
+                            ctx.fillStyle = 'white';
+                            ctx.textAlign = 'center';
+                            const textX = spriteScreenX;
+                            const textY = drawStartY - 10; // Above sprite
+                            ctx.strokeStyle = 'black';
+                            ctx.lineWidth = 5;
+                            ctx.strokeText(sprite.name, textX, textY); // Outline for readability
+                            ctx.fillText(sprite.name, textX, textY); //Actual text
+                        }
+                    }
+                }
+            });
+
+            if (handsLoaded) {
+                const handsWidth = handsImg.width * 1.7;
+                const handsHeight = handsImg.height * 1.7;
+                const handsX = (canvas.width - handsWidth) / 2;
+                const bobbing = Math.sin(player.moveTime * 0.2) * 10;
+                const handsY = canvas.height - handsHeight + bobbing + 100;
+                
+                ctx.drawImage(handsImg, handsX, handsY, handsWidth, handsHeight);
+            }
+        }
+
+        function movePlayer() {
+            const newX = player.x;
+            const newY = player.y;
+
+            let moving = false;
+            if (keys['w']) {
+                player.x += Math.cos(player.angle) * player.speed;
+                player.y += Math.sin(player.angle) * player.speed;
+                moving = true;
+            }
+            if (keys['s']) {
+                player.x -= Math.cos(player.angle) * player.speed;
+                player.y -= Math.sin(player.angle) * player.speed;
+                moving = true;
+            }
+            if (keys['a']) {
+                player.x += Math.cos(player.angle + Math.PI/2) * player.speed;
+                player.y += Math.sin(player.angle + Math.PI/2) * player.speed;
+                moving = true;
+            }
+            if (keys['d']) {
+                player.x -= Math.cos(player.angle + Math.PI/2) * player.speed;
+                player.y -= Math.sin(player.angle + Math.PI/2) * player.speed;
+                moving = true;
+            }
+            if (keys['q']) {
+                player.angle -= player.rotSpeed;
+            }
+            if (keys['e']) {
+                player.angle += player.rotSpeed;
+            }
+
+            // Throw toy on Space press
+            if (keys[' '] && !toy) {
+                toy = {
+                    x: player.x,
+                    y: player.y,
+                    z: 0.1,
+                    vx: Math.cos(player.angle) * 0.3,
+                    vy: Math.sin(player.angle) * 0.3,
+                    vz: 0, // Vertical velocity for falling
+                    texture: toyImg,
+                    loaded: () => toyLoaded,
+                    scale: 0.3,
+                    lifespan: 100,
+                    grounded: false // Track if toy has hit the ground
+                };
+            }
+
+            // Update toy position
+            if (toy) {
+                if (!toy.grounded) {
+                    // Check next position for collision
+                    const nextX = toy.x + toy.vx;
+                    const nextY = toy.y + toy.vy;
+                    const nextMapX = Math.floor(nextX);
+                    const nextMapY = Math.floor(nextY);
+
+                    if (nextMapX >= 0 && nextMapX < mapWidth && nextMapY >= 0 && nextMapY < mapHeight && map[nextMapY][nextMapX] === 1) {
+                        // Hit wall: stop horizontal movement, start falling
+                        toy.vx = 0;
+                        toy.vy = 0;
+                        toy.vz = -0.01; // Gravity effect
+                        toy.grounded = false; // Still falling until z = 0
+                    } else {
+                        // Continue moving
+                        toy.x = nextX;
+                        toy.y = nextY;
+                    }
+
+                    // Apply vertical movement (falling)
+                    toy.z += toy.vz;
+                    if (toy.z <= -0.5) {
+                        toy.z = -0.5;
+                        toy.vz = 0;
+                        toy.grounded = true; // Toy is now on the ground
+                    }
+                }
+
+                toy.lifespan -= 1;
+                if (toy.lifespan <= 0) {
+                    toy = null;
+                }
+            }
+
+            // Cat chasing behavior
+            if (toy) {
+                let toyCaught = false;
+                for (let i = 0; i < sprites.length && !toyCaught; i++) {
+                    const sprite = sprites[i];
+                    if (sprite.chase) {
+                        const dx = toy.x - sprite.x;
+                        const dy = toy.y - sprite.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        if (distance < 3) {
+                            const speed = 0.05;
+                            const newSpriteX = sprite.x + (dx / distance) * speed;
+                            const newSpriteY = sprite.y + (dy / distance) * speed;
+                            if (map[Math.floor(newSpriteY)][Math.floor(newSpriteX)] !== 1) {
+                                sprite.x = newSpriteX;
+                                sprite.y = newSpriteY;
+                            }
+                            if (distance < 0.2) {
+                                toy = null;
+                                toyCaught = true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (moving) {
+                player.moveTime += 1;
+            } else {
+                player.moveTime = 0;
+            }
+
+            if (map[Math.floor(player.y)][Math.floor(player.x)] === 1) {
+                player.x = newX;
+                player.y = newY;
+            }
+
+            if (player.angle < 0) player.angle += Math.PI * 2;
+            if (player.angle >= Math.PI * 2) player.angle -= Math.PI * 2;
+        }
+
+        function gameLoop() {
+            movePlayer();
+            raycast();
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
+    <p>
+        Controls: W, A, S, D to move, Q and E to rotate, Space to throw toy.
+    </p>
+    </main>
+
+<footer id="footer" style="margin-top: 10px;"> 
+    <strong>Hard to read?</strong>
+            <p style="font-size: smaller">Change the font here:
+            <input type="radio" id="font" name="font" value="None" checked><label>Arcade (default)</label>
+            <input type="radio" id="font" name="font" value="Georgia"><label style="font-family: Georgia">Georgia (serif)</label>
+            <input type="radio" id="font" name="font" value="Arial" ><label style="font-family: Arial">Arial (sans serif)</label>
+            </p>
+            <br> 
+<marquee>Copyright &copy; Justin Swain 2024 </marquee>
+</footer>
+</div>
+</body>
+</html>

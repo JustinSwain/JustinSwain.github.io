@@ -8,25 +8,48 @@
     <link rel="icon" href="/images/spaceKitty.png">
     <style>
     .book {width: 100%}
-    .zoom {
+    .zoom, .zoomL, .zoomR{
             width: 10%; 
             margin: 0;
-        }
-    .zoom:hover .text-box {
+            left: 50%;
+            transition: transform .3s ease-in-out;
+    }
+    .zoom:hover {
+        z-index: 1;
+        transform: scale(3.0);
+    }
+    .zoomL:hover {
+        transform: translateX(50%) scale(3.0);
+        z-index: 1;
+    }
+    .zoomR:hover {
+        transform: translateX(-50%) scale(3.0);
+        z-index: 1;
+    }
+    .zoom:hover .book, .zoomL:hover .book, .zoomR:hover .book{
+        border: 2px solid var(--space0);
+    }
+    .zoom:hover .text-box,.zoomL:hover  .text-box,.zoomR:hover .text-box {
         display: block;
     }
     .text-box {
         display: none;
         position: absolute;
-        bottom: -30px;
+        top: 60%;
         left: 50%;
-        transform: translateX(-50%);
+        transform: translateX(-50%) scale(0.6);
         background-color: rgba(0, 7, 27, 0.5);
         color: white;
         padding: 5px;
         border-radius: 5px;
-        white-space: nowrap;
+        white-space: normal; /* Allow text to wrap */
         text-align: center;
+    }
+    .zoomL .text-box {
+        left: 100%;
+    }
+    .zoomR .text-box {
+        left: -0%;
     }
     </style>
   </head>
@@ -57,15 +80,15 @@
             <p>These are the books I read in...</p>
             <strong>2025</strong>
             <div id="flex" style="flex-wrap: wrap; flex-direction: row; align-items: center; ">
-                <div class="zoom">
+                <div class="zoomL">
                     <img src="/images/books/2025/templars.jpg" class="book">
                     <div class="text-box">The Templars <br> Dan Jones</div>
                 </div>
-                <div class="zoom">
+                <div class="zoomL">
                     <img src="/images/books/2025/eyeOfTheWorld.jpg" class="book">
                     <div class="text-box">The Eye of the World <br> Robert Jordan</div>
                 </div>
-                <div class="zoom">
+                <div class="zoomL">
                     <img src="/images/books/2025/theGreatHunt.jpg" class="book">
                     <div class="text-box">The Great Hunt <br> Robert Jordan</div>
                 </div>
@@ -73,15 +96,15 @@
             <br>
             <strong>2024</strong>
                 <div id="flex" style="flex-wrap: wrap; flex-direction: row; align-items: center; ">
-                    <div class="zoom">
+                    <div class="zoomL">
                         <img src="/images/books/2024/outlive.jpg" class="book">
                         <div class="text-box">Outlive<br>Peter Attia</div>
                     </div>
-                    <div class="zoom">
+                    <div class="zoomL">
                         <img src="/images/books/2024/snowCrash.jpg" class="book">
                         <div class="text-box">Snow Crash<br>Neal Stephenson</div>
                     </div>
-                    <div class="zoom">
+                    <div class="zoomL">
                         <img src="/images/books/2024/infiniteJest.jpg" class="book">
                         <div class="text-box">Infinite Jest<br>David Foster Wallace</div>
                     </div>
@@ -101,27 +124,27 @@
                         <img src="/images/books/2024/callOfTheWild.jpg" class="book">
                         <div class="text-box">The Call of the Wild<br>Jack London</div>
                     </div>
-                    <div class="zoom">
+                    <div class="zoomR">
                         <img class="book" src="/images/books/2024/betweenTwoFires.jpg">
                         <div class="text-box">Between Two Fires<br>Christopher Buehlman</div>
                     </div>
-                    <div class="zoom">
+                    <div class="zoomR">
                         <img class="book" src="/images/books/2024/housemaid1.jpg" alt="">
                         <div class="text-box">The Housemaid<br>Freida McFadden</div>
                     </div>
-                    <div class="zoom">
+                    <div class="zoomR">
                         <img class="book" src="/images/books/2024/americanPsycho.jpg" alt="">
                         <div class="text-box">American Psycho<br>Bret Easton Ellis</div>
                     </div>
-                    <div class="zoom">
+                    <div class="zoomL">
                         <img class="book" src="/images/books/2024/godGame.jpg" alt="">
                         <div class="text-box">The God Game<br>Danny Tobey</div>
                     </div>
-                    <div class="zoom">
+                    <div class="zoomL">
                         <img class="book" src="/images/books/2024/nihilismRootOfRevolution.jpg" alt="">
                         <div class="text-box">Nihilism: The Root of the Revolution of the Modern Age<br> Fr. Seraphim Rose</div>
                     </div>
-                    <div class="zoom">
+                    <div class="zoomL">
                         <img class="book" src="/images/books/2024/deathNote.jpg" alt="">
                         <div class="text-box">Death Note<br>Tsugumi Ohba</div>
                     </div>
@@ -141,27 +164,27 @@
                         <img class="book" src="/images/books/2024/kafkaOnTheShore.jpg" alt="">
                         <div class="text-box">Kafka on the Shore<br> Haruki Murakami</div>
                     </div>
-                    <div class="zoom">
+                    <div class="zoomR">
                         <img class="book" src="/images/books/2024/hawthorne1.jpg" alt="">
                         <div class="text-box">The Inheritance Games<br>Jennifer Lynn Barnes</div>
                     </div>
-                    <div class="zoom">
+                    <div class="zoomR">
                         <img class="book" src="/images/books/2024/hawthorne2.jpg" alt="">
                         <div class="text-box">The Hawthorne Legacy<br>Jennifer Lynn Barnes</div>
                     </div>
-                    <div class="zoom">
+                    <div class="zoomR">
                         <img class="book" src="/images/books/2024/hawthorne3.jpg" alt="">
                         <div class="text-box">The Final Gambit<br>Jennifer Lynn Barnes</div>
                     </div>
-                    <div class="zoom">
+                    <div class="zoomL">
                         <img class="book" src="/images/books/2024/bloodMeridian.jpg" alt="">
                         <div class="text-box">Blood Meridian<br>Cormac McCarthy</div>
                     </div>
-                    <div class="zoom">
+                    <div class="zoomL">
                         <img class="book" src="/images/books/2024/crawdadsSing.jpg" alt="">
                         <div class="text-box">Where the Crawdads Sing<br>Delia Owens</div>
                     </div>
-                    <div class="zoom">
+                    <div class="zoomL">
                         <img class="book" src="/images/books/2024/crimeAndPunishment.jpg" alt="">
                         <div class="text-box">Crime and Punishment<br> Fyodor Dostoevsky</div>
                     </div>
@@ -181,27 +204,27 @@
                         <img class="book" src="/images/books/2024/hobbit.jpg" alt="">
                         <div class="text-box">The Hobbit<br>J. R. R. Tolkien</div>
                     </div>
-                    <div class="zoom">
+                    <div class="zoomR">
                         <img class="book" src="/images/books/2024/metamorphosis.jpg" alt="">
                         <div class="text-box">The Metamorphosis<br> Franz Kafka</div>
                     </div>
-                    <div class="zoom">
+                    <div class="zoomR">
                         <img class="book" src="/images/books/2024/originsOfTheFrenchRevolution.jpg" alt="">
                         <div class="text-box">The Origins of the French Revolution<br>William Doyle</div>
                     </div>
-                    <div class="zoom">
+                    <div class="zoomR">
                         <img class="book" src="/images/books/2024/orthodoxChurch.jpg" alt="">
                         <div class="text-box">The Orthodox Church<br>Met. Kallistos Ware</div>
                     </div>
-                    <div class="zoom">
+                    <div class="zoomL">
                         <img class="book" src="/images/books/2024/reflectionsBurke.jpg" alt="">
                         <div class="text-box">Reflections on the Revolution in France<br>Edmund Burke</div>
                     </div>
-                    <div class="zoom">
+                    <div class="zoomL">
                         <img class="book" src="/images/books/2024/remina.jpg" alt="">
                         <div class="text-box">Remina <br> Junji Ito</div>
                     </div>
-                    <div class="zoom">
+                    <div class="zoomL">
                         <img class="book" src="/images/books/2024/silentPatient.jpg" alt="">
                         <div class="text-box">The Silent Patient<br>Alex Michaelides</div>
                     </div>

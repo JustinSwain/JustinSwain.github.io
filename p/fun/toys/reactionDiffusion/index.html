@@ -17,10 +17,14 @@
             border-color: var(--space0);
         }
         canvas {
-            width: 100%;
+            width: 80%;
             max-width: 360px;
             display: block;
             margin: auto;
+        }
+        .equation {
+            width: 100%;
+            overflow-x: auto;
         }
     </style>
   </head>
@@ -44,19 +48,19 @@
             <div>
                 <h1> Reaction Diffusion </h1>
             </div>
-            <div style="margin: 10px;">
+            <div>
                 <canvas id="canvas" ></canvas>
             </div>
             <div id="flex" style="justify-content:center; flex-wrap: wrap;flex-direction:row;">
-                <br>
-                <select id="initialConfig" style="margin-right: 5px;">
+                <br><br>
+                <select id="initialConfig" >
                     <option selected value="Square">Square</option>
                     <option value="X">X</option>
                     <option value="Smile">:)</option>
                     <!-- <option value="Random">Random</option> -->
                 </select>
 
-                <select id="paramConfig" style="margin-left: 5px;">
+                <select id="paramConfig">
                     <option selected value="Default">Turing Pattern</option>
                     <option value="Bacteria">Bacteria</option>
                     <option value="Coral">Coral</option>
@@ -64,7 +68,7 @@
                     <option value="Zebrafish">Zebrafish</option>
                 </select>
 
-                <select id="colorConfig" style="margin-left: 5px;">
+                <select id="colorConfig">
                     <option selected value="Rainbow">Rainbow</option>
                     <option value="Grayscale">Grayscale</option>
                 </select>
@@ -106,8 +110,8 @@
                 The terms \(\Delta u\) and \(\Delta v\) are the diffusion terms with diffusion coefficients \(\gamma_u\) and \(\gamma_v\).
             </p>
             <p>
-                To create a numerical scheme we first discretize the domain into an \(N\times N\) uniform grid of size \(h\) and employ a 9-point stencil to approximate the diffusion term. Then the time interval is discretized using a regular time step \(\Delta t\), and given \(u^n, v^n \in \mathbb{R}^{N\times N}\) a simple backwards Euler Finite Difference Method is used to compute the next time step. The scheme can be written as follows:
-                <div class="equation">
+                To create a numerical scheme we first discretize the domain into an \(N\times N\) uniform grid of size \(h\) and employ a 9-point stencil to approximate the diffusion term. Then the time interval is discretized using a regular time step \(\Delta t\), and given \(u^n, v^n \in \mathbb{R}^{N\times N}\) a simple backwards Euler Finite Difference Method is used to compute the next time step.
+                <!--<div class="equation" style="overflow-x: auto; white-space: nowrap;">
                     $$
                     \left\{
                     \begin{array}{rcl}
@@ -128,7 +132,7 @@
                     \end{array}
                     \right.
                     $$
-                </div>
+                </div>-->
                 The scheme is complemented with periodic boundary conditions.
             </p>
             <p>
@@ -141,16 +145,17 @@
                 The patterns created by this kind of model are called <a href="https://en.wikipedia.org/wiki/Turing_pattern">Turing Patterns</a>.
             </p>
             <p>
-                Source code: <a href="https://github.com/JustinSwain/Reaction-Diffusion.git">https://github.com/JustinSwain/Reaction-Diffusion.git</a>
+                Source code: <a href="https://github.com/JustinSwain/Reaction-Diffusion.git">github</a>
             </p>
             <p>
                 Sources:
                 <ul>
-                    <li>https://groups.csail.mit.edu/mac/projects/amorphous/GrayScott/</li>
-                    <li>https://www.karlsims.com/rd.html</li>
+                    <li><a href="https://groups.csail.mit.edu/mac/projects/amorphous/GrayScott/">MIT</a></li>
+                    <li><a href="https://www.karlsims.com/rd.html">Karl Sims</a></li>
                 </ul>
             </p>
-            <script src="reactionDiffusion.js"></script>
+        </div>
+        <script src="reactionDiffusion.js"></script>
     </main>
     <aside id="rightSidebar">
         <div class="navbox">

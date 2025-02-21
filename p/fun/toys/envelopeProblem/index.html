@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justin Swain - Reaction Diffusion</title>
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="icon" href="/images/spaceKitty.png">
+    <style>
+        .box {
+
+        }
+        button { 
+            padding: 10px 20px; 
+            margin: 5px; 
+            cursor: pointer; 
+            background-color: var(--space3);
+        }
+        .box #gameArea { text-align: center; }
+        .box #stats { text-align: center; }
+        .box #settings { text-align: center; }
+        #gameArea { margin-top: 20px; }
+        #stats { 
+            margin-top: 20px; 
+            font-size: 1.1em; }
+        #settings { margin-top: 20px; }
+        select, input { 
+            padding: 8px; 
+            margin: 5px; 
+        }
+        #chartContainer { 
+            margin-top: 30px; 
+            width: 80%; 
+            max-width: 1000px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            background-color: var(--space0);
+        }
+    </style>
+  </head>
+  <body>
+
+<div id="container"><div id="topBar">
+    <!--<marquee>Welcome!</marquee>-->
+</div>
+<div id="headerArea">
+    <div id="header">
+        <a href="/"><img src="/images/spaceKitty.png" height="120px"></a>
+            <a href="/" style="text-decoration: none;"><strong style="font-size: x-large;">justinswain.github.io</strong></a>
+    </div>
+</div>
+
+<div id="flex">
+
+    <main>
+        <h1>Toys</h1>
+        <div class="box">
+            <h1>The Two Envelope "Paradox"</h1>
+            <p>
+                Two envelopes are presented to you with one containing twice as much money as the other. You may pick one envelope and keep the money inside. However, before inspecting your envelope you are given the option to switch to the other envelope.
+            </p>
+            <p>
+                <strong>Question:</strong> Should you switch envelopes? Does it even matter?
+            </p>
+            <p style="text-align: center;">
+                <img src="/images/downhand.gif">
+                <em>Scroll down to play the  <a href="#game">game</a>.</em>
+               
+                <img src="/images/downhand.gif">
+            </p>
+            <p>
+                <strong>Explanation: </strong>This problem is known as the Two Envelopes "Paradox." The "paradox" arises from the confusion over the expected value of switching envelopes and a calculation that claims that it is always greater than the expected value of keeping your current envelope. However, this reasoning is flawed as the experiment as stated can be easily misunderstood.
+            </p>
+            <p>
+                Lets define the problem more clearly and see if we can determine the expected value of three strategies: always switching envelopes, always keeping our envelope, and randomly switching/staying. Those who believe that switching is always better may be surprised by the results!
+            </p>
+            <p>
+                Let Y be the random variable representing our earnings, i.e. Y is the amount of money that we receive at the end of the experiment after deciding to switch or stay. Let $X be the amount of money in the lesser envelope, and so $2X is in the greater envelope. We will calculate the expected value of Y/X for each strategy. Of course, X is a random variable since we do not know how much money is in the envelopes, only that one envelope is twice as much as the other.
+            </p>
+            <p>
+                The expected value of Y/X for each strategy is the average ratio of the amount of money we receive to the amount of money in the lesser envelope. We can construct a probability tree to determine the expected value of Y/X for each strategy. 
+            </p>
+            <p>
+                First, lets consider the strategy of always switching. Our initial choice of envelope is random, so we have a 50% chance of picking the lesser envelope and a 50% chance of picking the greater envelope. If we pick the lesser envelope, we will switch to the greater envelope and receive $2X. If we pick the greater envelope, we will switch to the lesser envelope and receive $X. Therefore, the expected value of Y/X for the strategy of always switching is 0.5(2X)+0.5(X)=1.5X.
+            </p>
+            <p>
+                A similar calculation can be done for the case of always staying. If we pick the lesser envelope, we will keep it and receive $X. If we pick the greater envelope, we will keep it and receive $2X. Therefore, the expected value of Y/X for the strategy of always staying is 0.5(X)+0.5(2X)=1.5X.
+            </p>
+            <p>
+                Finally, we can compute the expected value for randomly choosing to switch or stay. We have a 50% chance of switching and a 50% chance of staying. Therefore, the expected value of Y/X for the strategy of randomly choosing is again 1.5X.
+            </p>
+            <p>
+                In any case, our expected value is always 1.5X. Again, X is a random variable as we do not have any idea how much money is in the envelopes. However, the expected value of Y/X, which is the random variable associated with the experiment from the perspective of the player, is alwyas 1.5X.
+            </p>
+            <p>
+                Before talking about the "paradox" which stems from a confusion about the problem, allow me to convince you of the correct answer by playing the game below!
+            </p>
+            </div>
+            <br>
+            <div class="box" id="game">
+            <div id="gameArea">
+                <button onclick="startGame()">Start New Game</button>
+                <p id="status">Click "Start New Game" to begin! <br>Or use the Auto-Play button to see the convergence!</p>
+                <div id="choices" style="display: none;">
+                    <button onclick="chooseEnvelope(1)">Envelope 1</button>
+                    <button onclick="chooseEnvelope(2)">Envelope 2</button>
+                </div>
+                <div id="switchOption" style="display: none;">
+                    <p id="switchPrompt"></p>
+                    <button onclick="switchEnvelope(true)">Switch</button>
+                    <button onclick="switchEnvelope(false)">Keep</button>
+                </div>
+                <div id="autoPlay" style="margin-top: 20px;">
+                    <select id="strategy">
+                        <option value="alwaysSwitch">Always Switch</option>
+                        <option value="alwaysStay">Always Stay</option>
+                        <option value="random">Randomly Choose</option>
+                    </select>
+                    <button onclick="autoPlay()">Auto-Play</button>
+                </div>
+            </div>
+            <div id="stats">
+                <p>Games Played: <span id="gamesPlayed">0</span></p>
+                <p>Total Winnings: <span id="totalWinnings">0</span></p>
+                <p>Average Winnings: <span id="avgWinnings">0</span></p>
+                <p>Expected Value: <span id="expectedRatio">0</span>X</p>
+            </div>
+            <div id="settings">
+                <h3>Settings</h3>
+                <label>Auto-Play Games: <input type="number" id="numGames" value="100" min="1" step="1"></label><br>
+                <label><input type="checkbox" id="animate" checked> Animate Auto-Play (50ms delay)</label><br>
+                <label><input type="checkbox" id="multiLine" checked> Show All Strategies in Chart</label><br>
+                <button onclick="reset()">Reset Stats & Chart</button>
+            </div>
+            <div id="chartContainer">
+                <canvas id="convergenceChart"></canvas>
+            </div>
+        
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                let envelope1, envelope2, chosenEnvelope, x;
+                let gamesPlayed = 0;
+                let totalWinnings = 0;
+                let totalRatio = 0;
+                let strategyStats = {
+                    alwaysSwitch: { games: 0, totalRatio: 0, avgRatioData: [] },
+                    alwaysStay: { games: 0, totalRatio: 0, avgRatioData: [] },
+                    random: { games: 0, totalRatio: 0, avgRatioData: [] }
+                };
+        
+                const ctx = document.getElementById("convergenceChart").getContext("2d");
+                const chart = new Chart(ctx, {
+                    type: "line",
+                    data: {
+                        labels: [],
+                        datasets: [
+                            { label: "Always Switch", data: [], borderColor: "blue", fill: false, tension: 0.1, hidden: false },
+                            { label: "Always Stay", data: [], borderColor: "green", fill: false, tension: 0.1, hidden: false },
+                            { label: "Randomly Choose", data: [], borderColor: "red", fill: false, tension: 0.1, hidden: false }
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            y: { beginAtZero: false, suggestedMin: 0, suggestedMax: 3, title: { display: true, text: "Expected Value" } },
+                            x: { title: { display: true, text: "Number of Games" } }
+                        },
+                        plugins: { legend: { display: true } }
+                    }
+                });
+        
+                function startGame() {
+                    x = Math.floor(Math.random() * 100) + 1;
+                    const isEnvelope1Smaller = Math.random() < 0.5;
+                    envelope1 = isEnvelope1Smaller ? x : 2 * x;
+                    envelope2 = isEnvelope1Smaller ? 2 * x : x;
+                    document.getElementById("status").innerText = "Choose an envelope!";
+                    document.getElementById("choices").style.display = "block";
+                    document.getElementById("switchOption").style.display = "none";
+                }
+        
+                function chooseEnvelope(choice) {
+                    chosenEnvelope = (choice === 1) ? envelope1 : envelope2;
+                    document.getElementById("status").innerText = `You picked an envelope with ${chosenEnvelope}.`;
+                    document.getElementById("choices").style.display = "none";
+                    document.getElementById("switchPrompt").innerText = `Switch to the other envelope or keep your ${chosenEnvelope}?`;
+                    document.getElementById("switchOption").style.display = "block";
+                }
+        
+                function switchEnvelope(doSwitch) {
+                    const finalAmount = doSwitch ? (chosenEnvelope === envelope1 ? envelope2 : envelope1) : chosenEnvelope;
+                    const strategy = document.getElementById("strategy").value;
+                    gamesPlayed++;
+                    totalWinnings += finalAmount;
+                    totalRatio += finalAmount / x;
+                    updateStatsAndChart(strategy, finalAmount / x);
+                    document.getElementById("status").innerText = 
+                        `X was ${x}. Envelope 1: ${envelope1}, Envelope 2: ${envelope2}. You got ${finalAmount}.`;
+                    document.getElementById("switchOption").style.display = "none";
+                }
+        
+                function updateStatsAndChart(strategy, ratio) {
+                    const avgWinnings = (totalWinnings / gamesPlayed).toFixed(2);
+                    const expectedRatio = (totalRatio / gamesPlayed).toFixed(2);
+                    document.getElementById("gamesPlayed").innerText = gamesPlayed;
+                    document.getElementById("totalWinnings").innerText = totalWinnings;
+                    document.getElementById("avgWinnings").innerText = avgWinnings;
+                    document.getElementById("expectedRatio").innerText = expectedRatio;
+        
+                    const strat = strategyStats[strategy];
+                    strat.games++;
+                    strat.totalRatio += ratio;
+                    const avgRatio = strat.totalRatio / strat.games;
+                    chart.options.scales.y.min = 1.0;
+                    chart.options.scales.y.max = 2.0;
+                    strat.avgRatioData.push(avgRatio);
+        
+                    const multiLine = document.getElementById("multiLine").checked;
+                    const maxGames = Math.max(
+                        strategyStats.alwaysSwitch.games,
+                        strategyStats.alwaysStay.games,
+                        strategyStats.random.games
+                    );
+                    chart.data.labels = Array.from({ length: maxGames }, (_, i) => i + 1);
+        
+                    if (multiLine) {
+                        chart.data.datasets[0].data = strategyStats.alwaysSwitch.avgRatioData;
+                        chart.data.datasets[1].data = strategyStats.alwaysStay.avgRatioData;
+                        chart.data.datasets[2].data = strategyStats.random.avgRatioData;
+                    } else {
+                        chart.data.datasets.forEach((dataset, index) => {
+                            dataset.data = index === chart.data.datasets.findIndex(d => d.label === getStrategyLabel(strategy))
+                                ? strat.avgRatioData : [];
+                        });
+                    }
+                    chart.update();
+                }
+        
+                function getStrategyLabel(strategy) {
+                    return strategy === "alwaysSwitch" ? "Always Switch" : 
+                           strategy === "alwaysStay" ? "Always Stay" : "Randomly Choose";
+                }
+        
+                async function autoPlay() {
+                    const strategy = document.getElementById("strategy").value;
+                    const numGames = parseInt(document.getElementById("numGames").value);
+                    const animate = document.getElementById("animate").checked;
+                    document.getElementById("status").innerText = `Running ${numGames} games with "${strategy}" strategy...`;
+        
+                    for (let i = 0; i < numGames; i++) {
+                        x = Math.floor(Math.random() * 100) + 1;
+                        const isEnvelope1Smaller = Math.random() < 0.5;
+                        envelope1 = isEnvelope1Smaller ? x : 2 * x;
+                        envelope2 = isEnvelope1Smaller ? 2 * x : x;
+                        chosenEnvelope = Math.random() < 0.5 ? envelope1 : envelope2;
+        
+                        let doSwitch;
+                        if (strategy === "alwaysSwitch") doSwitch = true;
+                        else if (strategy === "alwaysStay") doSwitch = false;
+                        else doSwitch = Math.random() < 0.5;
+        
+                        const finalAmount = doSwitch ? (chosenEnvelope === envelope1 ? envelope2 : envelope1) : chosenEnvelope;
+                        gamesPlayed++;
+                        totalWinnings += finalAmount;
+                        totalRatio += finalAmount / x;
+                        updateStatsAndChart(strategy, finalAmount / x);
+        
+                        if (animate) await new Promise(resolve => setTimeout(resolve, 50));
+                    }
+        
+                    document.getElementById("status").innerText = 
+                        `Finished ${numGames} games with "${strategy}" strategy.`;
+                }
+        
+                function reset() {
+                    gamesPlayed = 0;
+                    totalWinnings = 0;
+                    totalRatio = 0;
+                    strategyStats = {
+                        alwaysSwitch: { games: 0, totalRatio: 0, avgRatioData: [] },
+                        alwaysStay: { games: 0, totalRatio: 0, avgRatioData: [] },
+                        random: { games: 0, totalRatio: 0, avgRatioData: [] }
+                    };
+                    document.getElementById("gamesPlayed").innerText = "0";
+                    document.getElementById("totalWinnings").innerText = "0";
+                    document.getElementById("avgWinnings").innerText = "0";
+                    document.getElementById("expectedRatio").innerText = "0";
+                    chart.data.labels = [];
+                    chart.data.datasets.forEach(dataset => dataset.data = []);
+                    chart.update();
+                    document.getElementById("status").innerText = "Stats and chart reset. Start a new game!";
+                }
+            </script>
+            </div>
+            <br>
+            <div class="box">
+            <p>
+                As you can see, the expected value of the ratio of the amount of money you receive to the amount of money in the lesser envelope is always 1.5X. This is true regardless of the strategy you choose. The "paradox" arises from a misunderstanding of the problem and a flawed calculation.
+            </p>
+            <p>
+                The error comes from the assumption that your earnings Y are realized twice: before deciding to switch or stay, and after. In this case, if you originally pick the larger envelope, and switch then they claim that you would receive $X/2 since your earnings are half of what you originally chose. Similarly, if you originally picked the smaller envelope, then you reveive $2X since your earnings are twice your original envelope's contents. However, this is a flawed calculation as your earnings are only realized once after you decide to switch or stay. 
+            </p>
+            <p>
+                Under this incorrect interpretation, you can compute that the expected value of the money inside of the envelope that you did not choose as a function of the money in your current envelope, call it Z, as 0.5(Z/2)+0.5(2Z)=1.25Z. Therefore, switching will always give you more money.
+            </p>
+            <p>
+                If this were true, then you would clearly see a difference in the numerical results above, but of course you do not becuase it is not true. The mistake is thinking that Z=X, when in fact we do not know Z, that is the whole problem!
+            </p>
+            <p>
+                This is a good example of a problem that can be made much more complicated by assigning assumptions that are not actually present. The problem does not at any point state that we are experimenting on X, but instead only asks us if switching or keeping is a better strategy. The answer is that it does not matter, and the expected value of the ratio of the amount of money you receive to the amount of money in the lesser envelope is always 1.5X.
+            </p>
+            <p>
+                I belive that this problem is very tempting to try and resolve using the famous Monty Hall problem as a guide, where switching legitimately does give you an advantage over staying. However, they key difference between these problems is that you gain information before making a decision in the <a url="https://betterexplained.com/articles/understanding-the-monty-hall-problem/">Monty Hall problem</a>, but not in the Two Envelopes problem. Without any information, your first choice and second choice have the same expected value.
+            </p>
+            <p>
+                A similar counterintuitive example is this: lets say I draw one card from the top of a deck of cards. What is the probability it is the Queen of Hearts? Now, lets say I deal all of the cards face down onto the table until I get to the last card. What is the probability that it is a Queen of Hearts? Is it the same?
+            </p>
+        </div>
+    </main>
+    <aside id="rightSidebar">
+        <div class="navbox">
+            <h2 style="margin: 0;">Navigation</h2>
+            <nav id="navbar" style="margin-bottom: 10px;">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/p/research/">Research</a></li>
+                    <li><a href="/p/teaching/">Teaching</a></li>
+                    <li><a href="/p/math/">Math</a></li>
+                    <li><a href="/p/fun/">Fun</a></li>
+                    <ul style="padding-left:20px; padding-top: 0px; padding-bottom: 0px;">
+                        <li><a href="/p/fun/cats/">Cats</a></li>
+                        <li><a href="/p/fun/books/">Books</a></li>
+                        <li><a href="/p/fun/links/">Links</a></li>
+                        <li><a href="/p/fun/music/">Music</a></li>
+                        <li><a href="/p/fun/toys/">Toys</a></li>
+                     </ul>   
+                    <li><a href="/p/about/">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+</div>
+<footer id="footer" style="margin-top: 10px;"> 
+    <strong>Hard to read?</strong>
+            <p style="font-size: smaller">Change the font here:
+            <input type="radio" id="font" name="font" value="None" checked><label>Arcade (default)</label>
+            <input type="radio" id="font" name="font" value="Georgia"><label style="font-family: Georgia">Georgia (serif)</label>
+            <input type="radio" id="font" name="font" value="Arial" ><label style="font-family: Arial">Arial (sans serif)</label>
+            </p>
+            <br> 
+<marquee>Copyright &copy; Justin Swain 2024 </marquee>
+</footer>
+</div>
+</body>
+</html>
