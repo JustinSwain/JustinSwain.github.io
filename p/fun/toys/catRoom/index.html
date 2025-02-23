@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Justin Swain - Cat Simulator</title>
@@ -8,645 +8,474 @@
     <link rel="icon" href="/images/spaceKitty.png">
     <style>
         canvas {
-            border: 1px solid black;
-            max-width: 100%;
-            max-height: 100%;
+            border: 1px solid black; /* Adds a thin black border around the canvas */
+            max-width: 100%; /* Ensures canvas doesn’t exceed its container’s width */
+            max-height: 100%; /* Ensures canvas doesn’t exceed its container’s height */
         }
         body {
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            position: relative; /* For positioning mobile controls */
+            margin: 0; /* Removes default margins */
+            display: flex; /* Uses flexbox for layout */
+            justify-content: center; /* Centers content horizontally */
+            align-items: center; /* Centers content vertically */
+            height: 100vh; /* Makes body fill the viewport height */
+            overflow: hidden; /* Prevents scrolling */
+            position: relative; /* Allows absolute positioning of children (e.g., mobile controls) */
         }
-        /* Mobile controls styling */
         .mobile-controls {
-            display: none; /* Hidden by default */
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none; /* Allow canvas events through except controls */
+            display: none; /* Hides mobile controls unless triggered by media query */
+            position: absolute; /* Overlays controls on the canvas */
+            width: 100%; /* Spans full width of the body */
+            height: 100%; /* Spans full height of the body */
+            top: 0; /* Aligns to the top */
+            left: 0; /* Aligns to the left */
+            pointer-events: none; /* Allows clicks to pass through to the canvas except where controls exist */
         }
+        /* Styles the joystick area for mobile movement */
         .joystick-container {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            width: 150px;
-            height: 150px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            pointer-events: auto;
+            position: absolute; /* Positions it relative to .mobile-controls */
+            bottom: 20px; /* 20px from the bottom */
+            left: 20px; /* 20px from the left */
+            width: 150px; /* Fixed width of the joystick area */
+            height: 150px; /* Fixed height of the joystick area */
+            background: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
+            border-radius: 50%; /* Makes it circular */
+            pointer-events: auto; /* Allows interaction with the joystick */
         }
-
+        /* Styles the movable joystick knob */
         #joystick {
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
+            width: 50px; /* Width of the joystick knob */
+            height: 50px; /* Height of the joystick knob */
+            background: rgba(255, 255, 255, 0.8); /* More opaque white background */
+            border-radius: 50%; /* Circular shape */
+            position: absolute; /* Positions it within .joystick-container */
+            top: 50%; /* Centers vertically */
+            left: 50%; /* Centers horizontally */
+            transform: translate(-50%, -50%); /* Offsets it to truly center */
+            pointer-events: none; /* Prevents direct interaction with the knob itself */
         }
-
+        /* Styles the container for mobile buttons */
         .button-container {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            flex-direction: row;
-            gap: 10px;
-            pointer-events: auto;
+            position: absolute; /* Positions it relative to .mobile-controls */
+            bottom: 20px; /* 20px from the bottom */
+            right: 20px; /* 20px from the right */
+            display: flex; /* Uses flexbox for layout */
+            flex-direction: row; /* Aligns buttons horizontally */
+            gap: 10px; /* Adds 10px spacing between buttons */
+            pointer-events: auto; /* Allows interaction with buttons */
         }
-
+        /* Styles individual mobile buttons */
         .mobile-button {
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 20px;
-            font-family: Arial, sans-serif;
-            color: #000;
-            cursor: pointer;
-            pointer-events: auto;
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: none; /* Prevent default touch behavior */
+            width: 60px; /* Fixed width */
+            height: 60px; /* Fixed height */
+            background: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+            border-radius: 50%; /* Circular shape */
+            display: flex; /* Centers content inside */
+            justify-content: center; /* Horizontally centers content */
+            align-items: center; /* Vertically centers content */
+            font-size: 20px; /* Size of the button text/icon */
+            font-family: Arial, sans-serif; /* Font style */
+            color: #000; /* Black text/icon color */
+            cursor: pointer; /* Hand cursor on hover */
+            pointer-events: auto; /* Allows interaction */
+            user-select: none; /* Prevents text selection */
+            touch-action: none; /* Prevents default touch behaviors like scrolling */
         }
-
-        /* Show controls only on mobile/touch devices */
+        /* Media query to show mobile controls on smaller screens or touch devices */
         @media (max-width: 1000px), (pointer: coarse) {
-            .mobile-controls {
-                display: block;
-            }
-            .keyboard-controls {
-                display: none;
-            }
+            .mobile-controls { display: block; } /* Shows mobile controls */
+            .keyboard-controls { display: none; } /* Hides keyboard instructions */
         }
-        #container { max-width: 1200px;}
+        /* Limits the maximum width of the container */
+        #container { max-width: 1200px; }
     </style>
-  </head>
+</head>
 <body>
-<!--<div id="container"><div id="topBar">
-    <marquee>Welcome!</marquee>
-</div>
-<div id="headerArea">
-    <div id="header">
-        <a href="/"><img src="/images/spaceKitty.png" height="120px"></a>
-            <a href="/" style="text-decoration: none;"><strong style="font-size: x-large;">justinswain.github.io</strong></a>
-    </div>
-</div>
-<main>-->
-<div id="flex" style="display: flex; flex-direction: column;">
-<div style="text-align: center;">
-    <h1>Cat Simulator</h1>
-</div>
-<br>
-<div>
-<canvas id="canvas"></canvas>
-    <div class="mobile-controls">
-        <!-- Joystick for movement -->
-        <div class="joystick-container" id="joystick-container">
-            <div id="joystick"></div>
-        </div>
-        <!-- Buttons for rotation and throwing -->
-        <div class="button-container">
-            <div class="mobile-button" id="rotate-left">↺</div>
-            <div class="mobile-button" id="rotate-right">↻</div>
-            <div class="mobile-button" id="throw-ball">🧶</div>
-        </div>
-    </div>
-    <script>
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        
-        const isMobile = window.innerWidth <= 1000 || 'ontouchstart' in window;
-        canvas.width = isMobile ? Math.min(window.innerWidth, 600) : 1200;
-        canvas.height = isMobile ? Math.min(window.innerHeight, 400) : 800;
+    <div id="flex" style="display: flex; flex-direction: column;">
+        <div style="text-align: center;"><h1>Cat Simulator</h1></div>
+        <br>
+        <div>
+            <canvas id="canvas"></canvas>
+            <div class="mobile-controls">
+                <!-- Joystick area for movement -->
+                <div class="joystick-container" id="joystick-container"><div id="joystick"></div></div>
+                <!-- Container for action buttons -->
+                <div class="button-container">
+                    <!-- Button to rotate player left -->
+                    <div class="mobile-button" id="rotate-left">↺</div>
+                    <!-- Button to rotate player right -->
+                    <div class="mobile-button" id="rotate-right">↻</div>
+                    <!-- Button to throw the toy -->
+                    <div class="mobile-button" id="throw-ball">🧶</div>
+                </div>
+            </div>
+            <script>
+                // Get the canvas element and its 2D rendering context
+                const canvas = document.getElementById('canvas');
+                const ctx = canvas.getContext('2d', { alpha: false }); // Disables transparency for performance
 
-        const textureImg = new Image();
-        textureImg.src = '/images/example.jpg';
-        let textureLoaded = false;
-        textureImg.onload = () => textureLoaded = true;
+                // Detect if the device is mobile based on screen width or touch capability
+                const isMobile = window.innerWidth <= 1000 || 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+                // Set canvas width based on device (smaller for mobile)
+                const renderWidth = isMobile ? Math.min(window.innerWidth, 400) : 1200;
+                // Set canvas height, reserving space for controls on mobile
+                const renderHeight = isMobile ? Math.min(window.innerHeight - 100, 300) : 800;
+                canvas.width = renderWidth; // Apply width to canvas
+                canvas.height = renderHeight; // Apply height to canvas
 
-        const spriteImgJinx = new Image();
-        spriteImgJinx.src = '/images/jinx.png';
-        let spriteLoadedJinx = false;
-        spriteImgJinx.onload = () => spriteLoadedJinx = true;
-
-        const spriteImgPluto = new Image();
-        spriteImgPluto.src = '/images/pluto.png';
-        let spriteLoadedPluto = false;
-        spriteImgPluto.onload = () => spriteLoadedPluto = true;
-
-        const spriteImgBeans = new Image();
-        spriteImgBeans.src = '/images/beans.png';
-        let spriteLoadedBeans = false;
-        spriteImgBeans.onload = () => spriteLoadedBeans = true;
-
-        const spriteImgNinja = new Image();
-        spriteImgNinja.src = '/images/ninja.png';
-        let spriteLoadedNinja = false;
-        spriteImgNinja.onload = () => spriteLoadedNinja = true;
-
-        const spriteImgZed = new Image();
-        spriteImgZed.src = '/images/zed.png';
-        let spriteLoadedZed = false;
-        spriteImgZed.onload = () => spriteLoadedZed = true;
-
-        const handsImg = new Image();
-        handsImg.src = '/images/pole.png';
-        let handsLoaded = false;
-        handsImg.onload = () => handsLoaded = true;
-
-        const toyImg = new Image();
-        toyImg.src = '/images/ball.png';
-        let toyLoaded = false;
-        toyImg.onload = () => toyLoaded = true;
-
-        const player = {
-            x: 2,
-            y: 2,
-            angle: 1,
-            speed: 0.1,
-            rotSpeed: 0.05,
-            moveTime: 0
-        };
-
-        const map = [ //y across, x down
-            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1], // Top wall
-            [1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1], // Room 1 top
-            [1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1],
-            [1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1],
-            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1], // Hallway top
-            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1], // Hallway middle
-            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-            [1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1], // Room 2 bottom
-            [1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1],
-            [1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1], // Room 3 bottom
-            [1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1],
-            [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]  // Bottom wall
-        ];
-
-        const sprites = [
-            { 
-                x: 10, y: 6, z: -0.5, texture: spriteImgJinx, loaded: () => spriteLoadedJinx, scale: 1.5, chase: true, name: 'Jinx'
-            },
-            { 
-                x: 3, y: 12, z: -0.5, texture: spriteImgBeans, loaded: () => spriteLoadedBeans, scale: 1.7, chase: true, name: 'Beans'
-            },
-            { 
-                x: 8, y: 12, z: -0.5, texture: spriteImgPluto, loaded: () => spriteLoadedPluto, scale: 1.5, chase: true, name: 'Pluto'
-
-            },
-            { 
-                x: 8, y: 3, z: -0.5, texture: spriteImgNinja, loaded: () => spriteLoadedNinja, scale: 1.5, chase: true, name: 'Ninja'
-            },
-            { 
-                x: 11, y: 12, z: -0.5, texture: spriteImgZed, loaded: () => spriteLoadedZed, scale: 1.5, chase: true, name: 'Zed'
-            },
-        ];
-
-        let toy = null;
-
-        const fog = {
-            color: 'rgba(150, 150, 150, 0',
-            density: 0.0,
-            maxDistance: 10
-        };
-
-        const mapWidth = map[0].length;
-        const mapHeight = map.length;
-
-        const keys = {};
-        document.addEventListener('keydown', (e) => keys[e.key.toLowerCase()] = true);
-        document.addEventListener('keyup', (e) => keys[e.key.toLowerCase()] = false);
-
-        // Mobile controls setup
-        const joystickContainer = document.getElementById('joystick-container');
-        const joystick = document.getElementById('joystick');
-        const rotateLeftBtn = document.getElementById('rotate-left');
-        const rotateRightBtn = document.getElementById('rotate-right');
-        const throwBallBtn = document.getElementById('throw-ball');
-
-        let joystickActive = false;
-        let joystickStartX, joystickStartY;
-        let moveX = 0, moveY = 0;
-
-        // Joystick touch events
-        joystickContainer.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            const touch = e.touches[0];
-            joystickStartX = touch.clientX;
-            joystickStartY = touch.clientY;
-            joystickActive = true;
-        });
-
-        joystickContainer.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            if (!joystickActive) return;
-            const touch = e.touches[0];
-            const dx = touch.clientX - joystickStartX;
-            const dy = touch.clientY - joystickStartY;
-            const maxDist = 50; // Max joystick movement radius
-            const dist = Math.min(maxDist, Math.sqrt(dx * dx + dy * dy));
-            const angle = Math.atan2(dy, dx);
-            moveX = Math.cos(angle) * dist / maxDist;
-            moveY = Math.sin(angle) * dist / maxDist;
-
-            // Update joystick position visually
-            joystick.style.left = `${50 + Math.cos(angle) * dist}%`;
-            joystick.style.top = `${50 + Math.sin(angle) * dist}%`;
-        });
-
-        joystickContainer.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            joystickActive = false;
-            moveX = 0;
-            moveY = 0;
-            joystick.style.left = '50%';
-            joystick.style.top = '50%';
-        });
-
-        // Button touch events
-        let rotateLeftActive = false, rotateRightActive = false, throwActive = false;
-
-        rotateLeftBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            rotateLeftActive = true;
-        });
-        rotateLeftBtn.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            rotateLeftActive = false;
-        });
-
-        rotateRightBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            rotateRightActive = true;
-        });
-        rotateRightBtn.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            rotateRightActive = false;
-        });
-
-        throwBallBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            throwActive = true;
-            throwBall(); // Trigger throw immediately
-        });
-        throwBallBtn.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            throwActive = false;
-        });
-
-        function throwBall() {
-            if (!toy) {
-                toy = {
-                    x: player.x,
-                    y: player.y,
-                    z: 0.1,
-                    vx: Math.cos(player.angle) * 0.3,
-                    vy: Math.sin(player.angle) * 0.3,
-                    vz: 0,
-                    texture: toyImg,
-                    loaded: () => toyLoaded,
-                    scale: 0.3,
-                    lifespan: 100,
-                    grounded: false
+                // Object to manage all game images
+                const images = {
+                    texture: { src: '/images/example.jpg', loaded: false }, // Wall texture
+                    jinx: { src: '/images/jinx.png', loaded: false }, // Jinx sprite
+                    pluto: { src: '/images/pluto.png', loaded: false }, // Pluto sprite
+                    beans: { src: '/images/beans.png', loaded: false }, // Beans sprite
+                    ninja: { src: '/images/ninja.png', loaded: false }, // Ninja sprite
+                    zed: { src: '/images/zed.png', loaded: false }, // Zed sprite
+                    hands: { src: '/images/pole.png', loaded: false }, // Hands/pole sprite
+                    toy: { src: '/images/ball.png', loaded: false } // Toy ball sprite
                 };
-            }
-        }
-
-        function raycast() {
-            const fov = Math.PI / 3;
-            const resolution = canvas.width;
-            const planeDist = (canvas.width / 2) / Math.tan(fov / 2);
-            const sliceWidth = Math.ceil(canvas.width / resolution);
-
-            ctx.fillStyle = '#87CEEB';
-            ctx.fillRect(0, 0, canvas.width, canvas.height / 2);
-            ctx.fillStyle = '#666';
-            ctx.fillRect(0, canvas.height / 2, canvas.width, canvas.height / 2);
-
-            const zBuffer = new Array(resolution);
-            for (let i = 0; i < resolution; i++) {
-                const cameraX = (2 * i / resolution) - 1;
-                const rayDirX = Math.cos(player.angle) + Math.sin(player.angle) * cameraX;
-                const rayDirY = Math.sin(player.angle) - Math.cos(player.angle) * cameraX;
-
-                let distance = 0;
-                let hit = false;
-                let rayX = player.x;
-                let rayY = player.y;
-                let textureX;
-                let side;
-
-                while (!hit && distance < 20) {
-                    distance += 0.05;
-                    rayX = player.x + rayDirX * distance;
-                    rayY = player.y + rayDirY * distance;
-
-                    const mapX = Math.floor(rayX);
-                    const mapY = Math.floor(rayY);
-
-                    if (mapX < 0 || mapX >= mapWidth || mapY < 0 || mapY >= mapHeight) {
-                        hit = true;
-                    } else if (map[mapY][mapX] === 1) {
-                        hit = true;
-                        const wallX = rayX - mapX;
-                        const wallY = rayY - mapY;
-                        side = (Math.abs(wallX - 0.5) > Math.abs(wallY - 0.5)) ? 0 : 1;
-                        textureX = side === 0 ? wallY : wallX;
-                        textureX = textureX * textureImg.width;
-                    }
+                // Load all images and set their loaded status
+                for (let key in images) {
+                    const img = new Image(); // Create new image object
+                    img.src = images[key].src; // Set image source
+                    img.onload = () => images[key].loaded = true; // Mark as loaded when ready
+                    images[key].img = img; // Store the image object
                 }
 
-                zBuffer[i] = distance;
-                const wallHeight = Math.min(canvas.height, (canvas.height / distance) * 1.5);
-                const wallTop = (canvas.height - wallHeight) / 2;
-
-                if (textureLoaded) {
-                    ctx.drawImage(
-                        textureImg,
-                        Math.floor(textureX), 0, 1, textureImg.height,
-                        i * sliceWidth, wallTop, sliceWidth, wallHeight
-                    );
-                    const fogOpacity = Math.min(1, distance * fog.density);
-                    ctx.fillStyle = `${fog.color}${fogOpacity})`;
-                    ctx.fillRect(i * sliceWidth, wallTop, sliceWidth, wallHeight);
-                } else {
-                    const baseColor = `rgb(${20 - distance * 2}, ${100 - distance * 10}, ${100 - distance * 5})`;
-                    const fogOpacity = Math.min(1, distance * fog.density);
-                    ctx.fillStyle = baseColor;
-                    ctx.fillRect(i * sliceWidth, wallTop, sliceWidth, wallHeight);
-                    ctx.fillStyle = `${fog.color}${fogOpacity})`;
-                    ctx.fillRect(i * sliceWidth, wallTop, sliceWidth, wallHeight);
-                }
-            }
-
-            const allSprites = [...sprites];
-            if (toy && toyLoaded) {
-                allSprites.push(toy);
-            }
-
-            const sortedSprites = allSprites.map(sprite => {
-                const dx = sprite.x - player.x;
-                const dy = sprite.y - player.y;
-                return { ...sprite, distance: Math.sqrt(dx * dx + dy * dy) };
-            }).sort((a, b) => b.distance - a.distance);
-
-            sortedSprites.forEach(sprite => {
-                if (sprite.loaded()) {
-                    const spriteX = sprite.x - player.x;
-                    const spriteY = sprite.y - player.y;
-
-                    const dirX = Math.cos(player.angle);
-                    const dirY = Math.sin(player.angle);
-                    const planeX = Math.sin(player.angle);
-                    const planeY = -Math.cos(player.angle);
-
-                    const transformX = planeX * spriteX + planeY * spriteY;
-                    const transformY = dirX * spriteX + dirY * spriteY;
-
-                    if (transformY > 0) {
-                        const spriteScreenX = (canvas.width / 2) * (1 + transformX / transformY);
-                        const spriteHeight = Math.abs(canvas.height / transformY) * 0.5 * sprite.scale;
-                        const spriteWidth = spriteHeight * (sprite.texture.width / sprite.texture.height);
-
-                        const heightOffset = (sprite.z * canvas.height) / transformY;
-                        const drawStartY = (canvas.height - spriteHeight) / 2 - heightOffset;
-
-                        const drawStartX = Math.max(0, spriteScreenX - spriteWidth / 2);
-                        const drawEndX = Math.min(canvas.width, spriteScreenX + spriteWidth / 2);
-
-                        for (let x = Math.floor(drawStartX); x < drawEndX; x++) {
-                            const stripe = Math.floor(x / sliceWidth);
-                            if (x >= 0 && x < canvas.width && stripe < resolution && transformY < zBuffer[stripe]) {
-                                const texX = Math.floor(((x - (spriteScreenX - spriteWidth / 2)) * sprite.texture.width) / spriteWidth);
-                                ctx.drawImage(
-                                    sprite.texture,
-                                    texX, 0, 1, sprite.texture.height,
-                                    x, drawStartY, 1, spriteHeight
-                                );
-                                const fogOpacity = Math.min(1, transformY * fog.density);
-                                ctx.fillStyle = `${fog.color}${fogOpacity})`;
-                                ctx.fillRect(x, drawStartY, 1, spriteHeight);
-                            }
-                        }
-
-                        // Draw name if close
-                        if (sprite.name && sprite.distance < 2) {
-                            ctx.font = '20px Arial';
-                            ctx.fillStyle = 'white';
-                            ctx.textAlign = 'center';
-                            const textX = spriteScreenX;
-                            const textY = drawStartY - 10; // Above sprite
-                            ctx.strokeStyle = 'black';
-                            ctx.lineWidth = 5;
-                            ctx.strokeText(sprite.name, textX, textY); // Outline for readability
-                            ctx.fillText(sprite.name, textX, textY); //Actual text
-                        }
-                    }
-                }
-            });
-
-            if (handsLoaded) {
-                const handsWidth = Math.min(canvas.width*0.6,handsImg.width * 1.7);
-                const handsHeight = Math.min(canvas.height*0.6,handsImg.height * 1.7);
-                const handsX = (canvas.width - handsWidth) / 2;
-                const bobbing = Math.sin(player.moveTime * 0.2) * 10;
-                const handsY = canvas.height - handsHeight + bobbing + 0.1*canvas.height;
-                
-                ctx.drawImage(handsImg, handsX, handsY, handsWidth, handsHeight);
-            }
-        }
-
-        function movePlayer() {
-            const newX = player.x;
-            const newY = player.y;
-
-            let moving = false;
-            if (keys['w']) {
-                player.x += Math.cos(player.angle) * player.speed;
-                player.y += Math.sin(player.angle) * player.speed;
-                moving = true;
-            }
-            if (keys['s']) {
-                player.x -= Math.cos(player.angle) * player.speed;
-                player.y -= Math.sin(player.angle) * player.speed;
-                moving = true;
-            }
-            if (keys['a']) {
-                player.x += Math.cos(player.angle + Math.PI/2) * player.speed;
-                player.y += Math.sin(player.angle + Math.PI/2) * player.speed;
-                moving = true;
-            }
-            if (keys['d']) {
-                player.x -= Math.cos(player.angle + Math.PI/2) * player.speed;
-                player.y -= Math.sin(player.angle + Math.PI/2) * player.speed;
-                moving = true;
-            }
-            if (keys['q']) {
-                player.angle += player.rotSpeed;
-            }
-            if (keys['e']) {
-                player.angle -= player.rotSpeed;
-            }
-
-            // Mobile controls
-            if (joystickActive) {
-                // Forward/Backward (moveY)
-                player.x += Math.cos(player.angle) * player.speed * -moveY; // Invert moveY for intuitive control
-                player.y += Math.sin(player.angle) * player.speed * -moveY;
-                // Left/Right strafe (moveX)
-                player.x -= Math.cos(player.angle + Math.PI/2) * player.speed * moveX;
-                player.y -= Math.sin(player.angle + Math.PI/2) * player.speed * moveX;
-                moving = moveX !== 0 || moveY !== 0;
-            }
-            if (rotateLeftActive) {
-                player.angle += player.rotSpeed;
-            }
-            if (rotateRightActive) {
-                player.angle -= player.rotSpeed;
-            }
-            if (throwActive) {
-                throwBall(); // Continuous throw not needed, handled on touchstart
-            }
-
-            // Throw toy on Space press
-            if (keys[' '] && !toy) {
-                toy = {
-                    x: player.x,
-                    y: player.y,
-                    z: 0.1,
-                    vx: Math.cos(player.angle) * 0.3,
-                    vy: Math.sin(player.angle) * 0.3,
-                    vz: 0, // Vertical velocity for falling
-                    texture: toyImg,
-                    loaded: () => toyLoaded,
-                    scale: 0.3,
-                    lifespan: 100,
-                    grounded: false // Track if toy has hit the ground
+                // Player object with position, angle, and movement properties
+                const player = { 
+                    x: 2, y: 2, // Starting position (x, y)
+                    angle: 1, // Starting angle in radians
+                    speed: 0.1, // Movement speed
+                    rotSpeed: 0.05, // Rotation speed
+                    moveTime: 0 // Tracks movement for hand bobbing animation
                 };
-            }
 
-            // Update toy position
-            if (toy) {
-                if (!toy.grounded) {
-                    // Check next position for collision
-                    const nextX = toy.x + toy.vx;
-                    const nextY = toy.y + toy.vy;
-                    const nextMapX = Math.floor(nextX);
-                    const nextMapY = Math.floor(nextY);
+                // 2D array representing the game map (1 = wall, 0 = empty)
+                const map = [
+                    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1], // Top wall
+                    [1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1], // Room 1
+                    [1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1],
+                    [1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1],
+                    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1], // Hallway
+                    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+                    [1,0,0,0,0,1,0,0,0,0,0,0,1,0,0,1], // Room 2
+                    [1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1], // Room 3
+                    [1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1],
+                    [1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,1],
+                    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]  // Bottom wall
+                ];
 
-                    if (nextMapX >= 0 && nextMapX < mapWidth && nextMapY >= 0 && nextMapY < mapHeight && map[nextMapY][nextMapX] === 1) {
-                        // Hit wall: stop horizontal movement, start falling
-                        toy.vx = 0;
-                        toy.vy = 0;
-                        toy.vz = -0.01; // Gravity effect
-                        toy.grounded = false; // Still falling until z = 0
-                    } else {
-                        // Continue moving
-                        toy.x = nextX;
-                        toy.y = nextY;
-                    }
+                // Array of sprite objects (cats) with positions and properties
+                const sprites = [
+                    { x: 10, y: 6, z: -0.5, texture: images.jinx.img, loaded: () => images.jinx.loaded, scale: 1.8, chase: true, name: 'Jinx' },
+                    { x: 3, y: 12, z: -0.5, texture: images.beans.img, loaded: () => images.beans.loaded, scale: 2.0, chase: true, name: 'Beans' },
+                    { x: 8, y: 12, z: -0.5, texture: images.pluto.img, loaded: () => images.pluto.loaded, scale: 1.8, chase: true, name: 'Pluto' },
+                    { x: 8, y: 3, z: -0.5, texture: images.ninja.img, loaded: () => images.ninja.loaded, scale: 1.8, chase: true, name: 'Ninja' },
+                    { x: 11, y: 12, z: -0.5, texture: images.zed.img, loaded: () => images.zed.loaded, scale: 1.8, chase: true, name: 'Zed' }
+                ];
 
-                    // Apply vertical movement (falling)
-                    toy.z += toy.vz;
-                    if (toy.z <= -0.5) {
-                        toy.z = -0.5;
-                        toy.vz = 0;
-                        toy.grounded = true; // Toy is now on the ground
+                // Variable to hold the toy object (null until thrown)
+                let toy = null;
+
+                // Fog settings (currently disabled with density 0)
+                const fog = { color: 'rgba(150, 150, 150, ', density: 0.0, maxDistance: 10 };
+
+                // Map dimensions for boundary checking
+                const mapWidth = map[0].length; // Number of columns
+                const mapHeight = map.length; // Number of rows
+
+                // Object to track which keys are pressed
+                const keys = {};
+                // Event listeners for keyboard input
+                document.addEventListener('keydown', (e) => keys[e.key.toLowerCase()] = true); // Sets key as pressed
+                document.addEventListener('keyup', (e) => keys[e.key.toLowerCase()] = false); // Sets key as released
+
+                // Get mobile control elements
+                const joystickContainer = document.getElementById('joystick-container'); // Joystick area
+                const joystick = document.getElementById('joystick'); // Joystick knob
+                const rotateLeftBtn = document.getElementById('rotate-left'); // Rotate left button
+                const rotateRightBtn = document.getElementById('rotate-right'); // Rotate right button
+                const throwBallBtn = document.getElementById('throw-ball'); // Throw toy button
+
+                // Variables for joystick state
+                let joystickActive = false, joystickStartX, joystickStartY, moveX = 0, moveY = 0;
+                // Variables for button states
+                let rotateLeftActive = false, rotateRightActive = false, throwActive = false;
+
+                // Joystick touch events
+                joystickContainer.addEventListener('touchstart', (e) => {
+                    e.preventDefault(); // Prevents default touch behavior
+                    const touch = e.touches[0]; // Gets first touch point
+                    joystickStartX = touch.clientX; // Starting X position
+                    joystickStartY = touch.clientY; // Starting Y position
+                    joystickActive = true; // Marks joystick as active
+                });
+                joystickContainer.addEventListener('touchmove', (e) => {
+                    e.preventDefault(); // Prevents default touch behavior
+                    if (!joystickActive) return; // Exits if joystick isn’t active
+                    const touch = e.touches[0]; // Current touch point
+                    const dx = touch.clientX - joystickStartX; // X distance moved
+                    const dy = touch.clientY - joystickStartY; // Y distance moved
+                    const maxDist = 50; // Maximum joystick movement radius
+                    const dist = Math.min(maxDist, Math.sqrt(dx * dx + dy * dy)); // Clamps distance
+                    const angle = Math.atan2(dy, dx); // Angle of movement
+                    moveX = -Math.cos(angle) * dist / maxDist; // X movement direction (- for intuitive control)
+                    moveY = Math.sin(angle) * dist / maxDist; // Y movement direction
+                    // Update joystick knob position visually
+                    joystick.style.left = `${50 + Math.cos(angle) * dist}%`;
+                    joystick.style.top = `${50 + Math.sin(angle) * dist}%`;
+                });
+                joystickContainer.addEventListener('touchend', (e) => {
+                    e.preventDefault(); // Prevents default touch behavior
+                    joystickActive = false; // Marks joystick as inactive
+                    moveX = 0; moveY = 0; // Resets movement
+                    joystick.style.left = '50%'; // Resets knob to center
+                    joystick.style.top = '50%';
+                });
+
+                // Button touch events
+                rotateLeftBtn.addEventListener('touchstart', (e) => { e.preventDefault(); rotateLeftActive = true; }); // Starts left rotation
+                rotateLeftBtn.addEventListener('touchend', (e) => { e.preventDefault(); rotateLeftActive = false; }); // Stops left rotation
+                rotateRightBtn.addEventListener('touchstart', (e) => { e.preventDefault(); rotateRightActive = true; }); // Starts right rotation
+                rotateRightBtn.addEventListener('touchend', (e) => { e.preventDefault(); rotateRightActive = false; }); // Stops right rotation
+                throwBallBtn.addEventListener('touchstart', (e) => { e.preventDefault(); throwActive = true; throwBall(); }); // Throws toy
+                throwBallBtn.addEventListener('touchend', (e) => { e.preventDefault(); throwActive = false; }); // Resets throw state
+
+                // Function to create and throw the toy
+                function throwBall() {
+                    if (!toy) { // Only creates toy if none exists
+                        toy = {
+                            x: player.x, y: player.y, z: 0.1, // Starting position
+                            vx: Math.cos(player.angle) * 0.3, vy: Math.sin(player.angle) * 0.3, vz: 0, // Velocity based on player angle
+                            texture: images.toy.img, loaded: () => images.toy.loaded, // Toy image
+                            scale: 0.3, // Size scaling
+                            lifespan: 100, // Frames until toy disappears
+                            grounded: false // Tracks if toy has landed
+                        };
                     }
                 }
 
-                toy.lifespan -= 1;
-                if (toy.lifespan <= 0) {
-                    toy = null;
-                }
-            }
+                // Raycasting function to render the 3D view
+                function raycast() {
+                    const fov = Math.PI / 3; // Field of view angle
+                    const resolution = isMobile ? Math.floor(renderWidth / 2): canvas.width; // Number of rays (lower on mobile)
+                    const planeDist = (renderWidth / 2) / Math.tan(fov / 2); // Distance to projection plane
+                    const sliceWidth = renderWidth / resolution; // Width of each wall slice
 
-            // Cat chasing behavior
-            if (toy) {
-                let toyCaught = false;
-                for (let i = 0; i < sprites.length && !toyCaught; i++) {
-                    const sprite = sprites[i];
-                    if (sprite.chase) {
-                        const dx = toy.x - sprite.x;
-                        const dy = toy.y - sprite.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        if (distance < 3) {
-                            const speed = 0.05;
-                            const newSpriteX = sprite.x + (dx / distance) * speed;
-                            const newSpriteY = sprite.y + (dy / distance) * speed;
-                            if (map[Math.floor(newSpriteY)][Math.floor(newSpriteX)] !== 1) {
-                                sprite.x = newSpriteX;
-                                sprite.y = newSpriteY;
+                    // Draw sky and floor
+                    ctx.fillStyle = '#87CEEB'; // Sky color
+                    ctx.fillRect(0, 0, renderWidth, renderHeight / 2); // Top half of canvas
+                    ctx.fillStyle = '#666'; // Floor color
+                    ctx.fillRect(0, renderHeight / 2, renderWidth, renderHeight / 2); // Bottom half
+
+                    const zBuffer = new Array(resolution); // Stores distance to walls for sprite depth
+                    const cosAngle = Math.cos(player.angle), sinAngle = Math.sin(player.angle); // Precompute player angle
+                    // Cast rays for each column
+                    for (let i = 0; i < resolution; i++) {
+                        const cameraX = (2 * i / resolution) - 1; // Normalized x-coordinate in camera space
+                        const rayDirX = cosAngle + sinAngle * cameraX; // Ray direction X
+                        const rayDirY = sinAngle - cosAngle * cameraX; // Ray direction Y
+
+                        let distance = 0, hit = false, rayX = player.x, rayY = player.y, textureX, side;
+                        // Step ray until it hits a wall or exceeds max distance
+                        while (!hit && distance < 20) {
+                            distance += 0.1; // Increment ray distance
+                            rayX = player.x + rayDirX * distance; // Current ray X position
+                            rayY = player.y + rayDirY * distance; // Current ray Y position
+                            const mapX = rayX | 0, mapY = rayY | 0; // Integer map coordinates
+                            // Check if ray is out of bounds or hits a wall
+                            if (mapX < 0 || mapX >= mapWidth || mapY < 0 || mapY >= mapHeight || map[mapY][mapX]) {
+                                hit = true;
+                                const wallX = rayX - mapX, wallY = rayY - mapY; // Fractional position within tile
+                                side = (Math.abs(wallX - 0.5) > Math.abs(wallY - 0.5)) ? 0 : 1; // 0 = vertical, 1 = horizontal
+                                textureX = (side ? wallX : wallY) * images.texture.img.width; // Texture coordinate
                             }
-                            if (distance < 0.2) {
-                                toy = null;
-                                toyCaught = true;
+                        }
+                        zBuffer[i] = distance; // Store distance for depth comparison
+                        const wallHeight = Math.min(renderHeight, (renderHeight / distance) * 1.5); // Wall height adjusted for perspective
+                        const wallTop = (renderHeight - wallHeight) / 2; // Top of the wall on screen
+
+                        // Draw wall slice
+                        if (images.texture.loaded) {
+                            ctx.drawImage(images.texture.img, textureX | 0, 0, 1, images.texture.img.height, i * sliceWidth, wallTop, sliceWidth, wallHeight);
+                        } else {
+                            ctx.fillStyle = `rgb(${20 - distance * 2},${100 - distance * 10},${100 - distance * 5})`; // Fallback color
+                            ctx.fillRect(i * sliceWidth, wallTop, sliceWidth, wallHeight);
+                        }
+                    }
+
+                    // Combine sprites and toy for rendering
+                    const allSprites = toy && images.toy.loaded ? [...sprites, toy] : sprites;
+                    // Sort sprites by distance (back to front)
+                    allSprites.sort((a, b) => {
+                        const dxA = a.x - player.x, dyA = a.y - player.y;
+                        const dxB = b.x - player.x, dyB = b.y - player.y;
+                        return (dxB * dxB + dyB * dyB) - (dxA * dxA + dyA * dyA); // Compare squared distances
+                    });
+
+                    const dirX = cosAngle, dirY = sinAngle, planeX = sinAngle, planeY = -cosAngle; // Camera vectors
+                    // Render each sprite
+                    allSprites.forEach(sprite => {
+                        if (!sprite.loaded()) return; // Skip if image isn’t loaded
+                        const spriteX = sprite.x - player.x, spriteY = sprite.y - player.y; // Relative position
+                        const transformX = planeX * spriteX + planeY * spriteY; // X in camera space
+                        const transformY = dirX * spriteX + dirY * spriteY; // Depth in camera space
+                        if (transformY <= 0) return; // Skip if behind player
+
+                        const spriteScreenX = (renderWidth / 2) * (1 + transformX / transformY); // Screen X position
+                        const spriteHeight = Math.abs(renderHeight / transformY) * 0.5 * sprite.scale; // Screen height
+                        const spriteWidth = spriteHeight * (sprite.texture.width / sprite.texture.height); // Screen width
+                        const heightOffset = (sprite.z * renderHeight) / transformY; // Vertical offset
+                        const drawStartY = (renderHeight - spriteHeight) / 2 - heightOffset; // Top Y position
+                        const drawStartX = Math.max(0, spriteScreenX - spriteWidth / 2); // Left X bound
+                        const drawEndX = Math.min(renderWidth, spriteScreenX + spriteWidth / 2); // Right X bound
+
+                        const step = isMobile ? 2 : 1; // Skip pixels on mobile for performance
+                        // Draw sprite column-by-column
+                        for (let x = drawStartX | 0; x < drawEndX; x += step) {
+                            const stripe = (x / sliceWidth) | 0; // Corresponding ray index
+                            if (x < renderWidth && stripe < resolution && transformY < zBuffer[stripe]) { // Check depth
+                                const texX = ((x - (spriteScreenX - spriteWidth / 2)) * sprite.texture.width / spriteWidth) | 0; // Texture X
+                                ctx.drawImage(sprite.texture, texX, 0, 1, sprite.texture.height, x, drawStartY, step, spriteHeight);
+                            }
+                        }
+
+                        // Draw sprite name if close enough
+                        if (sprite.name) {
+                            const dx = sprite.x - player.x, dy = sprite.y - player.y;
+                            const distance = Math.sqrt(dx * dx + dy * dy); // Distance to sprite
+                            if (distance < 2) { // Only draw if within 2 units
+                                ctx.font = `${isMobile ? '16' : '20'}px Arial`; // Smaller font on mobile
+                                ctx.fillStyle = 'white'; // Text color
+                                ctx.textAlign = 'center'; // Center text horizontally
+                                ctx.strokeStyle = 'black'; // Outline color
+                                ctx.lineWidth = 4; // Outline thickness
+                                const textX = spriteScreenX; // X position above sprite
+                                const textY = drawStartY - 10; // Y position above sprite
+                                ctx.strokeText(sprite.name, textX, textY); // Draw outline
+                                ctx.fillText(sprite.name, textX, textY); // Draw text
+                            }
+                        }
+                    });
+
+                    // Draw hands/pole if loaded
+                    if (images.hands.loaded) {
+                        const handsWidth = Math.min(renderWidth * 0.6, images.hands.img.width * 1.7); // Scaled width
+                        const handsHeight = Math.min(renderHeight * 0.6, images.hands.img.height * 1.7); // Scaled height
+                        const handsX = (renderWidth - handsWidth) / 2; // Centered X position
+                        const bobbing = Math.sin(player.moveTime * 0.2) * 10; // Bobbing effect
+                        ctx.drawImage(images.hands.img, handsX, renderHeight - handsHeight + bobbing + renderHeight * 0.1, handsWidth, handsHeight);
+                    }
+                }
+
+                // Function to update player and toy movement
+                function movePlayer() {
+                    let newX = player.x, newY = player.y, moving = false; // Store previous position
+                    const cosAngle = Math.cos(player.angle), sinAngle = Math.sin(player.angle); // Forward direction
+                    const cosStrafe = Math.cos(player.angle + Math.PI / 2), sinStrafe = Math.sin(player.angle + Math.PI / 2); // Strafe direction
+
+                    // Move forward
+                    if (keys['w'] || (joystickActive && moveY < 0)) {
+                        player.x += cosAngle * player.speed * (keys['w'] ? 1 : -moveY);
+                        player.y += sinAngle * player.speed * (keys['w'] ? 1 : -moveY);
+                        moving = true;
+                    }
+                    // Move backward
+                    if (keys['s'] || (joystickActive && moveY > 0)) {
+                        player.x -= cosAngle * player.speed * (keys['s'] ? 1 : moveY);
+                        player.y -= sinAngle * player.speed * (keys['s'] ? 1 : moveY);
+                        moving = true;
+                    }
+                    // Strafe left
+                    if (keys['a'] || (joystickActive && moveX > 0)) {
+                        player.x += cosStrafe * player.speed * (keys['a'] ? 1 : moveX);
+                        player.y += sinStrafe * player.speed * (keys['a'] ? 1 : moveX);
+                        moving = true;
+                    }
+                    // Strafe right
+                    if (keys['d'] || (joystickActive && moveX < 0)) {
+                        player.x -= cosStrafe * player.speed * (keys['d'] ? 1 : -moveX);
+                        player.y -= sinStrafe * player.speed * (keys['d'] ? 1 : -moveX);
+                        moving = true;
+                    }
+                    // Rotate left
+                    if (keys['q'] || rotateLeftActive) player.angle += player.rotSpeed;
+                    // Rotate right
+                    if (keys['e'] || rotateRightActive) player.angle -= player.rotSpeed;
+                    // Throw toy
+                    if ((keys[' '] || throwActive) && !toy) throwBall();
+
+                    // Update toy position and physics
+                    if (toy) {
+                        if (!toy.grounded) {
+                            const nextX = toy.x + toy.vx, nextY = toy.y + toy.vy; // Next position
+                            const nextMapX = nextX | 0, nextMapY = nextY | 0; // Integer coordinates
+                            // Check for wall collision
+                            if (nextMapX >= 0 && nextMapX < mapWidth && nextMapY >= 0 && nextMapY < mapHeight && map[nextMapY][nextMapX]) {
+                                toy.vx = 0; toy.vy = 0; toy.vz = -0.01; // Stop and fall
+                            } else {
+                                toy.x = nextX; toy.y = nextY; // Move toy
+                            }
+                            toy.z += toy.vz; // Apply vertical velocity (gravity)
+                            if (toy.z <= -0.5) { // Check if toy hits ground
+                                toy.z = -0.5; toy.vz = 0; toy.grounded = true;
+                            }
+                        }
+                        if (--toy.lifespan <= 0) toy = null; // Decrease lifespan and remove if expired
+                    }
+
+                    // Cat chasing behavior
+                    if (toy) {
+                        let toyCaught = false;
+                        for (let i = 0; i < sprites.length && !toyCaught; i++) {
+                            const sprite = sprites[i];
+                            if (!sprite.chase) continue; // Skip if sprite doesn’t chase
+                            const dx = toy.x - sprite.x, dy = toy.y - sprite.y; // Distance to toy
+                            const distance = Math.sqrt(dx * dx + dy * dy);
+                            if (distance < 3) { // If within chasing range
+                                const speed = 0.05, newX = sprite.x + (dx / distance) * speed, newY = sprite.y + (dy / distance) * speed;
+                                if (!map[newY | 0][newX | 0]) { // Move if no wall
+                                    sprite.x = newX; sprite.y = newY;
+                                }
+                                if (distance < 0.2) { // Catch toy if very close
+                                    toy = null; toyCaught = true;
+                                }
                             }
                         }
                     }
+
+                    // Update movement timer for bobbing
+                    if (moving) player.moveTime++; else player.moveTime = 0;
+                    // Collision detection with walls
+                    if (map[player.y | 0][player.x | 0]) {
+                        player.x = newX; player.y = newY; // Revert to previous position
+                    }
+                    // Normalize angle to 0-2π
+                    player.angle = (player.angle + Math.PI * 2) % (Math.PI * 2);
                 }
-            }
 
-            if (moving) {
-                player.moveTime += 1;
-            } else {
-                player.moveTime = 0;
-            }
-
-            if (map[Math.floor(player.y)][Math.floor(player.x)] === 1) {
-                player.x = newX;
-                player.y = newY;
-            }
-
-            if (player.angle < 0) player.angle += Math.PI * 2;
-            if (player.angle >= Math.PI * 2) player.angle -= Math.PI * 2;
-        }
-
-        let lastTime = 0;
-        function gameLoop(time) {
-        if (time - lastTime >= 16) { // ~60 FPS cap
-            movePlayer();
-            raycast();
-            lastTime = time;
-        }
-        requestAnimationFrame(gameLoop);
-        }
-
-        gameLoop();
-    </script>
-    <div class="keyboard-controls" style="text-align: center;">
-        <p>Controls: W, A, S, D to move, Q and E to rotate, Space to throw toy.</p>
+                // Game loop timing
+                let lastTime = 0;
+                function gameLoop(time) {
+                    if (time - lastTime >= 16) { // Cap at ~60 FPS
+                        movePlayer(); // Update game state
+                        raycast(); // Render the frame
+                        lastTime = time; // Update last frame time
+                    }
+                    requestAnimationFrame(gameLoop); // Schedule next frame
+                }
+                requestAnimationFrame(gameLoop); // Start the game loop
+            </script>
+            <!-- Instructions for keyboard controls -->
+            <div class="keyboard-controls" style="text-align: center;">
+                <p>Controls: W, A, S, D to move, Q and E to rotate, Space to throw toy.</p>
+            </div>
+        </div>
     </div>
-<!--</main>
-
-<footer id="footer" style="margin-top: 10px;"> 
-    <strong>Hard to read?</strong>
-            <p style="font-size: smaller">Change the font here:
-            <input type="radio" id="font" name="font" value="None" checked><label>Arcade (default)</label>
-            <input type="radio" id="font" name="font" value="Georgia"><label style="font-family: Georgia">Georgia (serif)</label>
-            <input type="radio" id="font" name="font" value="Arial" ><label style="font-family: Arial">Arial (sans serif)</label>
-            </p>
-            <br> 
-<marquee>Copyright &copy; Justin Swain 2024 </marquee>
-</footer>-->
-</div>
-</div>
 </body>
 </html>
