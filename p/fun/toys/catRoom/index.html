@@ -128,8 +128,9 @@
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         
-        canvas.width = 1200;
-        canvas.height = 800;
+        const isMobile = window.innerWidth <= 1000 || 'ontouchstart' in window;
+        canvas.width = isMobile ? Math.min(window.innerWidth, 600) : 1200;
+        canvas.height = isMobile ? Math.min(window.innerHeight, 400) : 800;
 
         const textureImg = new Image();
         textureImg.src = '/images/example.jpg';
@@ -174,7 +175,7 @@
         const player = {
             x: 2,
             y: 2,
-            angle: 0,
+            angle: 1,
             speed: 0.1,
             rotSpeed: 0.05,
             moveTime: 0
@@ -201,7 +202,7 @@
 
         const sprites = [
             { 
-                x: 10, y: 8, z: -0.5, texture: spriteImgJinx, loaded: () => spriteLoadedJinx, scale: 1.5, chase: true, name: 'Jinx'
+                x: 10, y: 6, z: -0.5, texture: spriteImgJinx, loaded: () => spriteLoadedJinx, scale: 1.5, chase: true, name: 'Jinx'
             },
             { 
                 x: 3, y: 12, z: -0.5, texture: spriteImgBeans, loaded: () => spriteLoadedBeans, scale: 1.7, chase: true, name: 'Beans'
@@ -221,7 +222,7 @@
         let toy = null;
 
         const fog = {
-            color: 'rgba(150, 150, 150, ',
+            color: 'rgba(150, 150, 150, 0',
             density: 0.0,
             maxDistance: 10
         };
@@ -462,11 +463,11 @@
             });
 
             if (handsLoaded) {
-                const handsWidth = handsImg.width * 1.7;
-                const handsHeight = handsImg.height * 1.7;
+                const handsWidth = Math.min(canvas.width*0.6,handsImg.width * 1.7);
+                const handsHeight = Math.min(canvas.height*0.6,handsImg.height * 1.7);
                 const handsX = (canvas.width - handsWidth) / 2;
                 const bobbing = Math.sin(player.moveTime * 0.2) * 10;
-                const handsY = canvas.height - handsHeight + bobbing + 100;
+                const handsY = canvas.height - handsHeight + bobbing + 0.1*canvas.height;
                 
                 ctx.drawImage(handsImg, handsX, handsY, handsWidth, handsHeight);
             }
@@ -618,10 +619,14 @@
             if (player.angle >= Math.PI * 2) player.angle -= Math.PI * 2;
         }
 
-        function gameLoop() {
+        let lastTime = 0;
+        function gameLoop(time) {
+        if (time - lastTime >= 16) { // ~60 FPS cap
             movePlayer();
             raycast();
-            requestAnimationFrame(gameLoop);
+            lastTime = time;
+        }
+        requestAnimationFrame(gameLoop);
         }
 
         gameLoop();
