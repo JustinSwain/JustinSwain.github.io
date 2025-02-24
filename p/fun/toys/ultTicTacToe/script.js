@@ -106,7 +106,7 @@ class Box {
 
     highlight() {
         ctx.beginPath();
-        ctx.fillStyle = "rgba(255,0,255,0.2)";
+        ctx.fillStyle = "rgba(1,55,127,0.5)";
         ctx.fillRect(this.x,this.y,20,20);
     }
 }

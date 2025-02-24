@@ -4,8 +4,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jinx's Room</title>
-    <link rel="stylesheet" href="/style/jinx.css">
+    <link rel="stylesheet" href="/style/style.css">
     <link rel="icon" href="/images/spaceKitty.png">
+    <style>
+        :root {
+            --text_bg_image: url('/images/redweb.gif');
+            --body-bg-image: url('/images/bluebrick.jpg');
+
+            /* colors */
+            --space0: #ff8e8e; /* Links */
+            --space1: #c50000; /* Headings */
+            --space2: #9a0000; /* Box Border */
+            --space3: #710000;
+            --space4: #420808;
+            --space5: #353535;
+            --space6: #1a1a1a; /* Box Bakground */
+            --space7: #080808; 
+
+        }
+        .jinxbox {
+            border: 10px solid var(--space7);
+            padding: 10px;
+            position: sticky;
+            top: 20px;
+            border-radius: 10px;
+            background: linear-gradient(var(--space2), var(--space5));
+        }
+        main {
+            background-color: rgba(255, 255, 255, 0.0);
+            flex: 1;
+            padding: 20px;
+            order: 2;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: x-large;
+        }
+        aside {
+            /* background-image: var(--text_bg_image);*/
+            width: 35%;
+            padding: 10px;
+            font-size: small;
+            margin-top: 20px;
+        }
+        body {
+            font-family: 'Arcade';
+            margin: 0;
+            background-color: var(--space7);
+            background-size: auto;
+            color: white;
+            background-image: var(--body-bg-image);
+        }
+        @media only screen and (max-width: 1000px) {
+    #flex {
+        flex-direction: column;
+    }
+    #container {
+        max-width: 100%;
+        margin: 0px;
+    }
+    aside {
+        width: 100%;
+    }
+
+    main {
+        order: 1;
+    }
+    .box {
+        margin: 0px;
+    }
+
+    #leftSidebar {
+        order: 3;
+    }
+
+    #rightSidebar {
+        order: 2;
+    }
+    #navbar {
+        text-align: center;
+    }
+    #navbar ul {
+        height: 100px;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        list-style-image: none;
+    }
+    #navbar ul > ul {
+        display: none;
+    }
+    aside {
+        margin-left: 0px;
+        margin-bottom: 70px;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .jinxbox {
+        max-width: 350px;
+    }
+}
+    </style>
   </head>
 
 <body>
