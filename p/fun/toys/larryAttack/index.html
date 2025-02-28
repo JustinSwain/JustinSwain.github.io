@@ -1297,7 +1297,7 @@ function resetGame() {
 
 // Loading screen and asset check
 let assetsLoaded = 0;
-const totalAssets = Object.keys(assets.cats).length + assets.enemies.length + 12; // +1 for deathscreen
+const totalAssets = Object.keys(assets.cats).length + assets.enemies.length + 11; //sound is optional
 function checkAssetsLoaded() {
     assetsLoaded++;
     if (assetsLoaded === totalAssets) {
@@ -1330,6 +1330,8 @@ assets.wall.onerror = () => console.error('Failed to load wall.png');
 assets.background.onerror = () => console.error('Failed to load background.gif');
 assets.bullet.onerror = () => console.error('Failed to load bullet.png');
 assets.goal.onerror = () => console.error('Failed to load goal.png');
+assets.deathscreen.onerror = () => console.error('Failed to load deathscreen.png');
+assets.deathscreensound.onerror = () => console.error('Failed to load deathscreensound.mp3');
 
 // Start with loading screen
 // gameLoop();
