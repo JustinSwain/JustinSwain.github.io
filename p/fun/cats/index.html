@@ -8,12 +8,29 @@
     <link rel="icon" href="/images/spaceKitty.png">
     <style>
         .thumbnail {
-            border: 2px solid var(--space1);
-            border-radius: 10px;
-            transition: border 0.3s;
+            display: inline-block;    
+            margin: 0px;          
+            text-align: center;    
         }
-        .thumbnail:hover {
+
+        .thumbnail a {
+            display: block;      
+            max-width: 100%;   
+        }
+        .thumbnail img {
+            width: 100%;          
+            height: auto;        
+            border-radius: 10px;  
+            border: 2px solid var(--space1);
+        }
+        .thumbnail:hover img {
+            transform: scale(1.05); 
+            transition: transform 0.3s; 
             border: 2px solid var(--space0);
+        }
+        .thumbnail .caption {
+            margin-top: 5px;        
+            color: white;           
         }
     </style>
   </head>
@@ -48,12 +65,16 @@
         <br><br>
 
         <div class="box">
-            <h3>Cat Simulaor</h3>
-            <p>
-                Click here to enter the cat simulator!
-            </p>
-            <div style="text-align: center;">
-                <a href="/p/fun/toys/catRoom/"><img src="/images/catRoomThumbnail.png" width="50%" class="thumbnail"></a>
+            <h3>Cat Games</h3>
+            <div id="flex">
+            <div class="thumbnail">
+                <a href="/p/fun/toys/catRoom/"><img src="/images/catRoomThumbnail.png" width="30%" class="thumbnail"></a>
+                <span class="caption">Cat Simulator</span>
+            </div>
+            <div class="thumbnail">
+                <a href="/p/fun/toys/larryAttack/"><img src="/images/larryAttackThumbnail.png" width="30%" class="thumbnail"></a>
+                <span class="caption">Larry Space Attack</span>
+            </div>
             </div>
             <h3>Cat Rooms</h3>
             <p>Click on the doors to enter their rooms!</p>

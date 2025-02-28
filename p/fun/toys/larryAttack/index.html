@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cats in Space: Dungeon Explorer</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('/images/bluespace.gif');
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+        canvas {
+            /* border: 1px solid white; */
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="1200" height="800"></canvas>
+
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+function resizeCanvas() {
+    const scale = 1.0;//Math.min(window.innerWidth / 800, window.innerHeight / 600);
+    canvas.width = 1200; //800 * scale;
+    canvas.height = canvas.height; //600 * scale;
+    canvas.style.width = `${canvas.width}px`;
+    canvas.style.height = `${canvas.height}px`;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+// Scale factor for drawing (relative to original 800x600)
+const scaleFactor = () => canvas.width / canvas.width;
+
+// Adjust constants with scaling
+const TILE_SIZE = 40 * scaleFactor();
+const ROOM_WIDTH = 100;
+const ROOM_HEIGHT = 75;
+const VIEW_WIDTH = canvas.width / TILE_SIZE;
+const VIEW_HEIGHT = canvas.height / TILE_SIZE;
+
+// Load assets
+const assets = {
+    cats: {
+        'Ninja': new Image(),
+        'Zed': new Image(),
+        'Jinx': new Image(),
+        'Pluto': new Image(),
+        'Beans': new Image()
+    },
+    enemies: [
+        new Image(),
+        new Image(),
+        new Image()
+    ],
+    upgradeIcons: {
+        'Move Speed': new Image(),
+        'Shoot Speed': new Image(),
+        'Extra Gun': new Image(),
+        'Triple Shot': new Image(),
+        'Circle Shot': new Image()
+    },
+    floor: new Image(),
+    wall: new Image(),
+    background: new Image(),
+    bullet: new Image(),
+    goal: new Image(),
+    deathscreen: new Image(), // New death screen image
+    deathscreensound: new Audio() // New audio asset
+};
+assets.cats['Ninja'].src = '/images/ninja.png';
+assets.cats['Zed'].src = '/images/zed.png';
+assets.cats['Jinx'].src = '/images/jinx2.png';
+assets.cats['Pluto'].src = '/images/pluto.png';
+assets.cats['Beans'].src = '/images/beans.png';
+assets.enemies[0].src = '/images/enemy1.png';
+assets.enemies[1].src = '/images/enemy2.png';
+assets.enemies[2].src = '/images/enemy3.png';
+assets.floor.src = '/images/floor.png';
+assets.wall.src = '/images/purpooze.png';
+assets.background.src = '/images/bluespace.gif';
+assets.bullet.src = '/images/bullet.png';
+assets.goal.src = '/images/goal.png';
+assets.deathscreen.src = '/images/deathscreen.png'; // Load deathscreen.png
+assets.deathscreensound.src = '/audio/deathscreensound.mp3'; // Load MP3 file
+assets.deathscreensound.loop = false; // Play once (set to true if you want it to loop)
+assets.upgradeIcons['Move Speed'].src = '/images/speed_icon.png';
+assets.upgradeIcons['Shoot Speed'].src = '/images/shoot_icon.png';  
+assets.upgradeIcons['Extra Gun'].src = '/images/gun_icon.png';
+assets.upgradeIcons['Triple Shot'].src = '/images/ball.png';
+assets.upgradeIcons['Circle Shot'].src = '/images/ball.png';
+
+// Game objects
+class Player {
+    constructor(x, y, catData) {
+        this.x = x;
+        this.y = y;
+        this.name = catData.name;
+        this.speed = catData.speed;
+        this.size = 20;
+        this.shootCooldown = 0;
+        this.shootSpeed = catData.shootSpeed;
+        this.gunCount = catData.gunCount;
+        this.patterns = catData.patterns;
+        this.sprite = assets.cats[catData.name];
+    }
+
+    draw() {
+        ctx.drawImage(this.sprite, this.x - camera.x - this.size, this.y - camera.y - this.size, this.size * 2, this.size * 2);
+        ctx.fillStyle = 'white';
+        ctx.font = '12px Arial';
+        ctx.fillText(this.name, this.x - camera.x - 15, this.y - camera.y - 25);
+    }
+
+    move(keys) {
+        let dx = 0, dy = 0;
+        if (joystickActive && touchStartX !== null && touchMoveX !== null) {
+            const deltaX = touchMoveX - touchStartX;
+            const deltaY = touchMoveY - touchStartY;
+            const distance = Math.hypot(deltaX, deltaY);
+            if (distance > 10) { // Dead zone to prevent jitter
+                dx = (deltaX / distance) * this.speed * scaleFactor();
+                dy = (deltaY / distance) * this.speed * scaleFactor();
+            }
+        } else {
+            if (keys['ArrowUp']) dy -= this.speed;
+            if (keys['ArrowDown']) dy += this.speed;
+            if (keys['ArrowLeft']) dx -= this.speed;
+            if (keys['ArrowRight']) dx += this.speed;
+        }
+
+        const newX = this.x + dx;
+        const newY = this.y + dy;
+        const tileX = Math.floor(newX / TILE_SIZE);
+        const tileY = Math.floor(newY / TILE_SIZE);
+        if (tileX >= 0 && tileX < ROOM_WIDTH && tileY >= 0 && tileY < ROOM_HEIGHT && !dungeon[tileY]?.[tileX]) {
+            this.x = newX;
+            this.y = newY;
+        }
+    }
+
+    shoot(targetX, targetY) {
+        const targetDist = Math.hypot(targetX - this.x, targetY - this.y);
+        if (this.shootCooldown <= 0 && targetDist < 300) {
+            const angle = Math.atan2(targetY - this.y, targetX - this.x);
+            if (this.patterns.includes('single')) {
+                for (let i = 0; i < this.gunCount; i++) {
+                    bullets.push(new Bullet(this.x, this.y, angle + (i - (this.gunCount - 1) / 2) * 0.1));
+                }
+            }
+            if (this.patterns.includes('spread')) {
+                for (let i = -1; i <= 1; i++) {
+                    bullets.push(new Bullet(this.x, this.y, angle + i * 0.3));
+                }
+            }
+            if (this.patterns.includes('circle')) {
+                for (let i = 0; i < 8; i++) {
+                    bullets.push(new Bullet(this.x, this.y, angle + (Math.PI * 2 / 8) * i));
+                }
+            }
+            this.shootCooldown = this.shootSpeed;
+        }
+    }
+}
+
+class Bullet {
+    constructor(x, y, angle) {
+        this.x = x;
+        this.y = y;
+        this.speed = 6;
+        this.size = 5;
+        this.dx = Math.cos(angle) * this.speed;
+        this.dy = Math.sin(angle) * this.speed;
+    }
+
+    update() {
+        this.x += this.dx;
+        this.y += this.dy;
+    }
+
+    draw() {
+        ctx.drawImage(assets.bullet, this.x - camera.x - this.size, this.y - camera.y - this.size, this.size * 2, this.size * 2);
+    }
+}
+
+class Enemy {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.speed = 1 + Math.random();
+        this.size = 15;
+        this.option = Math.floor(Math.random() * 3); // Randomly choose enemy type
+        this.health = Math.floor(2*this.option + 1 + 0.5*level); // 1, 2, or 3 health bars
+        this.maxHealth = this.health; // Store max health for health bar scaling
+        this.sprite = assets.enemies[this.option]; // Use enemy sprite based on health (1=enemy1, 2=enemy2, 3=enemy3)
+    }
+
+    update() {
+        const angle = Math.atan2(player.y - this.y, player.x - this.x);
+        this.x += Math.cos(angle) * this.speed;
+        this.y += Math.sin(angle) * this.speed;
+    }
+
+    draw() {
+        // Draw enemy sprite
+        ctx.drawImage(this.sprite, this.x - camera.x - this.size, this.y - camera.y - this.size, this.size * 2.5, this.size * 2.5);
+
+        // Draw health bar above enemy
+        const healthBarWidth = this.size * 2;
+        const healthBarHeight = 5;
+        const healthRatio = this.health / this.maxHealth;
+        ctx.fillStyle = 'red';
+        ctx.fillRect(this.x - camera.x - this.size, this.y - camera.y - this.size - 10, healthBarWidth, healthBarHeight);
+        ctx.fillStyle = 'green';
+        ctx.fillRect(this.x - camera.x - this.size, this.y - camera.y - this.size - 10, healthBarWidth * healthRatio, healthBarHeight);
+    }
+
+    dropParticles() {
+        for (let i = 0; i < 3; i++) {
+            particles.push(new Particle(this.x, this.y));
+        }
+    }
+}
+
+class Particle {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.size = 8;
+        this.lifetime = 240;
+        this.dy = -1.5; // Initial upward bounce
+        this.dx = (Math.random() - 0.5) * 2; // Slight horizontal scatter
+        this.phase = Math.random() * Math.PI * 2;
+        this.dropDistance = 10 + Math.random() * 10; // Random drop distance (10-20 pixels)
+        this.initialY = y; // Store starting Y position
+        this.onGround = false;
+    }
+
+    update() {
+        this.lifetime--;
+        if (!this.onGround) {
+            this.dy += 0.1; // Gravity
+            this.y += this.dy;
+            this.x += this.dx;
+
+            // Check if particle has fallen its designated drop distance
+            if (this.y >= this.initialY + this.dropDistance) {
+                this.y = this.initialY + this.dropDistance; // Snap to final position
+                this.onGround = true;
+                this.dy = 0;
+                this.dx = 0;
+            }
+        }
+        // Optional: Add a slight wobble even after landing for visual flair
+        if (this.onGround) {
+            this.x += Math.sin(this.phase + Date.now() * 0.01) * 0.2;
+        }
+    }
+
+    draw() {
+        ctx.fillStyle = `rgba(255, 182, 193, ${this.lifetime / 240})`; // Soft pink glow
+        ctx.beginPath();
+        const r = this.size / 2;
+        ctx.arc(this.x - camera.x, this.y - camera.y, r, 0, Math.PI * 2); // Main pad
+        ctx.fill();
+        ctx.fillStyle = `rgba(255, 220, 225, ${this.lifetime / 240})`; // Lighter pink toes
+        for (let i = 0; i < 4; i++) {
+            const angle = (Math.PI / 2) * i - Math.PI / 4;
+            const toeX = this.x - camera.x + Math.cos(angle) * r * 1.5;
+            const toeY = this.y - camera.y + Math.sin(angle) * r * 1.5 - r;
+            ctx.beginPath();
+            ctx.arc(toeX, toeY, r / 2, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        // Shimmer effect
+        ctx.fillStyle = `rgba(255, 255, 255, ${Math.sin(Date.now() * 0.01) * 0.3 + 0.3})`;
+        ctx.beginPath();
+        ctx.arc(this.x - camera.x, this.y - camera.y, r / 2, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
+class Goal {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.size = 15;
+    }
+
+    draw() {
+        ctx.drawImage(assets.goal, this.x - camera.x - this.size, this.y - camera.y - this.size, this.size * 2, this.size * 2);
+    }
+}
+
+// Camera
+const camera = {
+    x: 0,
+    y: 0,
+    update() {
+        const scale = 1.0; //scaleFactor();
+        // Use original design dimensions (800x600) for centering
+        this.x = player.x - canvas.width / 2;
+        this.y = player.y - canvas.height / 2;
+        // Clamp to world bounds, scaled to match rendering
+        this.x = Math.max(0, Math.min(this.x, ROOM_WIDTH * TILE_SIZE - canvas.width));
+        this.y = Math.max(0, Math.min(this.y, ROOM_HEIGHT * TILE_SIZE - canvas.height));
+    }
+};
+
+// Procedural dungeon generation
+function generateDungeon() {
+    const dungeon = Array(ROOM_HEIGHT).fill().map(() => Array(ROOM_WIDTH).fill(true));
+    const walkers = 5;
+    const steps = 500;
+    for (let w = 0; w < walkers; w++) {
+        let x = Math.floor(ROOM_WIDTH / 2) + Math.floor(Math.random() * 20 - 10);
+        let y = Math.floor(ROOM_HEIGHT / 2) + Math.floor(Math.random() * 20 - 10);
+        for (let i = 0; i < steps; i++) {
+            if (x >= 1 && x < ROOM_WIDTH - 1 && y >= 1 && y < ROOM_HEIGHT - 1) {
+                dungeon[y][x] = false;
+                for (let dy = -1; dy <= 1; dy++) {
+                    for (let dx = -1; dx <= 1; dx++) {
+                        if (y + dy >= 0 && y + dy < ROOM_HEIGHT && x + dx >= 0 && x + dx < ROOM_WIDTH) {
+                            dungeon[y + dy][x + dx] = false;
+                        }
+                    }
+                }
+            }
+            const dir = Math.floor(Math.random() * 4);
+            if (dir === 0) y--;
+            if (dir === 1) y++;
+            if (dir === 2) x--;
+            if (dir === 3) x++;
+        }
+    }
+    return dungeon;
+}
+
+function findValidSpawn(startX, startY) {
+    const tileX = Math.floor(startX / TILE_SIZE);
+    const tileY = Math.floor(startY / TILE_SIZE);
+
+    // If the initial position is not a wall, return it
+    if (tileX >= 0 && tileX < ROOM_WIDTH && tileY >= 0 && tileY < ROOM_HEIGHT && !dungeon[tileY][tileX]) {
+        return { x: startX, y: startY };
+    }
+
+    // Simple spiral search for the nearest open tile
+    let step = 1;
+    while (step < Math.max(ROOM_WIDTH, ROOM_HEIGHT)) {
+        for (let y = Math.max(0, tileY - step); y <= Math.min(ROOM_HEIGHT - 1, tileY + step); y++) {
+            for (let x = Math.max(0, tileX - step); x <= Math.min(ROOM_WIDTH - 1, tileX + step); x++) {
+                if (!dungeon[y][x]) {
+                    // Return the center of the found tile
+                    return { x: x * TILE_SIZE + TILE_SIZE / 2, y: y * TILE_SIZE + TILE_SIZE / 2 };
+                }
+            }
+        }
+        step++;
+    }
+
+    // Fallback: If no valid spot is found (unlikely), return center anyway
+    console.warn("No valid spawn found, using default center.");
+    return { x: ROOM_WIDTH * TILE_SIZE / 2, y: ROOM_HEIGHT * TILE_SIZE / 2 };
+}
+
+function wrapText(text, x, y, maxWidth, lineHeight) {
+    const words = text.split(' ');
+    let line = '';
+    let lines = [];
+    
+    for (let i = 0; i < words.length; i++) {
+        const testLine = line + words[i] + ' ';
+        const metrics = ctx.measureText(testLine);
+        const testWidth = metrics.width;
+
+        if (testWidth > maxWidth && i > 0) {
+            lines.push(line.trim());
+            line = words[i] + ' ';
+        } else {
+            line = testLine;
+        }
+    }
+    lines.push(line.trim());
+
+    lines.forEach((line, index) => {
+        ctx.fillText(line, x, y + index * lineHeight);
+    });
+}
+
+// Upgrade system
+const upgrades = [
+    { name: 'Move Speed', description: 'Run faster!', apply: () => player.speed += 1 },
+    { name: 'Shoot Speed', description: 'Shoot quicker!', apply: () => player.shootSpeed = Math.max(5, player.shootSpeed - 2) },
+    { name: 'Extra Gun', description: 'More guns!', apply: () => player.gunCount += 1 },
+    { name: 'Triple Shot', description: 'Shoot three bullets at once!', apply: () => player.patterns.push('spread') },
+    { name: 'Circle Shot', description: 'Shoot in all directions!', apply: () => player.patterns.push('circle') }
+];
+
+function getRandomUpgrades() {
+    const shuffled = [...upgrades].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, 3);
+}
+
+// Cat data
+const cats = [
+    { name: 'Ninja', speed: 4, shootSpeed: 10, gunCount: 1, patterns: ['single'], desc: 'Swift and precise striker' },
+    { name: 'Zed', speed: 3, shootSpeed: 8, gunCount: 1, patterns: ['single'], desc: 'Balanced cosmic warrior' },
+    { name: 'Jinx', speed: 4, shootSpeed: 12, gunCount: 2, patterns: ['single'], desc: 'Dual-gun chaos bringer' },
+    { name: 'Pluto', speed: 3, shootSpeed: 10, gunCount: 1, patterns: ['spread'], desc: 'Wide-shot tactician' },
+    { name: 'Beans', speed: 3.5, shootSpeed: 15, gunCount: 1, patterns: ['circle'], desc: 'Orbital barrage master' }
+];
+
+// Game state
+let dungeon = generateDungeon();
+let player;
+let bullets = [];
+let enemies = [];
+let particles = [];
+let goals = [];
+let keys = {};
+let score = 0;
+let spawnTimer = 0;
+let level = 1;
+let inShop = false;
+let inMenu = true;
+let inLoading = true;
+let inDeath = false; // New death state
+let deathTimer = 0; // Timer for death screen duration
+let deathFade = 0; // Fade value from 0 to 1
+const DEATH_DURATION = 600; // 3 seconds at 60 FPS
+let selectedCat = 0;
+let shopHoverIndex = -1; // Defined near other state variables like `selectedCat`
+
+// Timing variables for 60 FPS
+const FPS = 60;
+const FRAME_TIME = 1000 / FPS; // ~16.67ms per frame
+let lastTime = performance.now();
+let accumulatedTime = 0;
+
+function placeNewGoals() {
+    for (let i = 0; i < 5; i++) {
+        let x, y;
+        do {
+            x = Math.floor(Math.random() * ROOM_WIDTH) * TILE_SIZE + TILE_SIZE/2;
+            y = Math.floor(Math.random() * ROOM_HEIGHT) * TILE_SIZE + TILE_SIZE/2;
+        } while (dungeon[Math.floor(y/TILE_SIZE)][Math.floor(x/TILE_SIZE)]);
+        goals.push(new Goal(x, y));
+    }
+}
+
+// Input handling
+document.addEventListener('keydown', (e) => {
+    keys[e.key] = true;
+    if (inMenu) {
+        if (e.key === 'ArrowLeft') selectedCat = (selectedCat - 1 + cats.length) % cats.length;
+        if (e.key === 'ArrowRight') selectedCat = (selectedCat + 1) % cats.length;
+        if (e.key === 'Enter') {
+            const spawnPoint = findValidSpawn(ROOM_WIDTH * TILE_SIZE / 2, ROOM_HEIGHT * TILE_SIZE / 2);
+            player = new Player(spawnPoint.x, spawnPoint.y, cats[selectedCat]);
+            inMenu = false;
+            placeNewGoals();
+        }
+    } else if (inShop) {
+        if (e.key === 'ArrowLeft') {
+            shopHoverIndex = (shopHoverIndex - 1 + shopOptions.length) % shopOptions.length;
+        } else if (e.key === 'ArrowRight') {
+            shopHoverIndex = (shopHoverIndex + 1) % shopOptions.length;
+        } else if (e.key === 'Enter' && shopHoverIndex !== -1) {
+            shopOptions[shopHoverIndex].apply();
+            inShop = false;
+            level++;
+            dungeon = generateDungeon();
+            const spawnPoint = findValidSpawn(ROOM_WIDTH * TILE_SIZE / 2, ROOM_HEIGHT * TILE_SIZE / 2);
+            player.x = spawnPoint.x;
+            player.y = spawnPoint.y;
+            bullets = [];
+            enemies = [];
+            particles = [];
+            goals = [];
+            placeNewGoals();
+            spawnTimer = 60;
+        } else if (e.key >= '1' && e.key <= '3') {
+            const choice = parseInt(e.key) - 1;
+            if (shopOptions[choice]) {
+                shopOptions[choice].apply();
+                inShop = false;
+                level++;
+                dungeon = generateDungeon();
+                const spawnPoint = findValidSpawn(ROOM_WIDTH * TILE_SIZE / 2, ROOM_HEIGHT * TILE_SIZE / 2);
+                player.x = spawnPoint.x;
+                player.y = spawnPoint.y;
+                bullets = [];
+                enemies = [];
+                particles = [];
+                goals = [];
+                placeNewGoals();
+                spawnTimer = 60;
+            }
+        }
+    }
+});
+document.addEventListener('keyup', (e) => keys[e.key] = false);
+canvas.addEventListener('mousedown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const clickY = e.clientY - rect.top;
+
+    if (inMenu) {
+        // Menu card click detection
+        const cardWidth = 225;
+        const cardHeight = 300;
+        const gap = 20;
+        const maxCardsPerRow = 3;
+        const row1Width = maxCardsPerRow * cardWidth + (maxCardsPerRow - 1) * gap;
+        const row2Width = (cats.length - maxCardsPerRow) * cardWidth + (cats.length - maxCardsPerRow - 1) * gap;
+        const startXRow1 = (canvas.width - row1Width) / 2;
+        const startXRow2 = (canvas.width - row2Width) / 2;
+        const startYRow1 = 120;
+        const startYRow2 = startYRow1 + cardHeight + gap;
+
+        cats.forEach((cat, i) => {
+            let x, y;
+            if (i < maxCardsPerRow) {
+                x = startXRow1 + i * (cardWidth + gap);
+                y = startYRow1;
+            } else {
+                x = startXRow2 + (i - maxCardsPerRow) * (cardWidth + gap);
+                y = startYRow2;
+            }
+
+            if (clickX >= x && clickX <= x + cardWidth && clickY >= y && clickY <= y + cardHeight) {
+                selectedCat = i; // Select the clicked cat
+                const spawnPoint = findValidSpawn(ROOM_WIDTH * TILE_SIZE / 2, ROOM_HEIGHT * TILE_SIZE / 2);
+                player = new Player(spawnPoint.x, spawnPoint.y, cats[selectedCat]);
+                inMenu = false;
+                placeNewGoals();
+            }
+        });
+    } else if (inShop) {
+        // Shop card click detection
+        const cardWidth = 225;
+        const cardHeight = 300;
+        const startX = (canvas.width - (cardWidth * 3 + 40)) / 2;
+        const startY = 160;
+
+        shopOptions.forEach((opt, i) => {
+            const x = startX + i * (cardWidth + 20);
+            const y = startY;
+
+            if (clickX >= x && clickX <= x + cardWidth && clickY >= y && clickY <= y + cardHeight) {
+                opt.apply(); // Apply the clicked upgrade
+                inShop = false;
+                level++;
+                dungeon = generateDungeon();
+                const spawnPoint = findValidSpawn(ROOM_WIDTH * TILE_SIZE / 2, ROOM_HEIGHT * TILE_SIZE / 2);
+                player.x = spawnPoint.x;
+                player.y = spawnPoint.y;
+                bullets = [];
+                enemies = [];
+                particles = [];
+                goals = [];
+                placeNewGoals();
+                spawnTimer = 60;
+            }
+        });
+    }
+});
+
+canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    if (inMenu) {
+        const cardWidth = 225;
+        const cardHeight = 300;
+        const gap = 20;
+        const maxCardsPerRow = 3;
+        const row1Width = maxCardsPerRow * cardWidth + (maxCardsPerRow - 1) * gap;
+        const row2Width = (cats.length - maxCardsPerRow) * cardWidth + (cats.length - maxCardsPerRow - 1) * gap;
+        const startXRow1 = (canvas.width - row1Width) / 2;
+        const startXRow2 = (canvas.width - row2Width) / 2;
+        const startYRow1 = 120;
+        const startYRow2 = startYRow1 + cardHeight + gap;
+
+        let newSelectedCat = selectedCat;
+        cats.forEach((cat, i) => {
+            let x, y;
+            if (i < maxCardsPerRow) {
+                x = startXRow1 + i * (cardWidth + gap);
+                y = startYRow1;
+            } else {
+                x = startXRow2 + (i - maxCardsPerRow) * (cardWidth + gap);
+                y = startYRow2;
+            }
+
+            if (mouseX >= x && mouseX <= x + cardWidth && mouseY >= y && mouseY <= y + cardHeight) {
+                newSelectedCat = i;
+            }
+        });
+        selectedCat = newSelectedCat;
+    } else if (inShop) {
+        const cardWidth = 225;
+        const cardHeight = 300;
+        const startX = (canvas.width - (cardWidth * 3 + 40)) / 2;
+        const startY = 160;
+
+        shopHoverIndex = -1; // Reset to no hover
+        shopOptions.forEach((opt, i) => {
+            const x = startX + i * (cardWidth + 20);
+            const y = startY;
+
+            if (mouseX >= x && mouseX <= x + cardWidth && mouseY >= y && mouseY <= y + cardHeight) {
+                shopHoverIndex = i; // Set hover index
+            }
+        });
+    }
+});
+
+// Touch state
+let touchStartX = null;
+let touchStartY = null;
+let touchMoveX = null;
+let touchMoveY = null;
+let joystickActive = false;
+
+// Touch events
+canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    const touchX = (touch.clientX - rect.left) * (canvas.width / canvas.width); // Normalize to 800x600
+    const touchY = (touch.clientY - rect.top) * (canvas.height / canvas.height);
+
+    if (inMenu || inShop) {
+        handleMenuShopTouch(touchX, touchY);
+    } else {
+        touchStartX = touchX;
+        touchStartY = touchY;
+        touchMoveX = touchX;
+        touchMoveY = touchY;
+        joystickActive = true;
+    }
+});
+
+canvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    touchMoveX = (touch.clientX - rect.left) * (canvas.width / canvas.width);
+    touchMoveY = (touch.clientY - rect.top) * (canvas.height / canvas.height);
+});
+
+canvas.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    joystickActive = false;
+    touchStartX = null;
+    touchStartY = null;
+    touchMoveX = null;
+    touchMoveY = null;
+});
+
+// Handle menu/shop touch
+function handleMenuShopTouch(touchX, touchY) {
+    if (inMenu) {
+        const cardWidth = 225;
+        const cardHeight = 30;
+        const gap = 20;
+        const maxCardsPerRow = 3;
+        const row1Width = maxCardsPerRow * cardWidth + (maxCardsPerRow - 1) * gap;
+        const row2Width = (cats.length - maxCardsPerRow) * cardWidth + (cats.length - maxCardsPerRow - 1) * gap;
+        const startXRow1 = (canvas.width - row1Width) / 2;
+        const startXRow2 = (canvas.width - row2Width) / 2;
+        const startYRow1 = 120;
+        const startYRow2 = startYRow1 + cardHeight + gap;
+
+        cats.forEach((cat, i) => {
+            let x, y;
+            if (i < maxCardsPerRow) {
+                x = startXRow1 + i * (cardWidth + gap);
+                y = startYRow1;
+            } else {
+                x = startXRow2 + (i - maxCardsPerRow) * (cardWidth + gap);
+                y = startYRow2;
+            }
+
+            if (touchX >= x && touchX <= x + cardWidth && touchY >= y && touchY <= y + cardHeight) {
+                selectedCat = i;
+                const spawnPoint = findValidSpawn(ROOM_WIDTH * TILE_SIZE / 2, ROOM_HEIGHT * TILE_SIZE / 2);
+                player = new Player(spawnPoint.x, spawnPoint.y, cats[selectedCat]);
+                inMenu = false;
+                placeNewGoals();
+            }
+        });
+    } else if (inShop) {
+        const cardWidth = 225;
+        const cardHeight = 300;
+        const startX = (canvas.width - (cardWidth * 3 + 40)) / 2;
+        const startY = 160;
+
+        shopOptions.forEach((opt, i) => {
+            const x = startX + i * (cardWidth + 20);
+            const y = startY;
+
+            if (touchX >= x && touchX <= x + cardWidth && touchY >= y && touchY <= y + cardHeight) {
+                opt.apply();
+                inShop = false;
+                level++;
+                dungeon = generateDungeon();
+                const spawnPoint = findValidSpawn(ROOM_WIDTH * TILE_SIZE / 2, ROOM_HEIGHT * TILE_SIZE / 2);
+                player.x = spawnPoint.x;
+                player.y = spawnPoint.y;
+                bullets = [];
+                enemies = [];
+                particles = [];
+                goals = [];
+                placeNewGoals();
+                spawnTimer = 60;
+            }
+        });
+    }
+}
+
+// Game loop
+// function gameLoop() {
+//     const scale = 1.0; //scaleFactor();
+//     ctx.setTransform(scale, 0, 0, scale, 0, 0); // Apply scaling
+
+//     if (inLoading) {
+//         ctx.fillStyle = 'black';
+//         ctx.fillRect(0, 0, canvas.width, canvas.height);
+//         ctx.fillStyle = 'white';
+//         ctx.font = '30px Arial';
+//         ctx.fillText('Loading...', canvas.width / 2 - 70, canvas.height / 2);
+//         requestAnimationFrame(gameLoop);
+//         return;
+//     }
+
+//     ctx.drawImage(assets.background, 0, 0, canvas.width, canvas.height);
+
+//     if (inMenu) {
+//         ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+//         ctx.fillRect(0, 0, 800, 600);
+//         ctx.fillStyle = 'white';
+//         ctx.font = '30px Arial';
+//         ctx.fillText('Choose Your Space Cat!', 800 / 2 - 150, 80);
+
+//         const cardWidth = 150;
+//         const cardHeight = 200;
+//         const gap = 20;
+//         const maxCardsPerRow = 3;
+//         const row1Width = maxCardsPerRow * cardWidth + (maxCardsPerRow - 1) * gap;
+//         const row2Width = (cats.length - maxCardsPerRow) * cardWidth + (cats.length - maxCardsPerRow - 1) * gap;
+//         const startXRow1 = (800 - row1Width) / 2;
+//         const startXRow2 = (800 - row2Width) / 2;
+//         const startYRow1 = 120;
+//         const startYRow2 = startYRow1 + cardHeight + gap;
+
+//         cats.forEach((cat, i) => {
+//             let x, y;
+//             if (i < maxCardsPerRow) {
+//                 x = startXRow1 + i * (cardWidth + gap);
+//                 y = startYRow1;
+//             } else {
+//                 x = startXRow2 + (i - maxCardsPerRow) * (cardWidth + gap);
+//                 y = startYRow2;
+//             }
+
+//             ctx.fillStyle = i === selectedCat ? 'rgba(80, 80, 120, 0.9)' : 'rgba(50, 50, 80, 0.9)';
+//             ctx.fillRect(x, y, cardWidth, cardHeight);
+//             ctx.strokeStyle = i === selectedCat ? '#ffd700' : 'white';
+//             ctx.strokeRect(x, y, cardWidth, cardHeight);
+
+//             ctx.drawImage(assets.cats[cat.name], x + 35, y + 20, 80, 80);
+//             ctx.fillStyle = 'white';
+//             ctx.font = '18px Arial';
+//             ctx.fillText(cat.name, x + 10, y + 120);
+//             ctx.font = '14px Arial';
+//             wrapText(cat.desc, x + 10, y + 150, cardWidth - 20, 16); // maxWidth = 130px, lineHeight = 16px
+
+//             // if (i === selectedCat) {
+//             //     ctx.fillStyle = '#ffd700';
+//             //     ctx.font = 'bold 20px Arial';
+//             //     ctx.fillText('[Selected]', x + 25, y + 180);
+//             // }
+//         });
+
+//         ctx.fillStyle = 'white';
+//         ctx.font = '20px Arial';
+//         ctx.fillText('Tap to select or use ← → + Enter', 800 / 2 - 150, startYRow2 + cardHeight + 40);
+//         requestAnimationFrame(gameLoop);
+//         return;
+//     }
+
+//     camera.update();
+
+//     if (inShop) {
+//         ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+//         ctx.fillRect(0, 0, 800, 600);
+//         ctx.fillStyle = 'white';
+//         ctx.font = '30px Arial';
+//         ctx.fillText(`Level ${level - 1} Complete! Score: ${score}`, 100, 80);
+//         ctx.font = '20px Arial';
+//         ctx.fillText('Tap an upgrade or use 1-3, ← → + Enter:', 100, 130);
+
+//         const cardWidth = 200;
+//         const cardHeight = 250;
+//         const startX = (800 - (cardWidth * 3 + 40)) / 2;
+//         const startY = 160;
+
+//         shopOptions.forEach((opt, i) => {
+//             const x = startX + i * (cardWidth + 20);
+//             const y = startY;
+
+//             ctx.fillStyle = i === shopHoverIndex ? 'rgba(80, 80, 120, 0.9)' : 'rgba(50, 50, 80, 0.9)';
+//             ctx.fillRect(x, y, cardWidth, cardHeight);
+//             ctx.strokeStyle = i === shopHoverIndex ? '#ffd700' : 'white';
+//             ctx.strokeRect(x, y, cardWidth, cardHeight);
+
+//             let icon = new Image();
+//             icon.src = upgradeIcons[opt.name];
+//             ctx.drawImage(icon, x + 60, y + 20, 80, 80);
+
+//             ctx.fillStyle = 'white';
+//             ctx.font = '18px Arial';
+//             ctx.fillText(opt.name, x + 10, y + 120);
+//             ctx.font = '14px Arial';
+//             ctx.fillText('Enhance your cat!', x + 10, y + 160);
+
+//             ctx.font = 'bold 20px Arial';
+//             ctx.fillStyle = '#ffd700';
+//             ctx.fillText(`[${i + 1}]`, x + cardWidth / 2 - 10, y + 220);
+
+//             // if (i === shopHoverIndex) {
+//             //     ctx.font = 'bold 16px Arial';
+//             //     ctx.fillText('[Hovered]', x + cardWidth / 2 - 40, y + 240);
+//             // }
+//         });
+
+//         requestAnimationFrame(gameLoop);
+//         return;
+//     }
+
+//     if (inDeath) {
+//         deathTimer++;
+//         deathFade = Math.min((deathTimer / 60)^3, 1);
+
+//         // Draw the game state faintly in the background
+//         camera.update();
+//         drawDungeon();
+//         player.draw();
+//         bullets.forEach(b => b.draw());
+//         enemies.forEach(e => e.draw());
+//         particles.forEach(p => p.draw());
+//         goals.forEach(g => g.draw());
+
+//         // Fade in black overlay
+//         ctx.fillStyle = `rgba(0, 0, 0, ${deathFade * 0.7})`;
+//         ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+//         // Draw death screen image with fade
+//         ctx.globalAlpha = deathFade;
+//         ctx.drawImage(assets.deathscreen, 0, 0, canvas.width, canvas.height);
+//         ctx.globalAlpha = 1.0;
+
+//         // Display level and score
+//         ctx.fillStyle = 'white';
+//         ctx.font = '30px Arial';
+//         ctx.textAlign = 'center';
+//         ctx.fillText('You Died!', canvas.width / 2, canvas.height / 2 - 50);
+//         ctx.font = '20px Arial';
+//         ctx.fillText(`Level: ${level}`, canvas.width / 2, canvas.height / 2);
+//         ctx.fillText(`Score: ${score}`, canvas.width / 2, canvas.height / 2 + 30);
+//         ctx.textAlign = 'left';
+
+//         // Reset to menu after duration
+//         if (deathTimer >= DEATH_DURATION) {
+//             assets.deathscreensound.pause(); // Stop the sound
+//             assets.deathscreensound.currentTime = 0; // Reset to start
+//             resetGame();
+//             inDeath = false;
+//             deathTimer = 0;
+//             deathFade = 0;
+//         }
+
+//         requestAnimationFrame(gameLoop);
+//         return;
+//     }
+
+
+//     // Draw dungeon
+//     // const startX = Math.floor(camera.x / TILE_SIZE);
+//     // const startY = Math.floor(camera.y / TILE_SIZE);
+//     // const endX = Math.min(startX + VIEW_WIDTH + 1, ROOM_WIDTH);
+//     // const endY = Math.min(startY + VIEW_HEIGHT + 1, ROOM_HEIGHT);
+//     // for (let y = startY; y < endY; y++) {
+//     //     for (let x = startX; x < endX; x++) {
+//     //         if (dungeon[y][x]) {
+//     //             ctx.drawImage(assets.wall, x * TILE_SIZE - camera.x, y * TILE_SIZE - camera.y, TILE_SIZE, TILE_SIZE);
+//     //         } else {
+//     //             ctx.drawImage(assets.floor, x * TILE_SIZE - camera.x, y * TILE_SIZE - camera.y, TILE_SIZE, TILE_SIZE);
+//     //         }
+//     //     }
+//     // }
+
+//     camera.update();
+//     drawDungeon();
+
+//     // Player
+//     player.move(keys);
+//     player.draw();
+
+//     // Auto-shoot nearest enemy
+//     let nearestEnemy = null;
+//     let minDist = Infinity;
+//     enemies.forEach(e => {
+//         const dist = Math.hypot(e.x - player.x, e.y - player.y);
+//         if (dist < minDist) {
+//             minDist = dist;
+//             nearestEnemy = e;
+//         }
+//     });
+//     if (nearestEnemy) player.shoot(nearestEnemy.x, nearestEnemy.y);
+//     player.shootCooldown--;
+
+//     // Bullets
+//     bullets = bullets.filter(b => b.x > 0 && b.x < ROOM_WIDTH * TILE_SIZE && b.y > 0 && b.y < ROOM_HEIGHT * TILE_SIZE);
+//     bullets.forEach(b => {
+//         b.update();
+//         b.draw();
+//     });
+
+//     // Enemies
+//     spawnTimer--;
+//     if (spawnTimer <= 0) {
+//         const side = Math.floor(Math.random() * 4);
+//         let x, y;
+//         if (side === 0) { x = Math.random() * ROOM_WIDTH * TILE_SIZE; y = -20; }
+//         else if (side === 1) { x = Math.random() * ROOM_WIDTH * TILE_SIZE; y = ROOM_HEIGHT * TILE_SIZE + 20; }
+//         else if (side === 2) { x = -20; y = Math.random() * ROOM_HEIGHT * TILE_SIZE; }
+//         else { x = ROOM_WIDTH * TILE_SIZE + 20; y = Math.random() * ROOM_HEIGHT * TILE_SIZE; }
+//         if (!dungeon[Math.floor(y/TILE_SIZE)]?.[Math.floor(x/TILE_SIZE)]) {
+//             enemies.push(new Enemy(x, y));
+//         }
+//         spawnTimer = 60 - Math.min(score/20, 50);
+//     }
+
+//     enemies = enemies.filter(e => Math.hypot(e.x - player.x, e.y - player.y) > 0);
+//     enemies.forEach((e, eIndex) => {
+//     e.update();
+//     e.draw();
+
+//     if (Math.hypot(e.x - player.x, e.y - player.y) < e.size + player.size) {
+//         // alert(`Game Over! Score: ${score}`);
+//         // resetGame();
+//         inDeath = true; // Trigger death screen instead of alert
+//         assets.deathscreensound.play(); // Play sound when death screen triggers
+//         return;
+//     }
+
+//     bullets.forEach((b, bIndex) => {
+//         if (Math.hypot(e.x - b.x, e.y - b.y) < e.size + b.size) {
+//             bullets.splice(bIndex, 1); // Remove bullet on hit
+//             e.health--; // Reduce enemy health
+//             if (e.health <= 0) {
+//                 enemies.splice(eIndex, 1); // Remove enemy if health is depleted
+//                 e.dropParticles(); // Drop particles on death
+//             }
+//         }
+//     });
+// });
+
+//     // Particles
+//     particles = particles.filter(p => p.lifetime > 0);
+//     particles.forEach((p, pIndex) => {
+//         p.update();
+//         p.draw();
+//         if (Math.hypot(p.x - player.x, p.y - player.y) < p.size + player.size) {
+//             particles.splice(pIndex, 1);
+//             score += 10;
+//         }
+//     });
+
+//     // Goals
+//     goals.forEach((g, gIndex) => {
+//         g.draw();
+//         if (Math.hypot(g.x - player.x, g.y - player.y) < g.size + player.size) {
+//             goals.splice(gIndex, 1);
+//             score += 50;
+//             if (goals.length === 0) {
+//                 inShop = true;
+//                 shopOptions = getRandomUpgrades();
+//             }
+//         }
+//     });
+
+//     // Score and Level
+//     ctx.fillStyle = 'white';
+//     ctx.font = '20px Arial';
+//     ctx.fillText(`Score: ${score}  Level: ${level}`, 10, 30);
+
+//     requestAnimationFrame(gameLoop);
+// }
+function update() {
+    if (inMenu || inShop || inLoading) return; // No updates in these states
+
+    if (inDeath) {
+        deathTimer++;
+        deathFade = Math.min(deathTimer / 60, 1);
+        if (deathTimer >= DEATH_DURATION) {
+            assets.deathscreensound.pause();
+            assets.deathscreensound.currentTime = 0;
+            resetGame();
+            inDeath = false;
+            deathTimer = 0;
+            deathFade = 0;
+        }
+        return;
+    }
+
+    // Player
+    player.move(keys);
+    if (player.shootCooldown > 0) player.shootCooldown--;
+
+    // Auto-shoot nearest enemy
+    let nearestEnemy = null;
+    let minDist = Infinity;
+    enemies.forEach(e => {
+        const dist = Math.hypot(e.x - player.x, e.y - player.y);
+        if (dist < minDist) {
+            minDist = dist;
+            nearestEnemy = e;
+        }
+    });
+    if (nearestEnemy) player.shoot(nearestEnemy.x, nearestEnemy.y);
+
+    // Bullets
+    bullets = bullets.filter(b => b.x > 0 && b.x < ROOM_WIDTH * TILE_SIZE && b.y > 0 && b.y < ROOM_HEIGHT * TILE_SIZE);
+    bullets.forEach(b => b.update());
+
+    // Enemies
+    spawnTimer--;
+    if (spawnTimer <= 0) {
+        const side = Math.floor(Math.random() * 4);
+        let x, y;
+        if (side === 0) { x = Math.random() * ROOM_WIDTH * TILE_SIZE; y = -20; }
+        else if (side === 1) { x = Math.random() * ROOM_WIDTH * TILE_SIZE; y = ROOM_HEIGHT * TILE_SIZE + 20; }
+        else if (side === 2) { x = -20; y = Math.random() * ROOM_HEIGHT * TILE_SIZE; }
+        else { x = ROOM_WIDTH * TILE_SIZE + 20; y = Math.random() * ROOM_HEIGHT * TILE_SIZE; }
+        if (!dungeon[Math.floor(y/TILE_SIZE)]?.[Math.floor(x/TILE_SIZE)]) {
+            enemies.push(new Enemy(x, y));
+        }
+        spawnTimer = 60 - Math.min(score/20, 50);
+    }
+
+    enemies = enemies.filter(e => Math.hypot(e.x - player.x, e.y - player.y) > 0);
+    enemies.forEach((e, eIndex) => {
+        e.update();
+
+        if (Math.hypot(e.x - player.x, e.y - player.y) < e.size + player.size) {
+            inDeath = true;
+            assets.deathscreensound.play();
+            return;
+        }
+
+        bullets.forEach((b, bIndex) => {
+            if (Math.hypot(e.x - b.x, e.y - b.y) < e.size + b.size) {
+                bullets.splice(bIndex, 1);
+                e.health--;
+                if (e.health <= 0) {
+                    enemies.splice(eIndex, 1);
+                    e.dropParticles();
+                }
+            }
+        });
+    });
+
+    // Particles
+    particles = particles.filter(p => p.lifetime > 0);
+    particles.forEach((p, pIndex) => {
+        p.update();
+        if (Math.hypot(p.x - player.x, p.y - player.y) < p.size + player.size) {
+            particles.splice(pIndex, 1);
+            score += 10;
+        }
+    });
+
+    // Goals
+    goals.forEach((g, gIndex) => {
+        if (Math.hypot(g.x - player.x, g.y - player.y) < g.size + player.size) {
+            goals.splice(gIndex, 1);
+            score += 50;
+            if (goals.length === 0) {
+                inShop = true;
+                shopOptions = getRandomUpgrades();
+            }
+        }
+    });
+}
+
+function render() {
+    const scale = 1.0;
+    ctx.setTransform(scale, 0, 0, scale, 0, 0);
+    ctx.drawImage(assets.background, 0, 0, canvas.width, canvas.height);
+
+    if (inLoading) {
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'white';
+        ctx.font = '30px Arial';
+        ctx.fillText('Loading...', canvas.width / 2 - 70, canvas.height / 2);
+        return;
+    }
+
+    if (inMenu) {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'white';
+        ctx.font = '30px Arial';
+        ctx.fillText('Choose Your Space Cat!', canvas.width / 2 - 150, 80);
+
+        const cardWidth = 225;
+        const cardHeight = 300;
+        const gap = 20;
+        const maxCardsPerRow = 3;
+        const row1Width = maxCardsPerRow * cardWidth + (maxCardsPerRow - 1) * gap;
+        const row2Width = (cats.length - maxCardsPerRow) * cardWidth + (cats.length - maxCardsPerRow - 1) * gap;
+        const startXRow1 = (canvas.width - row1Width) / 2;
+        const startXRow2 = (canvas.width - row2Width) / 2;
+        const startYRow1 = 120;
+        const startYRow2 = startYRow1 + cardHeight + gap;
+
+        cats.forEach((cat, i) => {
+            let x, y;
+            if (i < maxCardsPerRow) {
+                x = startXRow1 + i * (cardWidth + gap);
+                y = startYRow1;
+            } else {
+                x = startXRow2 + (i - maxCardsPerRow) * (cardWidth + gap);
+                y = startYRow2;
+            }
+
+            ctx.fillStyle = i === selectedCat ? 'rgba(80, 80, 120, 0.9)' : 'rgba(50, 50, 80, 0.9)';
+            ctx.fillRect(x, y, cardWidth, cardHeight);
+            ctx.strokeStyle = i === selectedCat ? '#ffd700' : 'white';
+            ctx.strokeRect(x, y, cardWidth, cardHeight);
+
+            ctx.drawImage(assets.cats[cat.name], x + 50, y + 30, 120, 120);
+            ctx.fillStyle = 'white';
+            ctx.font = '20px Arial';
+            ctx.fillText(cat.name, x + 10, y + 180);
+            ctx.font = '16px Arial';
+            wrapText(cat.desc, x + 10, y + 210, cardWidth - 20, 16);
+        });
+
+        ctx.fillStyle = 'white';
+        ctx.font = '20px Arial';
+        ctx.fillText('Tap to select or use ← → + Enter', canvas.width / 2 - 150, startYRow2 + cardHeight + 40);
+        return;
+    }
+
+    if (inShop) {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'white';
+        ctx.font = '30px Arial';
+        ctx.fillText(`Level ${level} Complete! Score: ${score}`, canvas.width / 2 - 200, 80);
+        ctx.font = '20px Arial';
+        ctx.fillText('Tap an upgrade or use 1-3, ← → + Enter:', canvas.width / 2 - 200, 130);
+
+        const cardWidth = 225;
+        const cardHeight = 300;
+        const startX = (canvas.width - (cardWidth * 3 + 40)) / 2;
+        const startY = 160;
+
+        shopOptions.forEach((opt, i) => {
+            const x = startX + i * (cardWidth + 20);
+            const y = startY;
+
+            ctx.fillStyle = i === shopHoverIndex ? 'rgba(80, 80, 120, 0.9)' : 'rgba(50, 50, 80, 0.9)';
+            ctx.fillRect(x, y, cardWidth, cardHeight);
+            ctx.strokeStyle = i === shopHoverIndex ? '#ffd700' : 'white';
+            ctx.strokeRect(x, y, cardWidth, cardHeight);
+
+            ctx.drawImage(assets.upgradeIcons[opt.name], x + 50, y + 30, 120, 120);
+
+            ctx.fillStyle = 'white';
+            ctx.font = '18px Arial';
+            ctx.fillText(opt.name, x + 10, y + 180);
+            ctx.font = '14px Arial';
+            wrapText(opt.description, x + 10, y + 210, cardWidth - 20, 16);
+
+            ctx.font = 'bold 20px Arial';
+            ctx.fillStyle = '#ffd700';
+            ctx.fillText(`[${i + 1}]`, x + cardWidth / 2 - 10, y + 250);
+        });
+        return;
+    }
+
+    if (inDeath) {
+        camera.update();
+        drawDungeon();
+        player.draw();
+        bullets.forEach(b => b.draw());
+        enemies.forEach(e => e.draw());
+        particles.forEach(p => p.draw());
+        goals.forEach(g => g.draw());
+
+        ctx.fillStyle = `rgba(0, 0, 0, ${deathFade * 0.7})`;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.globalAlpha = deathFade;
+        ctx.drawImage(assets.deathscreen, 0, 0, canvas.width, canvas.height);
+        ctx.globalAlpha = 1.0;
+
+        ctx.fillStyle = 'white';
+        ctx.font = '30px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Larry got you!', canvas.width / 2, canvas.height / 2 - 50);
+        ctx.font = '20px Arial';
+        ctx.fillText(`Level: ${level}`, canvas.width / 2, canvas.height / 2);
+        ctx.fillText(`Score: ${score}`, canvas.width / 2, canvas.height / 2 + 30);
+        ctx.textAlign = 'left';
+        return;
+    }
+
+    // Normal game rendering
+    camera.update();
+    drawDungeon();
+    player.draw();
+    bullets.forEach(b => b.draw());
+    enemies.forEach(e => e.draw());
+    particles.forEach(p => p.draw());
+    goals.forEach(g => g.draw());
+
+    ctx.fillStyle = 'white';
+    ctx.font = '20px Arial';
+    ctx.fillText(`Score: ${score}  Level: ${level}`, 10, 30);
+}
+
+// Fixed timestep game loop
+function gameLoop(currentTime) {
+    const deltaTime = currentTime - lastTime;
+    lastTime = currentTime;
+    accumulatedTime += deltaTime;
+
+    // Update game logic at fixed 60 FPS intervals
+    while (accumulatedTime >= FRAME_TIME) {
+        update();
+        accumulatedTime -= FRAME_TIME;
+    }
+
+    // Render every frame
+    render();
+
+    requestAnimationFrame(gameLoop);
+}
+
+function drawDungeon() {
+    const startX = Math.floor(camera.x / TILE_SIZE);
+    const startY = Math.floor(camera.y / TILE_SIZE);
+    const endX = Math.min(startX + VIEW_WIDTH + 1, ROOM_WIDTH);
+    const endY = Math.min(startY + VIEW_HEIGHT + 1, ROOM_HEIGHT);
+    for (let y = startY; y < endY; y++) {
+        for (let x = startX; x < endX; x++) {
+            if (dungeon[y][x]) {
+                ctx.drawImage(assets.wall, x * TILE_SIZE - camera.x, y * TILE_SIZE - camera.y, TILE_SIZE, TILE_SIZE);
+            } else {
+                ctx.drawImage(assets.floor, x * TILE_SIZE - camera.x, y * TILE_SIZE - camera.y, TILE_SIZE, TILE_SIZE);
+            }
+        }
+    }
+}
+
+function resetGame() {
+    dungeon = generateDungeon();
+    bullets = [];
+    enemies = [];
+    particles = [];
+    goals = [];
+    score = 0;
+    level = 1;
+    spawnTimer = 0;
+    inShop = false;
+    inMenu = true;
+    inDeath = false; // Reset death state
+    selectedCat = 0;
+}
+
+// Loading screen and asset check
+let assetsLoaded = 0;
+const totalAssets = Object.keys(assets.cats).length + assets.enemies.length + 12; // +1 for deathscreen
+function checkAssetsLoaded() {
+    assetsLoaded++;
+    if (assetsLoaded === totalAssets) {
+        inLoading = false;
+        // gameLoop();
+        requestAnimationFrame(gameLoop); // Start the fixed timestep loop
+    }
+}
+for (const cat in assets.cats) {
+    assets.cats[cat].onload = checkAssetsLoaded;
+    assets.cats[cat].onerror = () => console.error(`Failed to load ${cat}.png`);
+}
+for (const upgrade in assets.upgradeIcons) {
+    assets.upgradeIcons[upgrade].onload = checkAssetsLoaded;
+    assets.upgradeIcons[upgrade].onerror = () => console.error(`Failed to load ${cat}.png`);
+}
+assets.enemies.forEach((enemy, i) => {
+    enemy.onload = checkAssetsLoaded;
+    enemy.onerror = () => console.error(`Failed to load enemy${i + 1}.png`);
+});
+assets.floor.onload = checkAssetsLoaded;
+assets.wall.onload = checkAssetsLoaded;
+assets.background.onload = checkAssetsLoaded;
+assets.deathscreen.onload = checkAssetsLoaded; // Add deathscreen loading
+assets.deathscreensound.oncanplaythrough = checkAssetsLoaded;
+assets.bullet.onload = checkAssetsLoaded;
+assets.goal.onload = checkAssetsLoaded;
+assets.floor.onerror = () => console.error('Failed to load floor.png');
+assets.wall.onerror = () => console.error('Failed to load wall.png');
+assets.background.onerror = () => console.error('Failed to load background.gif');
+assets.bullet.onerror = () => console.error('Failed to load bullet.png');
+assets.goal.onerror = () => console.error('Failed to load goal.png');
+
+// Start with loading screen
+// gameLoop();
+requestAnimationFrame(gameLoop);
+
+</script>
+</body>
+</html>
