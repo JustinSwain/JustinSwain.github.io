@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sushi Bar Tycoon</title>
+    <link rel="stylesheet" href="/style/style.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            margin: 0;
+            padding: 10px;
+            transition: background-color 1s ease;
+            min-height: 100vh;
+        }
+
+        #game-container {
+            width: 1200px;
+            max-width: 100%;
+            padding: 10px;
+            background-color: rgba(1,1,1,0.1);
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            transition: opacity 1s ease;
+            box-sizing: border-box;
+        }
+
+        #game-container.dimmed {
+            opacity: 0.5;
+        }
+
+        #stats-bar {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: var(--space7);
+            border: 4px solid var(--space4);
+            border-radius: 5px;
+            font-size: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 8px;
+        }
+
+        #stats-bar p {
+            margin: 5px 0;
+        }
+
+        #main-layout {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .screen {
+            padding: 10px;
+            border: 4px solid var(--space4);
+            border-radius: 5px;
+            background-color: var(--space7);
+            box-sizing: border-box;
+        }
+
+        #left-column {
+            width: 25%;
+            display: flex;
+            flex-direction: column;
+            gap: 0px;
+        }
+
+        #pond {
+            width: 100%;
+            height: 50%;
+            position: relative;
+            min-height: 200px;
+        }
+
+        #farms {
+            width: 100%;
+            height: 50%;
+            position: relative;
+            min-height: 150px;
+        }
+
+        #restaurant {
+            width: 50%;
+            position: relative;
+        }
+
+        #store {
+            width: 25%;
+        }
+
+        h2 {
+            color: var(--space1);
+            text-align: center;
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        button {
+            padding: 8px 16px;
+            margin: 5px 0;
+            background-color: var(--space3);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s, transform 0.2s;
+            display: block;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        #time-display {
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        #restaurant-area {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+            background-color: var(--space0);
+            border: 4px solid var(--space4);
+            border-radius: 5px;
+        }
+
+        .sprite {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            transition: left 1s linear, top 1s linear;
+        }
+
+        #player {
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+
+        #waiter {
+            bottom: 10px;
+            left: 10px;
+        }
+
+        #rice-farm, #tea-farm, #fisherman {
+            position: relative;
+            width: 25%;
+            height: auto;
+            max-width: 60px;
+            max-height: 60px;
+        }
+
+        #tables {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            bottom: 60px;
+            width: 100%;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+
+        .table {
+            width: 50px;
+            height: 50px;
+            background-color: #8d5524;
+            border-radius: 5px;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .order-display {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 15px;
+            width: 100%;
+            text-align: center;
+        }
+
+        #pond-visual {
+            font-size: 50px;
+            text-align: center;
+            margin: 20px 0;
+            animation: wave 2s infinite;
+        }
+
+        @keyframes wave {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        #store-visual {
+            text-align: center;
+        }
+
+        #console {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: var(--space7);
+            border: 4px solid var(--space4);
+            border-radius: 5px;
+            height: 150px; 
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column;
+        }
+
+        #console h3 {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+        }
+
+        #console-messages {
+            font-size: 12px;
+            line-height: 1.4;
+            flex-grow: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        @media (max-width: 768px) {
+            #game-container {
+                padding: 5px;
+            }
+
+            #stats-bar {
+                font-size: 12px;
+                gap: 5px;
+                padding: 5px;
+            }
+
+            #stats-bar p {
+                margin: 3px 0;
+            }
+
+            #main-layout {
+                flex-direction: column;
+            }
+
+            #left-column {
+                width: 100%;
+            }
+
+            #pond, #farms {
+                width: 100%;
+                height: auto;
+                min-height: 150px;
+            }
+
+            #restaurant, #store {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            #restaurant-area {
+                height: 200px;
+            }
+
+            h2 {
+                font-size: 16px;
+            }
+
+            button {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            #time-display {
+                font-size: 14px;
+            }
+
+            .sprite {
+                width: 30px;
+                height: 30px;
+            }
+
+            .table {
+                width: 40px;
+                height: 40px;
+            }
+
+            .order-display {
+                font-size: 12px;
+            }
+
+            #pond-visual {
+                font-size: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #stats-bar {
+                font-size: 10px;
+                gap: 3px;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #pond-visual {
+                font-size: 30px;
+            }
+
+            button {
+                padding: 4px 8px;
+                font-size: 10px;
+            }
+
+            #restaurant-area {
+                height: 150px;
+            }
+
+            .sprite {
+                width: 25px;
+                height: 25px;
+            }
+
+            .table {
+                width: 30px;
+                height: 30px;
+            }
+
+            .order-display {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="stats-bar">
+            <p>💰 Money: $<span id="money">10</span></p>
+            <p>💰 Net Profit: $<span id="money-per-sec">0</span></p>
+        </div>
+
+        <div id="main-layout">
+            <div id="left-column">
+                <div id="pond" class="screen">
+                    <h2>Fishing Pond</h2>
+                    <p>Fish: <span id="fish">0</span></p>
+                    <div id="pond-visual">🌊</div>
+                    <button onclick="catchFish()">Catch Fish</button>
+                    <p>Catch Chance: <span id="catch-rate"></span></p>
+                    <div style="display: flex; align-items: center; justify-content: space-around;">
+                    <img id="fisherman" class="sprite" src="/images/catFisherman.png" style="display: none;">
+                    </div>
+                </div>
+                <div id="farms" class="screen">
+                    <h2>Farms</h2>
+                    <p>Rice Farm: <span id="rice-farm-rate">0</span> rice/s</p>
+                    <p>Tea Farm: <span id="tea-farm-rate">0</span> tea/s</p>
+                    <div style="display: flex; align-items: center; justify-content: space-around;">
+                    <img id="rice-farm" class="sprite" src="/images/catRice.png" style="display: none;">
+                    <img id="tea-farm" class="sprite" src="/images/catTea.png" style="display: none;">
+                    </div>
+                </div>
+            </div>
+
+            <div id="restaurant" class="screen">
+                <h2>Sushi Restaurant</h2>
+                <p>Sushi Price: $<span id="sushi-price">10</span></p>
+                <p>Tea Price: $<span id="tea-price">6</span></p>
+                <p id="time-display">Time: Day (15s left)</p>
+                <div id="restaurant-area">
+                    <img id="player" class="sprite" src="/images/ninja.png">
+                    <img id="waiter" class="sprite" src="/images/pluto.png" style="display: none;">
+                    <div id="tables">
+                        <div class="table" id="table-0"><span class="order-display"></span></div>
+                        <div class="table" id="table-1"><span class="order-display"></span></div>
+                        <div class="table" id="table-2"><span class="order-display"></span></div>
+                        <div class="table" id="table-3"><span class="order-display"></span></div>
+                        <div class="table" id="table-4"><span class="order-display"></span></div>
+                    </div>
+                </div>
+                <button onclick="serveCustomers()">Serve Orders</button>
+                <p>Waiter Service Rate: <span id="serve-rate">0</span> tables/s</p>
+                <p>Customer Arrival Chance: <span id="arrival-rate">25</span>%</p>
+                <p>Tables: <span id="table-count">5</span></p>
+                <p>Total Customers Served: <span id="total-served">0</span></p>
+            </div>
+
+            <div id="store" class="screen">
+                <h2>Store</h2>
+                <p>Rice: <span id="rice">0</span></p>
+                <p>Tea: <span id="tea">0</span></p>
+                <div id="store-visual">
+                    <button onclick="buyRice()">Buy Rice (5$)</button>
+                    <button onclick="buyTea()">Buy Tea (3$)</button>
+                    <button onclick="hireWaiter()">Hire Waiter (100$)</button>
+                    <button onclick="upgradeWaiter()">Upgrade Waiter</button>
+                    <button onclick="hireFisherman()">Hire Fisherman (100$)</button>
+                    <button onclick="upgradeRod()">Upgrade Rod</button>
+                    <button onclick="buyRiceFarm()">Buy Rice Farm (150$)</button>
+                    <button onclick="upgradeRiceFarm()">Upgrade Rice Farm</button>
+                    <button onclick="buyTeaFarm()">Buy Tea Farm (120$)</button>
+                    <button onclick="upgradeTeaFarm()">Upgrade Tea Farm</button>
+                    <button onclick="upgradeTables()">Add Table (200$)</button>
+                    <button onclick="upgradeMenu()">Premium Menu (300$)</button>
+                    <button onclick="upgradeAdvertising()">Boost Advertising (250$)</button>
+                </div>
+            </div>
+        </div>
+        <div id="console">
+            <h3>Event Log</h3>
+            <div id="console-messages"></div>
+        </div>
+    </div>
+    <script>
+        let money = 100;
+        let fish = 0;
+        let rice = 0;
+        let tea = 0;
+        let customers = 0;
+        let customerOrders = [];
+        let hasWaiter = false;
+        let waiterLevel = 0;
+        let hasFisherman = false;
+        let fishermanLevel = 0;
+        let hasRiceFarm = false;
+        let riceFarmLevel = 0;
+        let hasTeaFarm = false;
+        let teaFarmLevel = 0;
+        let maxTables = 5;
+        let menuLevel = 1;
+        let advertisingLevel = 0;
+        let totalCustomersServed = 0;
+
+        let isDay = true;
+        let dayLength = 60;
+        let nightLength = 5;
+        let timeLeft = dayLength;
+
+        let customerSprites = [];
+        let moneyPerSecond = 0;
+        let lastMoney = 10;
+
+        const customerImages = ['/images/jinx2.png', '/images/beans.png' , '/images/zed.png'];
+
+        function generateRandomOrder() {
+            const orders = ["sushi", "tea", "both"];
+            return orders[Math.floor(Math.random() * orders.length)];
+        }
+
+        function getUpgradeCost(level) {
+            return Math.round(100 * Math.pow(1.5, level));
+        }
+
+        function updateDisplay() {
+            moneyPerSecond = Math.round((money - lastMoney) * 2) / 2;
+
+            document.getElementById('money').textContent = money;
+            document.getElementById('money-per-sec').textContent = moneyPerSecond;
+            document.getElementById('fish').textContent = fish;
+            document.getElementById('rice').textContent = Math.floor(rice);
+            document.getElementById('tea').textContent = Math.floor(tea);
+            document.getElementById('sushi-price').textContent = 10 * menuLevel;
+            document.getElementById('tea-price').textContent = 6 * menuLevel;
+            document.getElementById('catch-rate').textContent = hasFisherman ? `${fishermanLevel * 10}%` : '10%';
+            document.getElementById('serve-rate').textContent = hasWaiter ? waiterLevel : 0;
+            document.getElementById('arrival-rate').textContent = Math.round((0.25 + advertisingLevel * 0.05) * 100);
+            document.getElementById('rice-farm-rate').textContent = hasRiceFarm ? (riceFarmLevel * 0.2).toFixed(1) : 0;
+            document.getElementById('tea-farm-rate').textContent = hasTeaFarm ? (teaFarmLevel * 0.2).toFixed(1) : 0;
+            document.getElementById('table-count').textContent = maxTables;
+            document.getElementById('total-served').textContent = totalCustomersServed;
+
+            document.getElementById('time-display').textContent = 
+                `Time: ${isDay ? 'Day' : 'Night'} (${timeLeft}s left)`;
+            document.body.className = isDay ? 'day' : 'night';
+            document.getElementById('game-container').className = 
+                isDay ? 'game-container' : 'game-container dimmed';
+
+            const waiter = document.getElementById('waiter');
+            waiter.style.display = hasWaiter ? 'block' : 'none';
+
+            const fisherman = document.getElementById('fisherman');
+            fisherman.style.display = hasFisherman ? 'block' : 'none';
+
+            const riceFarm = document.getElementById('rice-farm');
+            riceFarm.style.display = hasRiceFarm ? 'block' : 'none';
+
+            const teaFarm = document.getElementById('tea-farm');
+            teaFarm.style.display = hasTeaFarm ? 'block' : 'none';
+
+            document.querySelector('#store-visual button[onclick="upgradeWaiter()"]').textContent = 
+                `Upgrade Waiter (${getUpgradeCost(waiterLevel)}$)`;
+            document.querySelector('#store-visual button[onclick="upgradeRod()"]').textContent = 
+                `Upgrade Rod (${getUpgradeCost(fishermanLevel)}$)`;
+            document.querySelector('#store-visual button[onclick="upgradeRiceFarm()"]').textContent = 
+                `Upgrade Rice Farm (${getUpgradeCost(riceFarmLevel)}$)`;
+            document.querySelector('#store-visual button[onclick="upgradeTeaFarm()"]').textContent = 
+                `Upgrade Tea Farm (${getUpgradeCost(teaFarmLevel)}$)`;
+            document.querySelector('#store-visual button[onclick="upgradeTables()"]').textContent = 
+                `Add Table (${getUpgradeCost(maxTables - 5)}$)`;
+            document.querySelector('#store-visual button[onclick="upgradeMenu()"]').textContent = 
+                `Premium Menu (${getUpgradeCost(menuLevel - 1)}$)`;
+            document.querySelector('#store-visual button[onclick="upgradeAdvertising()"]').textContent = 
+                `Boost Advertising (${getUpgradeCost(advertisingLevel)}$)`;
+
+            const tablesDiv = document.getElementById('tables');
+            while (tablesDiv.children.length > maxTables) {
+                tablesDiv.removeChild(tablesDiv.lastChild);
+            }
+            while (tablesDiv.children.length < maxTables) {
+                const newTable = document.createElement('div');
+                newTable.className = 'table';
+                newTable.id = `table-${tablesDiv.children.length}`;
+                newTable.innerHTML = '<span class="order-display"></span>';
+                tablesDiv.appendChild(newTable);
+            }
+
+            for (let i = 0; i < maxTables; i++) {
+                const orderDisplay = document.getElementById(`table-${i}`).querySelector('.order-display');
+                const sprite = customerSprites.find(s => s.table === i);
+                if (sprite) {
+                    orderDisplay.textContent = 
+                        sprite.order === 'sushi' ? '🍣' : 
+                        sprite.order === 'tea' ? '🍵' : '🍣🍵';
+                } else {
+                    orderDisplay.textContent = '';
+                }
+            }
+        }
+
+        function logMessage(message) {
+            const consoleMessages = document.getElementById('console-messages');
+            const timestamp = new Date().toLocaleTimeString();
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = `[${timestamp}] ${message}`;
+            consoleMessages.appendChild(messageDiv);
+            consoleMessages.scrollTop = consoleMessages.scrollHeight; // Auto-scroll to bottom
+            // Optional: Limit to 50 messages to prevent performance issues
+            while (consoleMessages.children.length > 50) {
+                consoleMessages.removeChild(consoleMessages.firstChild);
+            }
+        }
+
+        function catchFish() {
+            const catchChance = hasFisherman ? (fishermanLevel * 10) : 10; // Base 10%, +10% per level
+            if (Math.random() * 100 < catchChance) {
+                fish += 1; // Always catch 1 fish on success
+                const pond = document.getElementById('pond-visual');
+                pond.textContent = '🌊🐟';
+                setTimeout(() => { pond.textContent = '🌊'; }, 300);
+            }
+            updateDisplay();
+        }
+
+        function buyRice() {
+            if (money >= 5) {
+                money -= 5;
+                rice += 1;
+                updateDisplay();
+            } else {
+                logMessage("Not enough money!");
+            }
+        }
+
+        function buyTea() {
+            if (money >= 3) {
+                money -= 3;
+                tea += 1;
+                updateDisplay();
+            } else {
+                logMessage("Not enough money!");
+            }
+        }
+
+        function hireWaiter() {
+            if (money >= 100 && !hasWaiter) {
+                money -= 100;
+                hasWaiter = true;
+                waiterLevel = 1;
+                document.querySelector('#store-visual button[onclick="hireWaiter()"]').disabled = true;
+                logMessage("Waiter hired!");
+                updateDisplay();
+            } else if (hasWaiter) {
+                logMessage("You already have a waiter!");
+            } else {
+                logMessage("Not enough money!");
+            }
+        }
+
+        function upgradeWaiter() {
+            const cost = getUpgradeCost(waiterLevel);
+            if (money >= cost && hasWaiter && waiterLevel < 5) {
+                money -= cost;
+                waiterLevel += 1;
+                logMessage("Waiter upgraded to level " + waiterLevel);
+                if (waiterLevel === 5) {
+                    document.querySelector('#store-visual button[onclick="upgradeWaiter()"]').disabled = true;
+                }
+                updateDisplay();
+            } else if (!hasWaiter) {
+                logMessage("Hire a waiter first!");
+            } else if (waiterLevel >= 5) {
+                logMessage("Waiter is fully upgraded!");
+            } else {
+                logMessage("Not enough money!");
+            }
+        }
+
+        function hireFisherman() {
+            if (money >= 100 && !hasFisherman) {
+                money -= 100;
+                hasFisherman = true;
+                fishermanLevel = 1; // Starts with 20% chance (10% base + 10% level 1)
+                logMessage("Fisherman hired!");
+                document.querySelector('#store-visual button[onclick="hireFisherman()"]').disabled = true;
+                updateDisplay();
+            } else if (hasFisherman) {
+                logMessage("You already have a fisherman!");
+            } else {
+                logMessage("Not enough money!");
+            }
+        }
+
+        function upgradeRod() {
+            const cost = getUpgradeCost(fishermanLevel);
+            if (money >= cost && hasFisherman && fishermanLevel < 5) {
+                money -= cost;
+                fishermanLevel += 1; // Each level adds 10% to catch chance
+                logMessage("Rod upgraded to level " + fishermanLevel);
+                if (fishermanLevel === 5) {
+                    document.querySelector('#store-visual button[onclick="upgradeRod()"]').disabled = true;
+                }
+                updateDisplay();
+            } else if (!hasFisherman) {
+                logMessage("Hire a fisherman first!");
+            } else if (fishermanLevel >= 5) {
+                logMessage("Rod is fully upgraded!");
+            } else {
+                logMessage("Not enough money!");
+            }
+        }
+
+        function buyRiceFarm() {
+            if (money >= 150 && !hasRiceFarm) {
+                money -= 150;
+                hasRiceFarm = true;
+                riceFarmLevel = 1; // 0.2 rice per second
+                logMessage("Rice farm purchased!");
+                document.querySelector('#store-visual button[onclick="buyRiceFarm()"]').disabled = true;
+                updateDisplay();
+            } else if (hasRiceFarm) {
+                logMessage("You already have a rice farm!");
+            } else {
+                logMessage("Not enough money!");
+            }
+        }
+
+        function upgradeRiceFarm() {
+            const cost = getUpgradeCost(riceFarmLevel);
+            if (money >= cost && hasRiceFarm && riceFarmLevel < 5) {
+                money -= cost;
+                riceFarmLevel += 1; // Increases rate by 0.2/s
+                logMessage("Rice farm upgraded to level " + riceFarmLevel);
+                if (riceFarmLevel === 5) {
+                    document.querySelector('#store-visual button[onclick="upgradeRiceFarm()"]').disabled = true;
+                }
+                updateDisplay();
+            } else if (!hasRiceFarm) {
+                logMessage("Buy a rice farm first!");
+            } else if (riceFarmLevel >= 5) {
+                logMessage("Rice farm is fully upgraded!");
+            } else {
+                logMessage("Not enough money!");
+            }
+        }
+
+        function buyTeaFarm() {
+            if (money >= 120 && !hasTeaFarm) {
+                money -= 120;
+                hasTeaFarm = true;
+                teaFarmLevel = 1; // 0.2 tea per second
+                logMessage("Tea farm purchased!");
+                document.querySelector('#store-visual button[onclick="buyTeaFarm()"]').disabled = true;
+                updateDisplay();
+            } else if (hasTeaFarm) {
+                logMessage("You already have a tea farm!");
+            } else {
+                logMessage("Not enough money!");
+            }
+        }
+
+        function upgradeTeaFarm() {
+            const cost = getUpgradeCost(teaFarmLevel);
+            if (money >= cost && hasTeaFarm && teaFarmLevel < 5) {
+                money -= cost;
+                teaFarmLevel += 1; // Increases rate by 0.2/s
+                logMessage("Tea farm upgraded to level " + teaFarmLevel);
+                if (teaFarmLevel === 5) {
+                    document.querySelector('#store-visual button[onclick="upgradeTeaFarm()"]').disabled = true;
+                }
+                updateDisplay();
+            } else if (!hasTeaFarm) {
+                logMessage("Buy a tea farm first!");
+            } else if (teaFarmLevel >= 5) {
+                logMessage("Tea farm is fully upgraded!");
+            } else {
+                logMessage("Not enough money!");
+            }
+        }
+
+        function upgradeTables() {
+            const cost = getUpgradeCost(maxTables - 5);
+            if (money >= cost && maxTables < 10) {
+                money -= cost;
+                maxTables += 1;
+                logMessage("Table added!");
+                updateDisplay();
+                updateCustomerPositions();
+            } else if (maxTables >= 10) {
+                logMessage("Max tables reached!");
+                document.querySelector('#store-visual button[onclick="upgradeTables()"]').disabled = true;
+            } else {
+                logMessage("Not enough money!");
+            }
+        }
+
+        function upgradeMenu() {
+            const cost = getUpgradeCost(menuLevel - 1);
+            if (money >= cost && menuLevel < 5) {
+                money -= cost;
+                menuLevel += 1;
+                logMessage("Menu upgraded to level " + menuLevel);
+                if (menuLevel === 5) {
+                    document.querySelector('#store-visual button[onclick="upgradeMenu()"]').disabled = true;
+                }
+                updateDisplay();
+            } else if (menuLevel >= 5) {
+                logMessage("Menu is fully upgraded!");
+            } else {
+                logMessage("Not enough money!");
+            }
+        }
+
+        function upgradeAdvertising() {
+            const cost = getUpgradeCost(advertisingLevel);
+            if (money >= cost && advertisingLevel < 8) {
+                money -= cost;
+                advertisingLevel += 1;
+                logMessage("Advertising boosted to level " + advertisingLevel);
+                if (advertisingLevel === 8) {
+                    document.querySelector('#store-visual button[onclick="upgradeAdvertising()"]').disabled = true;
+                }
+                updateDisplay();
+            } else if (advertisingLevel >= 5) {
+                logMessage("Advertising is fully upgraded!");
+            } else {
+                logMessage("Not enough money!");
+            }
+        }
+
+        function serveCustomers() {
+            if (!isDay) {
+                logMessage("The restaurant is closed at night!");
+                return;
+            }
+            if (customers === 0) {
+                logMessage("No customers to serve!");
+                return;
+            }
+
+            const sprite = customerSprites[0];
+            const currentTime = Date.now();
+            const timeSeated = currentTime - sprite.seatedTime;
+
+            if (timeSeated < 1000) {
+                return;
+            }
+
+            const order = sprite.order;
+            let canServe = false;
+            let earnings = 0;
+
+            if (order === 'sushi' && fish >= 1 && rice >= 1) {
+                fish -= 1;
+                rice -= 1;
+                canServe = true;
+                earnings = 10 * menuLevel;
+            } else if (order === 'tea' && tea >= 1) {
+                tea -= 1;
+                canServe = true;
+                earnings = 6 * menuLevel;
+            } else if (order === 'both' && fish >= 1 && rice >= 1 && tea >= 1) {
+                fish -= 1;
+                rice -= 1;
+                tea -= 1;
+                canServe = true;
+                earnings = 15 * menuLevel;
+            }
+
+            if (canServe) {
+                money += earnings;
+                customers -= 1;
+                customerOrders.shift();
+                totalCustomersServed += 1;
+                const element = sprite.element;
+                // element.src = customerImages[Math.floor(Math.random() * customerImages.length)]; // Happy variation
+                element.style.left = '100%';
+                setTimeout(() => element.remove(), 1000);
+                customerSprites.shift();
+                updateDisplay();
+            } else {
+                logMessage("Not enough ingredients for this order!");
+            }
+        }
+
+        function updateCustomerPositions() {
+            customerSprites.forEach(sprite => {
+                const table = document.getElementById(`table-${sprite.table}`);
+                if (table) {
+                    const tableRect = table.getBoundingClientRect();
+                    const containerRect = document.getElementById('restaurant-area').getBoundingClientRect();
+                    const targetLeft = tableRect.left - containerRect.left + 5;
+                    const targetTop = tableRect.top - containerRect.top - 40;
+                    sprite.element.style.left = `${targetLeft}px`;
+                    sprite.element.style.top = `${targetTop}px`;
+                }
+            });
+        }
+
+        function addCustomer() {
+            if (customers >= maxTables) return;
+
+            let availableTable = -1;
+            for (let i = 0; i < maxTables; i++) {
+                if (!customerSprites.some(s => s.table === i)) {
+                    availableTable = i;
+                    break;
+                }
+            }
+
+            if (availableTable === -1) return;
+
+            const sprite = document.createElement('img');
+            sprite.className = 'sprite customer';
+            sprite.style.top = '20px';
+            sprite.style.left = '-50px';
+            sprite.src = customerImages[Math.floor(Math.random() * customerImages.length)];
+            document.getElementById('restaurant-area').appendChild(sprite);
+
+            const order = generateRandomOrder();
+            const seatedTime = Date.now() + 1000;
+            customerSprites.push({ id: Date.now(), table: availableTable, order, element: sprite, seatedTime });
+            customers += 1;
+            customerOrders.push(order);
+
+            setTimeout(() => {
+                const table = document.getElementById(`table-${availableTable}`);
+                if (table) {
+                    const tableRect = table.getBoundingClientRect();
+                    const containerRect = document.getElementById('restaurant-area').getBoundingClientRect();
+                    const targetLeft = tableRect.left - containerRect.left + 5;
+                    const targetTop = tableRect.top - containerRect.top - 40;
+                    sprite.style.left = `${targetLeft}px`;
+                    sprite.style.top = `${targetTop}px`;
+                    updateDisplay();
+                }
+            }, 10);
+        }
+
+        setInterval(() => {
+            timeLeft -= 1;
+            if (timeLeft <= 0) {
+                isDay = !isDay;
+                lastMoney = money;
+                timeLeft = isDay ? dayLength : nightLength;
+                logMessage(`Time switched to ${isDay ? 'Day' : 'Night'}`);
+                if (!isDay) {
+                    customers = 0;
+                    customerOrders = [];
+                    customerSprites.forEach(s => s.element.remove());
+                    customerSprites = [];
+                    logMessage("Restaurant is closed for the night, all customers have left.");
+                }
+            }
+
+            if (isDay && Math.random() < 0.25 + advertisingLevel * 0.05) {
+                addCustomer();
+            }
+
+            if (hasWaiter && isDay && customers > 0) {
+                for (let i = 0; i < waiterLevel && customers > 0; i++) {
+                    serveCustomers();
+                }
+            }
+
+            if (hasFisherman) {
+                // fish += fishermanLevel;
+                catchFish();
+            }
+
+            if (hasRiceFarm) {
+                rice += riceFarmLevel * 0.2; // 0.2 rice per second at level 1, up to 1.0 at level 5
+            }
+            if (hasTeaFarm) {
+                tea += teaFarmLevel * 0.2; // 0.2 tea per second at level 1, up to 1.0 at level 5
+            }
+
+            if (timeLeft % 5 === 0) {
+                money += 1;
+            }
+
+            updateDisplay();
+        }, 1000);
+
+        updateDisplay();
+    </script>
+</body>
+</html>
