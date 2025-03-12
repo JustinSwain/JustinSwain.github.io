@@ -7,29 +7,21 @@
     <link rel="stylesheet" href="/style/style.css">
     <link rel="icon" href="/images/spaceKitty.png">
 <style>
-.book {width: 100%}
-    .zoom, .zoomL, .zoomR{
+    .book {width: 100%}
+    .zoom {
             width: 25%; 
             margin: 0;
             left: 50%;
             transition: transform .3s ease-in-out;
     }
-    .zoom:hover, .zoomL:hover, .zoomR:hover {   
+    .zoom:hover {   
         z-index: 1;
         transform: scale(2.0);
     }
-    /*.zoomL:hover {
-        transform: translateX(50%) scale(2.0);
-        z-index: 1;
-    }
-    .zoomR:hover {
-        transform: translateX(-50%) scale(2.0);
-        z-index: 1;
-    }*/
-    .zoom:hover .book, .zoomL:hover .book, .zoomR:hover .book{
+    .zoom:hover .book{
         border: 2px solid var(--space0);
     }
-    .zoom:hover .text-box,.zoomL:hover  .text-box,.zoomR:hover .text-box {
+    .zoom:hover .text-box{
         display: block;
     }
     .text-box {
@@ -42,15 +34,16 @@
         color: white;
         padding: 5px;
         border-radius: 5px;
-        white-space: normal; /* Allow text to wrap */
+        white-space: normal;
         text-align: center;
     }
-    /*.zoomL .text-box {
-        left: 50%;
+    .posters {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row !important;
+        align-items: center;
+        justify-content: center;
     }
-    .zoomR .text-box {
-        left: 50%;
-    }*/
 </style>  
 </head>
   <body>
@@ -130,41 +123,45 @@
             <h3>Concerts that I attended</h3>
 
             <strong>2025</strong>
-            <div id="flex" style="flex-wrap: wrap; flex-direction: row; align-items: center;">
-                <div class="zoomL">
-                    <img class="book" src="/images/shows/meshuggah2025.webp" width="25%" alt="Meshuggah 2025">
+            <div id="flex" class="posters">
+                <div class="zoom">
+                    <img class="book" src="/images/shows/meshuggah2025.webp" alt="Meshuggah 2025">
                     <div class="text-box">Meshuggah</div>
                 </div>
                 <div class="zoom">
-                    <img class="book" src="/images/shows/inventAnimate25.jpg" width="25%" alt=>
+                    <img class="book" src="/images/shows/inventAnimate25.jpg" alt=>
                     <div class="text-box">Invent Animate and Silent Planet</div>
+                </div>
+                <div class="zoom">
+                    <img class="book" src="/images/shows/rockCats.png" alt=>
+                    <div class="text-box">Rock Cats and Acrocats</div>
                 </div>
             </div>
 
             <strong>2024</strong>
-            <div id="flex" style="flex-wrap: wrap; flex-direction: row; align-items: center;">
-                <div class="zoomL">
-                    <img class="book" src="/images/shows/badOmens24.JPG" width="25%">
+            <div id="flex" class="posters">
+                <div class="zoom">
+                    <img class="book" src="/images/shows/badOmens24.JPG" >
                     <div class="text-box">Bad Omens</div>
                 </div>
                 <div class="zoom">
-                    <img class="book" src="/images/shows/knockedLoose24.jpeg" width="25%">
+                    <img class="book" src="/images/shows/knockedLoose24.jpeg" >
                     <div class="text-box">Knocked Loose</div>
                 </div>
                 <div class="zoom">
-                    <img class="book" src="/images/shows/FiR2024.png" width="25%">
+                    <img class="book" src="/images/shows/FiR2024.png" >
                     <div class="text-box">Falling in Reverse</div>
                 </div>
-                <div class="zoomR">
-                    <img class="book" src="/images/shows/bilmuri2024.png" width="25%">
+                <div class="zoom">
+                    <img class="book" src="/images/shows/bilmuri2024.png" >
                     <div class="text-box">Bilmuri</div>
                 </div>
-                <div class="zoomL">
-                    <img class="book" src="/images/shows/Animals2024.jpg" width="25%">
+                <div class="zoom">
+                    <img class="book" src="/images/shows/Animals2024.jpg" >
                     <div class="text-box">Animals as Leaders</div>
                 </div>
                 <div class="zoom">
-                    <img class="book" src="/images/shows/iceNineKills24.jpg" width="25%">
+                    <img class="book" src="/images/shows/iceNineKills24.jpg" >
                     <div class="text-box">Ice Nine Kills</div>
                 </div>
             </div>
@@ -172,37 +169,37 @@
             <br><br>
 
             <strong>2023</strong>
-            <div id="flex" style="flex-wrap: wrap; flex-direction: row; align-items: center;">
-                <div class="zoomL">
-                    <img class="book" src="/images/shows/gojiraMastadon23.jpg" width="25%">
+            <div id="flex" class="posters">
+                <div class="zoom">
+                    <img class="book" src="/images/shows/gojiraMastadon23.jpg" >
                     <div class="text-box">Gojira and Mastadon</div>
                 </div>
                 <div class="zoom">
-                    <img class="book" src="/images/shows/dreamTheater23.webp" width="25%">
+                    <img class="book" src="/images/shows/dreamTheater23.webp" >
                     <div class="text-box">Dream Theater</div>
                 </div>
                 <div class="zoom">
-                    <img class="book" src="/images/shows/ghost23.jpg" width="25%">
+                    <img class="book" src="/images/shows/ghost23.jpg" >
                     <div class="text-box">Ghost</div>
                 </div>
-                <div class="zoomR">
-                    <img class="book" src="/images/shows/avengeSevenfold23.webp" width="25%">
+                <div class="zoom">
+                    <img class="book" src="/images/shows/avengeSevenfold23.webp" >
                     <div class="text-box">Avenge Sevenfold</div>
                 </div>
-                <div class="zoomL">
-                    <img class="book" src="/images/shows/dgd23.webp" width="25%">
+                <div class="zoom">
+                    <img class="book" src="/images/shows/dgd23.webp" >
                     <div class="text-box">Dance Gavin Dance</div>
                 </div>
                 <div class="zoom">
-                    <img class="book" src="/images/shows/sleepToken23.jpg" width="25%">
+                    <img class="book" src="/images/shows/sleepToken23.jpg" >
                     <div class="text-box">Sleep Token</div>
                 </div>
                 <div class="zoom">
-                    <img class="book" src="/images/shows/motionless23.jpg" width="25%">
+                    <img class="book" src="/images/shows/motionless23.jpg" >
                     <div class="text-box">Motionless in White</div>
                 </div>
-                <div class="zoomR">
-                    <img class="book" src="/images/shows/periphery23.jpg" width="25%">
+                <div class="zoom">
+                    <img class="book" src="/images/shows/periphery23.jpg" >
                     <div class="text-box">Periphery</div>
                 </div>
             </div>
@@ -210,13 +207,13 @@
             <br><br>
 
             <strong>2022</strong>
-            <div id="flex" style="flex-wrap: wrap; flex-direction: row; align-items: center;">
-                <div class="zoomL">
-                    <img class="book" src="/images/shows/animalsAsLeaders22.jpg" width="25%">
+            <div id="flex" class="posters">
+                <div class="zoom">
+                    <img class="book" src="/images/shows/animalsAsLeaders22.jpg" >
                     <div class="text-box">Animals as Leaders</div>
                 </div>
                 <div class="zoom">
-                    <img class="book" src="/images/shows/ronnie22.jpg" width="25%">
+                    <img class="book" src="/images/shows/ronnie22.jpg" >
                     <div class="text-box">Falling in Reverse</div>
                 </div>
             </div>
