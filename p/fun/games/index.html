@@ -147,7 +147,7 @@ async function loadSteamData() {
             <div style="text-align:center;background:rgba(0,212,255,0.06);padding:20px;border-radius:14px;border:1px solid #333;">
                 <a href="https://store.steampowered.com/agecheck/app/${g.appid}"><img src="https://steamcdn-a.akamaihd.net/steam/apps/${g.appid}/header.jpg" 
                     alt="${cleanGameName(g.name)}"
-                    style="width: 80%;border-radius:8px;box-shadow:0 4px 15px rgba(0,212,255,0.4);"></a>
+                    style="max-width: 80%; height: auto;border-radius:8px;box-shadow:0 4px 15px rgba(0,212,255,0.4);"></a>
                 <p style="margin:15px 0 6px;font-weight:bold;font-size:1.2rem;color:#fff;">${cleanGameName(g.name)}</p>
                 <p style="color:#00d4ff;font-size:1.6rem;font-weight:bold;margin:0;">${g.hours}h</p>
             </div>
