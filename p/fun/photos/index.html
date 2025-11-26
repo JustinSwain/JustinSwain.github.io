@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justin Swain - Photos</title>
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="icon" href="/images/spacecat.png">
+
+    <!-- Gallery-specific styles -->
+    <style>
+  .photos-wrapper {
+    width: 100%;
+    padding: 20px 0;               /* vertical spacing only */
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    aspect-ratio: 1 / 1;           /* optional: forces square thumbs */
+  }
+
+  .gallery-item:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25);
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.08);
+  }
+
+  #lightbox {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+  }
+
+  #lightbox.active { display: flex; }
+
+  #lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    border: 4px solid #fff;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  }
+
+  .close-lightbox {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  width: 56px;
+  height: 56px;
+  font-size: 56px;           /* a bit larger for perfect alignment */
+  line-height: 56px !important;   /* forces exact vertical center */
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 100;
+  text-align: center;
+  opacity: 0.85;
+  transition: all 0.2s ease;
+  z-index: 1001;
+
+  /* The magic line that fixes the slight left-offset on every system */
+  transform: translateX(6px);
+
+  /* Optional but looks really nice */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-lightbox:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  transform: translateX(2px) scale(1.05);
+}
+
+  @media (max-width: 600px) {
+    .gallery { gap: 12px; }
+  }
+</style>
+  </head>
+  <body>
+
+<div id="container">
+  <div id="topBar"></div>
+  
+  <div id="headerArea">
+    <div id="header">
+      <a href="/"><img src="/images/spacecat.png" height="120px"></a>
+      <a href="/" style="text-decoration: none;"><strong style="font-size: x-large;">justinswain.dev</strong></a>
+    </div>
+  </div>
+
+  <div id="flex">
+    <main>
+        <h1>Photo Gallery</h1>
+      <div class="box">
+        <!-- Photo Gallery -->
+        <div class="gallery" id="photoGallery">
+          <!-- Photos will be injected here by JavaScript -->
+        </div>
+      </div>
+      <br><br>
+      <div class="box">
+        <h2>My Camera Gear</h2>
+        <ul>
+            <li>Nikon d5200</li>
+            <li>Nikkor AF-S DX 35mm f/1.8G</li>
+        </ul>
+        I use <a href="https://www.darktable.org/">Darktable</a> for edits.
+      </div>
+    </main>
+    <sideBar id="sideBarPlaceholder"></sideBar>
+  </div>
+  
+  <footer id="footerPlaceholder" style="margin-top: 10px;"></footer>
+</div>
+
+<!-- Lightbox Overlay -->
+<div id="lightbox">
+  <!-- Proper × using an actual multiplication sign (looks perfect everywhere) -->
+  <span class="close-lightbox" onclick="closeLightbox()" aria-label="Close">
+     x
+  </span>
+  <img id="lightboxImage" src="" alt="Full size photo">
+</div>
+
+<!-- JavaScript -->
+<script>
+  // === EDIT THIS ARRAY ONLY TO ADD/REMOVE/REORDER PHOTOS ===
+  const photos = [
+    "20251125_jinx.jpg",
+    "20251125_zed.jpg",
+    // Add more filenames here — just the name, not the full path
+  ];
+  // =========================================================
+
+  const gallery = document.getElementById("photoGallery");
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightboxImage");
+
+  // Generate gallery thumbnails
+  photos.forEach(filename => {
+    const item = document.createElement("div");
+    item.className = "gallery-item";
+
+    const img = document.createElement("img");
+    img.src = `/images/photos/${filename}`;
+    img.alt = filename.split('.')[0].replace(/_/g, ' ');
+    img.loading = "lazy"; // improves performance
+
+    item.appendChild(img);
+    gallery.appendChild(item);
+
+    // Click to open lightbox
+    item.addEventListener("click", () => {
+      lightboxImg.src = `/images/photos/${filename}`;
+      lightbox.classList.add("active");
+    });
+  });
+
+  // Close lightbox
+  function closeLightbox() {
+    lightbox.classList.remove("active");
+    lightboxImg.src = "";
+  }
+
+  // Close on background click or ESC key
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox || e.target.classList.contains("close-lightbox")) {
+      closeLightbox();
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeLightbox();
+  });
+
+  // Load your existing components
+  async function loadComponent(elementId, filePath) {
+    try {
+      const response = await fetch(filePath);
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      const content = await response.text();
+      document.getElementById(elementId).innerHTML = content;
+    } catch (error) {
+      console.error(`Error loading ${filePath}:`, error);
+    }
+  }
+
+  loadComponent("sideBarPlaceholder", "/components/sidebar.html");
+  loadComponent("footerPlaceholder", "/components/footer.html");
+
+  function isPrime(n) {
+    if (n < 2) return false;
+    for (let i = 2; i <= Math.sqrt(n); i++) if (n % i === 0) return false;
+    return true;
+  }
+  let currentNum = 2;
+  function updatePrime() {
+    while (!isPrime(currentNum)) currentNum++;
+    const el = document.getElementById("prime-number");
+    if (el) el.textContent = currentNum;
+    currentNum++;
+  }
+  setInterval(updatePrime, 2000);
+  updatePrime();
+</script>
+
+</body>
+</html>
