@@ -7,26 +7,30 @@
   <link rel="stylesheet" href="/style/style.css">
   <link rel="icon" href="/images/spacecat.png">
   <style>
-    .steam-profile {
+    .steam-card {
       text-align: center;
-      padding: 30px;
-      background: rgba(0,0,0,0.3);
+      padding: 40px 20px;
+      background: rgba(0,0,0,0.35);
       border-radius: 16px;
-      max-width: 500px;
+      max-width: 600px;
       margin: 30px auto;
+      border: 1px solid #333;
     }
-    .steam-profile img {
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      border: 4px solid #00d4ff;
-      box-shadow: 0 0 30px rgba(0,212,255,0.4);
+    .steam-card img { width: 160px; height: 160px; border-radius: 50%; border: 4px solid #00d4ff; box-shadow: 0 0 30px rgba(0,212,255,0.4); }
+    .steam-card h2 { margin: 20px 0 8px; font-size: 2.2rem; color: #00d4ff; }
+    .stats { margin: 25px 0; font-size: 1.3rem; line-height: 1.8; }
+    .level { font-size: 3rem; font-weight: bold; color: #ffd700; text-shadow: 0 0 20px #ffd700; }
+    .top-games { margin-top: 30px; }
+    .top-games h3 { margin: 0 0 15px; color: #00d4ff; }
+    .top-games ul { list-style: none; padding: 0; }
+    .top-games li {
+      background: rgba(0,212,255,0.1);
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 8px;
+      border-left: 4px solid #00d4ff;
     }
-    .steam-profile h2 { margin: 20px 0 8px; font-size: 2rem; color: #00d4ff; }
-    .steam-profile .status { font-size: 1.3rem; margin: 10px 0; }
-    .online { color: #66ff66; }
-    .offline { color: #ff6666; }
-    .loading { text-align: center; padding: 40px; color: #aaa; font-size: 1.2rem; }
+    .loading { text-align: center; padding: 60px; color: #aaa; font-size: 1.4rem; }
   </style>
 </head>
 <body>
@@ -46,8 +50,8 @@
         <h1>Video Games</h1>
         <p>My Steam profile.</p>
 
-        <div id="steam-loading" class="loading">Connecting to Steam...</div>
-        <div id="steam-profile" class="steam-profile" style="display:none"></div>
+        <div id="steam-loading" class="loading">Fetching Steam data...</div>
+        <div id="steam-card" class="steam-card" style="display:none"></div>
       </div>
     </main>
     <sideBar id="sideBarPlaceholder"></sideBar>
@@ -56,62 +60,112 @@
 </div>
 
 <script>
-// ==== CONFIG — CHANGE THESE TWO LINES ONLY ====
+// CONFIG — CHANGE ONLY THESE
 const STEAM_KEY = "BCB2BCC753CA6165382166FD6D7BACFB";
-const STEAM_ID  = "76561198123456789";  // ← your actual SteamID64
-// ===============================================
-
-async function loadSteamProfile() {
+const STEAM_ID  = "76561198799815501";  //
+// =====================================
+function cleanGameName(name) {
+  if (!name) return "Unknown Game";
+  return name
+    .replace(/\u2122/g, '™')   // ™
+    .replace(/\u00AE/g, '®')   // ®
+    .replace(/\u00A9/g, '©')   // ©
+    .replace(/[\u00C0-\u017F]/g, ch =>     // Fix common Windows-1252 → UTF-8 glitches
+      String.fromCharCode(ch.charCodeAt(0) - (ch.charCodeAt(0) > 127 ? 0x80 : 0))
+    )
+    .replace(/[^\w\s:®©&\-!'’()+,]/g, '') // Remove any remaining garbage
+    .trim();
+}
+async function loadSteamData() {
   const loading = document.getElementById('steam-loading');
-  const profileDiv = document.getElementById('steam-profile');
+  const card = document.getElementById('steam-card');
 
-  // 30-minute cache
-  const cache = localStorage.getItem('steamProfileCache');
-  if (cache && Date.now() - JSON.parse(cache).ts < 1800000) {
+  // Cache for 24 hours
+  const cache = localStorage.getItem('steamFullCache');
+  if (cache && Date.now() - JSON.parse(cache).ts < 86400000) {
     render(JSON.parse(cache).data);
     loading.style.display = 'none';
     return;
   }
 
   try {
-    const res = await fetch(
-      `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${STEAM_KEY}&steamids=${STEAM_ID}`
-    );
-    const json = await res.json();
-    const player = json.response.players[0];
+    const [profileRes, levelRes, ownedRes] = await Promise.all([
+      fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(
+        `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${STEAM_KEY}&steamids=${STEAM_ID}`
+      )}`).then(r => r.json()),
 
-    if (!player) throw new Error("No player data");
+      fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(
+        `https://api.steampowered.com/IPlayerService/GetSteamLevel/v1/?key=${STEAM_KEY}&steamid=${STEAM_ID}`
+      )}`).then(r => r.json()),
 
-    // Cache it
-    localStorage.setItem('steamProfileCache', JSON.stringify({ data: player, ts: Date.now() }));
+      fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(
+        `https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=${STEAM_KEY}&steamid=${STEAM_ID}&include_appinfo=1&include_played_free_games=1`
+      )}`).then(r => r.json())
+    ]);
 
-    render(player);
+    const player = profileRes.response.players[0];
+    const level = levelRes.response?.player_level || "??";
+    const gamesData = ownedRes.response;
+
+    if (!player || !gamesData) throw new Error("Missing data");
+
+    const totalGames = gamesData.game_count || 0;
+    const top5 = gamesData.games
+    .filter(g => g.playtime_forever > 60 && g.appid)
+    .sort((a,b) => b.playtime_forever - a.playtime_forever)
+    .slice(0, 5)
+    .map(g => ({
+    name: g.name,
+    hours: Math.round(g.playtime_forever / 60),
+    appid: g.appid,
+  }));
+
+    const data = { player, level, totalGames, top5 };
+    localStorage.setItem('steamFullCache', JSON.stringify({ data, ts: Date.now() }));
+    render(data);
+
     loading.style.display = 'none';
 
   } catch (e) {
-    loading.innerHTML = "Steam is taking a nap... try again in a minute.";
+    loading.innerHTML = "Steam is resting...";
     console.log("Steam error:", e);
   }
 
-  function render(p) {
-    const status = p.personastate === 1 ? "Online" : p.personastate === 0 ? "Offline" : "Away/In-Game";
-    const statusClass = p.personastate === 1 ? "online" : "offline";
+  function render(d) {
+    card.innerHTML = `
+      <a href="${d.player.profileurl}" target="_blank"><img src="${d.player.avatarfull}" alt="JustinTX"></a>
+      <h2>${d.player.personaname}</h2>
+      <div class="stats">
+        <div class="level">Level ${d.level}</div>
+        <div>${d.totalGames} games owned</div>
+      </div>
 
-    profileDiv.innerHTML = `
-      <img src="${p.avatarmedium}" alt="Steam Avatar">
-      <h2>${p.personaname}</h2>
-      <div class="status ${statusClass}">${status}</div>
-      ${p.realname ? `<p><strong>Real name:</strong> ${p.realname}</p>` : ""}
-      <p>Level: ${p.player_level || "??"} - Account created: ${new Date(p.timecreated * 1000).getFullYear()}</p>
-      <p><a href="${p.profileurl}" target="_blank">View full Steam profile →</a></p>
+      <div class="top-games">
+        <h3>Most Played</h3>
+        <div style="margin:20px;">
+            ${d.top5.map(g => `
+            <div style="text-align:center;background:rgba(0,212,255,0.06);padding:20px;border-radius:14px;border:1px solid #333;">
+                <a href="https://store.steampowered.com/agecheck/app/${g.appid}"><img src="https://steamcdn-a.akamaihd.net/steam/apps/${g.appid}/header.jpg" 
+                    alt="${cleanGameName(g.name)}"
+                    style="width: 80%;border-radius:8px;box-shadow:0 4px 15px rgba(0,212,255,0.4);"></a>
+                <p style="margin:15px 0 6px;font-weight:bold;font-size:1.2rem;color:#fff;">${cleanGameName(g.name)}</p>
+                <p style="color:#00d4ff;font-size:1.6rem;font-weight:bold;margin:0;">${g.hours}h</p>
+            </div>
+            <br>
+            `).join('')}
+        </div>
+        </div>
+      <p style="margin-top:30px">
+        <a href="${d.player.profileurl}" target="_blank">View my full Steam profile →</a>
+      </p>
     `;
-    profileDiv.style.display = 'block';
+    card.style.display = 'block';
   }
 }
 
-loadSteamProfile();
+loadSteamData();
 
-// Your usual footer/sidebar + prime clock
+// usual sidebar/footer + prime clock
 async function loadComponent(id, path) {
   try { document.getElementById(id).innerHTML = await (await fetch(path)).text(); } catch(e) {}
 }
