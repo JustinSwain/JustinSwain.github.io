@@ -6,275 +6,258 @@
     <title>Justin Swain - Music</title>
     <link rel="stylesheet" href="/style/style.css">
     <link rel="icon" href="/images/spacecat.png">
-<style>
-    .book {width: 100%}
-    .zoom {
-            width: 25%; 
-            margin: 0;
-            left: 50%;
-            transition: transform .3s ease-in-out;
+
+    <style>
+      .album-cover { 
+        max-width: 100%; 
+        display: block; 
+        border-radius: 8px;
     }
-    .zoom:hover {   
-        z-index: 1;
-        transform: scale(2.0);
-    }
-    .zoom:hover .book{
-        border: 2px solid var(--space0);
-    }
-    .zoom:hover .text-box{
+      .zoom {
+        width: 23%;
+        margin: 10px;
+        position: relative;
+        transition: transform 0.3s ease;
+      }
+      .zoom:hover {
+        z-index: 100;
+        transform: scale(1.5);
+      }
+      .zoom:hover .album-cover {
+        border: 3px solid var(--space0, #00d4ff);
+        box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+      }
+      .zoom:hover .text-box {
         display: block;
-    }
-    .text-box {
+      }
+      .text-box {
         display: none;
         position: absolute;
-        top: 90%;
+        bottom: 0px;
         left: 50%;
-        transform: translateX(-50%) scale(0.6);
-        background-color: rgba(0, 7, 27, 0.5);
+        transform: translateX(-50%);
+        transform: translateX(-50%) scale(0.75);
+        background: rgba(0, 7, 27, 0.92);
         color: white;
-        padding: 5px;
-        border-radius: 5px;
-        white-space: normal;
+        padding: 10px 16px;
+        border-radius: 8px;
+        white-space: nowrap;
+        font-size: 1.1rem;
+        font-weight: 600;
         text-align: center;
-    }
-    .posters {
+        pointer-events: none;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+      }
+      .posters {
         display: flex;
         flex-wrap: wrap;
-        flex-direction: row !important;
-        align-items: center;
         justify-content: center;
-    }
-</style>  
-</head>
+        gap: 12px;
+        padding: 20px 0;
+      }
+      .year-section strong {
+        display: block;
+        font-size: 2rem;
+        text-align: center;
+        margin: 30px 0 15px;
+        color: var(--space0, #00d4ff);
+      }
+      .spotify-embed {
+        margin: 20px 0;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+    /* BEST OF THE YEAR */
+.zoom.best {
+  position: relative;
+  z-index: 15;
+}
+.zoom.best img {
+  outline: 5px solid #ffd700;
+  outline-offset: -3px;
+  box-shadow: inset 0 0 10px rgba(255,215,0,0.5);
+  box-shadow: 
+    0 0 25px #ffd700,
+    0 0 50px #ffea00,
+    0 0 80px #ffd700;
+  animation: pulse-glow 3s infinite alternate;
+  pointer-events: none;
+  z-index: -10;
+}
+
+/* Ribbon label */
+.zoom.best::after {
+  content: "★ BEST OF YEAR ★";
+  position: absolute;
+  top: -34px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, #b8860b, #ffd700, #b8860b);
+  color: #000;
+  font-weight: bold;
+  font-size: 0.6rem;
+  padding: 6px 16px;
+  border-radius: 30px;
+  white-space: nowrap;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+  z-index: 20;
+}
+
+@keyframes pulse-glow {
+  from { box-shadow: 0 0 5px #ffd900a8, 0 0 10px #ffea00, 0 0 18px #ffd700a8; }
+  to   { box-shadow: 0 0 7px #ffd700a8, 0 0 16px #ffea00, 0 0 22px #ffd700a8; }
+}
+
+.zoom.best:hover {
+  transform: scale(1.5) !important;
+}
+    </style>
+  </head>
   <body>
-<div id="container"><div id="topBar">
-</div>
-<div id="headerArea">
+
+<div id="container">
+  <div id="topBar"></div>
+  
+  <div id="headerArea">
     <div id="header">
-        <a href="/"><img src="/images/spacecat.png" height="120px"></a>
-            <a href="/" style="text-decoration: none;"><strong style="font-size: x-large;">justinswain.dev</strong></a>
+      <a href="/"><img src="/images/spacecat.png" height="120px"></a>
+      <a href="/" style="text-decoration: none;"><strong style="font-size: x-large;">justinswain.dev</strong></a>
     </div>
-</div>
+  </div>
 
-<div id="flex">
-
+  <div id="flex">
     <main>
+      <div class="box">
         <h1>Music</h1>
-        <div class="box">
-            <h3>Favorite Music by Year</h3>
-            <iframe style="border-radius:10px" src="https://open.spotify.com/embed/playlist/5qurPIasCgEm1ZkvWNHvce?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-            <br><br>
-            <iframe style="border-radius:10px" src="https://open.spotify.com/embed/playlist/30Ff7hADeDl5K6w3hG6QFv?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
+        <h3>Favorite Music by Year</h3>
+        <div class="spotify-embed">
+          <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/5qurPIasCgEm1ZkvWNHvce?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
-
-        <br><br>
-
-        <div class="box">
-            <h3>Favorite Drummers</h3>
-            <ol>
-                <li>Matt Garstka</li>
-                <ul>
-                    <li>
-                        <a href="https://www.youtube.com/watch?v=-xUqa6pYqnY">1</a> 
-                    </li>
-                    <li>
-                        <a href="https://www.youtube.com/watch?v=lNjOFNBkja4">2</a> 
-                    </li>
-                    <li>
-                        <a href="https://www.youtube.com/watch?v=3mv7JyLCFfI">3</a> 
-                    </li>
-                    <li>
-                        <a href="https://www.youtube.com/watch?v=mzYcGXT0v8s">4</a> 
-                    </li>
-                </ul>
-                <li>Matt Halpern</li>
-                <ul>
-                    <li>
-                        <a href="https://www.youtube.com/watch?v=FUk72MwuWrs">1</a> 
-                    </li>
-                    <li>
-                        <a href="https://www.youtube.com/watch?v=JSJaPD99unE">2</a> 
-                    </li>
-                </ul>
-                <li>Tomas Haake</li>
-                <ul>
-                    <li>
-                        <a href="https://www.youtube.com/watch?v=axGn6qeJHcM">1</a> 
-                    </li>
-                </ul>
-                <li>Mario Duplantier</li>
-                <ul>
-                    <li>
-                        <a href="https://www.youtube.com/watch?v=R2zTNT2YPZE">1</a> 
-                    </li>
-                </ul>
-                <li>II (Sleep Token)</li>
-                <ul>
-                    <li>
-                        <a href="https://www.youtube.com/watch?v=sAy2FfAjefU">1</a> 
-                    </li>
-                </ul>
-            </ol>
+        <div class="spotify-embed">
+          <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/30Ff7hADeDl5K6w3hG6QFv?utm_source=generator&theme=0" width="100%" height="152" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
-
-        <br><br>
-
-        <div class="box">
-            <h3>Concerts that I attended</h3>
-
-            <strong>2025</strong>
-            <div id="flex" class="posters">
-                <div class="zoom">
-                    <img class="book" src="/images/shows/meshuggah2025.webp" alt="Meshuggah 2025">
-                    <div class="text-box">Meshuggah</div>
-                </div>
-                <div class="zoom">
-                    <img class="book" src="/images/shows/inventAnimate25.jpg" alt=>
-                    <div class="text-box">Invent Animate and Silent Planet</div>
-                </div>
-                <div class="zoom">
-                    <img class="book" src="/images/shows/rockCats.png" alt=>
-                    <div class="text-box">Rock Cats and Acrocats</div>
-                </div>
-                <div class="zoom">
-                    <img class="book" src="/images/shows/ronnie25.jpg" alt=>
-                    <div class="text-box">Falling in Reverse</div>
-                </div>
-                <div class="zoom">
-                    <img class="book" src="/images/shows/bilmuri25.jpg" alt=>
-                    <div class="text-box">Bilmuri</div>
-                </div>
-                <div class="zoom">
-                    <img class="book" src="/images/shows/bmth25.png" alt=>
-                    <div class="text-box">Bring Me the Horizon</div>
-                </div>
-            </div>
-
-            <strong>2024</strong>
-            <div id="flex" class="posters">
-                <div class="zoom">
-                    <img class="book" src="/images/shows/badOmens24.JPG" >
-                    <div class="text-box">Bad Omens</div>
-                </div>
-                <div class="zoom">
-                    <img class="book" src="/images/shows/knockedLoose24.jpeg" >
-                    <div class="text-box">Knocked Loose</div>
-                </div>
-                <div class="zoom">
-                    <img class="book" src="/images/shows/FiR2024.png" >
-                    <div class="text-box">Falling in Reverse</div>
-                </div>
-                <div class="zoom">
-                    <img class="book" src="/images/shows/bilmuri2024.png" >
-                    <div class="text-box">Bilmuri</div>
-                </div>
-                <div class="zoom">
-                    <img class="book" src="/images/shows/Animals2024.jpg" >
-                    <div class="text-box">Animals as Leaders</div>
-                </div>
-                <div class="zoom">
-                    <img class="book" src="/images/shows/iceNineKills24.jpg" >
-                    <div class="text-box">Ice Nine Kills</div>
-                </div>
-            </div>
-
-            <br><br>
-
-            <strong>2023</strong>
-            <div id="flex" class="posters">
-                <div class="zoom">
-                    <img class="book" src="/images/shows/gojiraMastadon23.jpg" >
-                    <div class="text-box">Gojira and Mastadon</div>
-                </div>
-                <div class="zoom">
-                    <img class="book" src="/images/shows/dreamTheater23.webp" >
-                    <div class="text-box">Dream Theater</div>
-                </div>
-                <div class="zoom">
-                    <img class="book" src="/images/shows/ghost23.jpg" >
-                    <div class="text-box">Ghost</div>
-                </div>
-                <div class="zoom">
-                    <img class="book" src="/images/shows/avengeSevenfold23.webp" >
-                    <div class="text-box">Avenge Sevenfold</div>
-                </div>
-                <div class="zoom">
-                    <img class="book" src="/images/shows/dgd23.webp" >
-                    <div class="text-box">Dance Gavin Dance</div>
-                </div>
-                <div class="zoom">
-                    <img class="book" src="/images/shows/sleepToken23.jpg" >
-                    <div class="text-box">Sleep Token</div>
-                </div>
-                <div class="zoom">
-                    <img class="book" src="/images/shows/motionless23.jpg" >
-                    <div class="text-box">Motionless in White</div>
-                </div>
-                <div class="zoom">
-                    <img class="book" src="/images/shows/periphery23.jpg" >
-                    <div class="text-box">Periphery</div>
-                </div>
-            </div>
-
-            <br><br>
-
-            <strong>2022</strong>
-            <div id="flex" class="posters">
-                <div class="zoom">
-                    <img class="book" src="/images/shows/animalsAsLeaders22.jpg" >
-                    <div class="text-box">Animals as Leaders</div>
-                </div>
-                <div class="zoom">
-                    <img class="book" src="/images/shows/ronnie22.jpg" >
-                    <div class="text-box">Falling in Reverse</div>
-                </div>
-            </div>
-            
-        </div>
+      </div>
+      <br>
+      <div class="box">
+        <h3>Favorite Drummers</h3>
+        <ol>
+          <li><strong>Matt Garstka</strong> (Animals as Leaders)
+            <ul>
+              <li><a href="https://www.youtube.com/watch?v=-xUqa6pYqnY" target="_blank">Monomyth</a></li>
+              <li><a href="https://www.youtube.com/watch?v=lNjOFNBkja4" target="_blank">Kepler</a></li>
+              <li><a href="https://www.youtube.com/watch?v=7LKHkRtmHSY" target="_blank">CAFO Live</a></li>
+              <li><a href="https://www.youtube.com/watch?v=mzYcGXT0v8s" target="_blank">35 BPM Solo</a></li>
+            </ul>
+          </li>
+          <li><strong>Matt Halpern</strong> (Periphery)
+            <ul>
+              <li><a href="https://www.youtube.com/watch?v=FUk72MwuWrs" target="_blank">Dracul Gas</a></li>
+              <li><a href="https://www.youtube.com/watch?v=0xKmMZ79ZzM" target="_blank">Wax Wings</a></li>
+            </ul>
+          </li>
+          <li><strong>Tomas Haake</strong> (Meshuggah)
+            <ul><li><a href="https://www.youtube.com/watch?v=axGn6qeJHcM" target="_blank">Clockworks</a></li></ul>
+          </li>
+          <li><strong>Mario Duplantier</strong> (Gojira)
+            <ul><li><a href="https://www.youtube.com/watch?v=R2zTNT2YPZE" target="_blank">The Art of Dying</a></li></ul>
+          </li>
+          <li><strong>II</strong> (Sleep Token)
+            <ul><li><a href="https://www.youtube.com/watch?v=sAy2FfAjefU" target="_blank">The Summoning (Live)</a></li></ul>
+          </li>
+        </ol>
+      </div>
+      <br>
+      <div class="box">
+        <h3>Concerts I've Attended</h3>
+        <div id="concerts"></div> <!-- All concert posters injected here -->
+      </div>
     </main>
     <sideBar id="sideBarPlaceholder"></sideBar>
-</div>
-<footer id="footerPlaceholder" style="margin-top: 10px;"></footer>
+  </div>
+
+  <footer id="footerPlaceholder" style="margin-top: 10px;"></footer>
 </div>
 
-<!-- JavaScript to load components -->
 <script>
-async function loadComponent(elementId, filePath) {
-  try {
-    const response = await fetch(filePath);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const content = await response.text();
-    if (!content) {
-      console.warn(`File ${filePath} is empty or not loaded`);
-    }
-    document.getElementById(elementId).innerHTML = content;
-  } catch (error) {
-    console.error(`Error loading ${filePath}:`, error);
+  // EDIT ONLY THIS OBJECT 
+  const concertsByYear = {
+    "2025": [
+      { img: "meshuggah2025.webp",        caption: "Meshuggah" , best: true},
+      { img: "inventAnimate25.jpg",       caption: "Invent Animate + Silent Planet" },
+      { img: "rockCats.png",              caption: "Rock Cats & Acrocats" },
+      { img: "ronnie25.jpg",              caption: "Falling in Reverse"},
+      { img: "bilmuri25.jpg",             caption: "Bilmuri"  },
+      { img: "bmth25.png",                caption: "Bring Me the Horizon" }
+    ],
+    "2024": [
+      { img: "badOmens24.JPG",            caption: "Bad Omens" },
+      { img: "knockedLoose24.jpeg",       caption: "Knocked Loose" },
+      { img: "FiR2024.png",               caption: "Falling in Reverse" },
+      { img: "bilmuri2024.png",           caption: "Bilmuri" , best: true},
+      { img: "Animals2024.jpg",           caption: "Animals as Leaders" },
+      { img: "iceNineKills24.jpg",        caption: "Ice Nine Kills" }
+    ],
+    "2023": [
+      { img: "gojiraMastadon23.jpg",      caption: "Gojira & Mastodon" , best: true},
+      { img: "dreamTheater23.webp",       caption: "Dream Theater" },
+      { img: "ghost23.jpg",               caption: "Ghost" },
+      { img: "avengeSevenfold23.webp",    caption: "Avenged Sevenfold" },
+      { img: "dgd23.webp",                caption: "Dance Gavin Dance" },
+      { img: "sleepToken23.jpg",          caption: "Sleep Token" },
+      { img: "motionless23.jpg",          caption: "Motionless in White" },
+      { img: "periphery23.jpg",           caption: "Periphery" }
+    ],
+    "2022": [
+      { img: "animalsAsLeaders22.jpg",    caption: "Animals as Leaders" , best: true},
+      { img: "ronnie22.jpg",              caption: "Falling in Reverse" }
+    ]
+  };
+
+  const concertsContainer = document.getElementById("concerts");
+
+  // Sort years descending and generate sections
+  Object.keys(concertsByYear)
+    .sort((a, b) => b - a)
+    .forEach(year => {
+        const section = document.createElement("div");
+        section.className = "year-section";
+        section.innerHTML = `<strong>${year}</strong><div class="posters"></div>`;
+        const posters = section.querySelector(".posters");
+
+        concertsByYear[year].forEach(show => {
+        const zoom = document.createElement("div");
+        zoom.className = "zoom";
+        if (show.best) zoom.classList.add("best");   // glowing
+
+        zoom.innerHTML = `
+            <img src="/images/shows/${show.img}" class="album-cover" alt="${show.caption}" loading="lazy">
+            <div class="text-box">${show.caption}</div>
+        `;
+    posters.appendChild(zoom);
+    });
+
+      concertsContainer.appendChild(section);
+    });
+
+  // Load components
+  async function loadComponent(id, path) {
+    try {
+      const res = await fetch(path);
+      if (!res.ok) throw new Error(res.status);
+      document.getElementById(id).innerHTML = await res.text();
+    } catch (e) { console.error(e); }
   }
-}
+  loadComponent("sideBarPlaceholder", "/components/sidebar.html");
+  loadComponent("footerPlaceholder", "/components/footer.html");
 
-// Load the components
-loadComponent("sideBarPlaceholder", "/components/sidebar.html");
-loadComponent("footerPlaceholder", "/components/footer.html");
-function isPrime(n) {
-    if (n < 2) return false;
-    for (let i = 2; i <= Math.sqrt(n); i++) {
-        if (n % i === 0) return false;
-    }
-    return true;
-}
-
-let currentNum = 2;
-function updatePrime() {
-    while (!isPrime(currentNum)) currentNum++;
-    document.getElementById("prime-number").textContent = currentNum;
-    currentNum++;
-}
-setInterval(updatePrime, 2000); // Updates every 2 seconds
-updatePrime();
+  // Prime number easter egg
+  function isPrime(n) { if (n < 2) return false; for (let i = 2; i <= Math.sqrt(n); i++) if (n % i === 0) return false; return true; }
+  let n = 2;
+  function updatePrime() { while (!isPrime(n)) n++; const el = document.getElementById("prime-number"); if (el) el.textContent = n; n++; }
+  setInterval(updatePrime, 2000); updatePrime();
 </script>
-</div>
+
 </body>
 </html>

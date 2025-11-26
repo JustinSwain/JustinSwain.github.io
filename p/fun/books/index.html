@@ -6,311 +6,258 @@
     <title>Justin Swain - Books</title>
     <link rel="stylesheet" href="/style/style.css">
     <link rel="icon" href="/images/spacecat.png">
+
     <style>
-    .book {width: 100%}
-    .zoom {
-            width: 15%; 
-            margin: 0;
-            left: 50%;
-            transition: transform .3s ease-in-out;
-    }
-    .zoom:hover {   
-        z-index: 1;
-        transform: scale(2.0);
-    }
-    .zoom:hover .book{
-        border: 2px solid var(--space0);
-    }
-    .zoom:hover .text-box{
+      .book { width: 100%; display: block; border-radius: 6pt; }
+      .zoom {
+        width: 15%;
+        margin: 8px;
+        position: relative;
+        transition: transform .3s ease-in-out;
+      }
+      .zoom:hover {
+        z-index: 100;
+        transform: scale(1.5);
+      }
+      .zoom:hover .book {
+        border: 3px solid var(--space0, #00d4ff);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      }
+      .zoom:hover .text-box {
         display: block;
-    }
-    .text-box {
+      }
+      .text-box {
         display: none;
         position: absolute;
-        top: 90%;
+        top: 100%;
         left: 50%;
-        transform: translateX(-50%) scale(0.6);
-        background-color: rgba(0, 7, 27, 0.75);
+        transform: translateX(-50%) scale(0.75);
+        background: rgba(0, 7, 27, 0.9);
         color: white;
-        padding: 5px;
-        border-radius: 5px;
-        white-space: normal;
+        padding: 10px 14px;
+        border-radius: 8px;
+        white-space: nowrap;
+        font-size: 1rem;
+        font-weight: 500;
         text-align: center;
-    }
-    .posters {
+        pointer-events: none;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+      }
+      .posters {
         display: flex;
         flex-wrap: wrap;
-        flex-direction: row !important; 
-        align-items: center;
         justify-content: center;
-    }
+        gap: 10px;
+        padding: 20px 0;
+      }
+      .year-section {
+        margin-bottom: 40px;
+      }
+      .year-section strong {
+        font-size: 1.8rem;
+        display: block;
+        margin: 20px 0 10px;
+        text-align: center;
+      }
+      /* BEST OF THE YEAR */
+.zoom.best {
+  position: relative;
+  z-index: 15;
+}
+/* Glowing border */
+.zoom.best img {
+  outline: 5px solid #ffd700;
+  outline-offset: -3px;
+  box-shadow: inset 0 0 10px rgba(255,215,0,0.5);
+  box-shadow: 
+    0 0 25px #ffd700,
+    0 0 50px #ffea00,
+    0 0 80px #ffd700;
+  animation: pulse-glow 3s infinite alternate;
+  pointer-events: none;
+  z-index: -10;
+}
+
+/* Ribbon label */
+.zoom.best::after {
+  content: "★ BEST OF YEAR ★";
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, #b8860b, #ffd700, #b8860b);
+  color: #000;
+  font-weight: bold;
+  font-size: 0.6rem;
+  padding: 6px 16px;
+  border-radius: 30px;
+  white-space: nowrap;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+  z-index: 20;
+}
+
+@keyframes pulse-glow {
+  from { box-shadow: 0 0 5px #ffd900a8, 0 0 10px #ffea00, 0 0 18px #ffd700a8; }
+  to   { box-shadow: 0 0 7px #ffd700a8, 0 0 16px #ffea00, 0 0 22px #ffd700a8; }
+}
+
+.zoom.best:hover {
+  transform: scale(1.5) !important;
+}
     </style>
   </head>
   <body>
-<div id="container"><div id="topBar">
-    <!--<marquee>Welcome!</marquee>-->
-</div>
-<div id="headerArea">
+
+<div id="container">
+  <div id="topBar"></div>
+  
+  <div id="headerArea">
     <div id="header">
-        <a href="/"><img src="/images/spacecat.png" height="120px"></a>
-            <a href="/" style="text-decoration: none;"><strong style="font-size: x-large;">justinswain.dev</strong></a>
+      <a href="/"><img src="/images/spacecat.png" height="120px"></a>
+      <a href="/" style="text-decoration: none;"><strong style="font-size: x-large;">justinswain.dev</strong></a>
     </div>
-</div>
+  </div>
 
-<div id="flex">
-
+  <div id="flex">
     <main>
+      <div class="box">
         <h1>Books</h1>
-        <div class="box">
-            <p>
-                I like reading and collecting books. Below you will find my virtual bookshelf, as well as a list of favorites.
-        </div>
+        <p>I like reading and collecting books. Below you will find my virtual bookshelf, as well as a list of favorites.</p>
+      </div>
+      <br>
+      <div class="box">
+        <h2>Virtual Bookshelf</h2>
+        <p>These are the books I read in...</p>
 
-        <br>
-
-        <div class="box">
-            <h2>Virtual Bookshelf</h2>
-            <p>These are the books I read in...</p>
-            <strong>2025</strong>
-            <div id="flex" class="posters">
-                <div class="zoom">
-                    <img src="/images/books/2025/templars.jpg" class="book">
-                    <div class="text-box">The Templars <br> Dan Jones</div>
-                </div>
-                <div class="zoom">
-                    <img src="/images/books/2025/eyeOfTheWorld.jpg" class="book">
-                    <div class="text-box">The Eye of the World <br> Robert Jordan</div>
-                </div>
-                <div class="zoom">
-                    <img src="/images/books/2025/theGreatHunt.jpg" class="book">
-                    <div class="text-box">The Great Hunt <br> Robert Jordan</div>
-                </div>
-                <div class="zoom">
-                    <img src="/images/books/2025/theBrokenSword.jpg" class="book">
-                    <div class="text-box">The Broken Sword <br> Poul Anderson</div>
-                </div>
-                <div class="zoom">
-                    <img src="/images/books/2025/againstTheMachine.jpg" class="book">
-                    <div class="text-box">Against the Machine <br> Paul Kingsnorth</div>
-                </div>
-                <div class="zoom">
-                    <img src="/images/books/2025/taliesin.jpg" class="book">
-                    <div class="text-box">Taliesin <br> Stephen R. Lawhead</div>
-                </div>
-            </div>
-            <br>
-            <strong>2024</strong>
-                <div id="flex" class="posters">
-                    <div class="zoom">
-                        <img src="/images/books/2024/outlive.jpg" class="book">
-                        <div class="text-box">Outlive<br>Peter Attia</div>
-                    </div>
-                    <div class="zoom">
-                        <img src="/images/books/2024/snowCrash.jpg" class="book">
-                        <div class="text-box">Snow Crash<br>Neal Stephenson</div>
-                    </div>
-                    <div class="zoom">
-                        <img src="/images/books/2024/infiniteJest.jpg" class="book">
-                        <div class="text-box">Infinite Jest<br>David Foster Wallace</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/notesFromUnderground.jpg">
-                        <div class="text-box">Notes from Underground<br>Fyodor Dostoevsky</div>
-                    </div>
-                    <div class="zoom">
-                        <img src="/images/books/2024/starshipToopers.jpg" class="book">
-                        <div class="text-box">Starship Troopers<br>Robert A. Heinlein</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/theFisherman.jpg">
-                        <div class="text-box">The Fisherman<br>John Langan</div>
-                    </div>
-                    <div class="zoom">
-                        <img src="/images/books/2024/callOfTheWild.jpg" class="book">
-                        <div class="text-box">The Call of the Wild<br>Jack London</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/betweenTwoFires.jpg">
-                        <div class="text-box">Between Two Fires<br>Christopher Buehlman</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/housemaid1.jpg" alt="">
-                        <div class="text-box">The Housemaid<br>Freida McFadden</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/americanPsycho.jpg" alt="">
-                        <div class="text-box">American Psycho<br>Bret Easton Ellis</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/godGame.jpg" alt="">
-                        <div class="text-box">The God Game<br>Danny Tobey</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/nihilismRootOfRevolution.jpg" alt="">
-                        <div class="text-box">Nihilism: The Root of the Revolution of the Modern Age<br> Fr. Seraphim Rose</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/deathNote.jpg" alt="">
-                        <div class="text-box">Death Note<br>Tsugumi Ohba</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/murderRoad.jpg" alt="">
-                        <div class="text-box">Murder Road<br> Simone St. James</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/iconANovel.jpg" alt="">
-                        <div class="text-box">Icon: A Novel<br>Georgia Briggs</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/orthodoxWay.jpg" alt="">
-                        <div class="text-box">The Orthodox Way<br> Met. Kallistos Ware</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/kafkaOnTheShore.jpg" alt="">
-                        <div class="text-box">Kafka on the Shore<br> Haruki Murakami</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/hawthorne1.jpg" alt="">
-                        <div class="text-box">The Inheritance Games<br>Jennifer Lynn Barnes</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/hawthorne2.jpg" alt="">
-                        <div class="text-box">The Hawthorne Legacy<br>Jennifer Lynn Barnes</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/hawthorne3.jpg" alt="">
-                        <div class="text-box">The Final Gambit<br>Jennifer Lynn Barnes</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/bloodMeridian.jpg" alt="">
-                        <div class="text-box">Blood Meridian<br>Cormac McCarthy</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/crawdadsSing.jpg" alt="">
-                        <div class="text-box">Where the Crawdads Sing<br>Delia Owens</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/crimeAndPunishment.jpg" alt="">
-                        <div class="text-box">Crime and Punishment<br> Fyodor Dostoevsky</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/darkMatter.jpg" alt="">
-                        <div class="text-box">Dark Matter<br>Blake Crouch</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/earlyChristianWritings.jpg" alt="">
-                        <div class="text-box">Early Christian Writings<br>Various</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/godsBattalions.jpg" alt="">
-                        <div class="text-box">God's Battalions<br>Rodney Stark</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/hobbit.jpg" alt="">
-                        <div class="text-box">The Hobbit<br>J. R. R. Tolkien</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/metamorphosis.jpg" alt="">
-                        <div class="text-box">The Metamorphosis<br> Franz Kafka</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/originsOfTheFrenchRevolution.jpg" alt="">
-                        <div class="text-box">The Origins of the French Revolution<br>William Doyle</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/orthodoxChurch.jpg" alt="">
-                        <div class="text-box">The Orthodox Church<br>Met. Kallistos Ware</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/reflectionsBurke.jpg" alt="">
-                        <div class="text-box">Reflections on the Revolution in France<br>Edmund Burke</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/remina.jpg" alt="">
-                        <div class="text-box">Remina <br> Junji Ito</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/silentPatient.jpg" alt="">
-                        <div class="text-box">The Silent Patient<br>Alex Michaelides</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/theTrial.jpg" alt="">
-                        <div class="text-box">The Trial<br>Franz Kafka</div>
-                    </div>
-                    <div class="zoom">
-                        <img class="book" src="/images/books/2024/wayToNicaea.jpg" alt="">
-                        <div class="text-box">The Way to Nicaea<br>John Behr</div>
-                    </div>
-                </div>
-        </div>
-
-        <br>
-
-        <div class="box">
-            <h2>Favorite Books by Category</h2>
+        <!-- All books are injected here by JavaScript -->
+        <div id="bookshelf"></div>
+      </div>
+      <br>
+      <div class="box">
+        <h2>Favorite Books by Category</h2>
+        <ul>
+          <li><strong>Fantasy</strong>
             <ul>
-                <li>Fantasy</li>
-                <ul>
-                    <li>The Hobbit - J. R. R. Tolkien</li>
-                    <li>Lord of the Rings - J. R. R. Tolkien</li>
-                    <li>Gormenghast Trilogy - Mervyn Peake</li>
-                    <li>The Worm Ouroboros - E. R. Eddison</li>
-                </ul>
-                <li>Sci-Fi</li>
-                <ul>
-                    <li>Dark Matter - Blake Crouch</li>
-                    <li>Starship Troopers - Robert A. Heinlein</li>
-                </ul>
-                <li>Horror</li>
-                <ul>
-                    <li>American Psycho - Bret Easton Ellis</li>
-                </ul>
+              <li>The Hobbit - J. R. R. Tolkien</li>
+              <li>Lord of the Rings - J. R. R. Tolkien</li>
+              <li>Gormenghast Trilogy - Mervyn Peake</li>
+              <li>The Worm Ouroboros - E. R. Eddison</li>
             </ul>
-        </div>
+          </li>
+          <li><strong>Sci-Fi</strong>
+            <ul>
+              <li>Dark Matter - Blake Crouch</li>
+              <li>Starship Troopers - Robert A. Heinlein</li>
+            </ul>
+          </li>
+          <li><strong>Horror</strong>
+            <ul>
+              <li>American Psycho - Bret Easton Ellis</li>
+              <li>Between Two Fires - Christopher Buehlman</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </main>
     <sideBar id="sideBarPlaceholder"></sideBar>
-</div>
-<footer id="footerPlaceholder" style="margin-top: 10px;"></footer>
+  </div>
+
+  <footer id="footerPlaceholder" style="margin-top: 10px;"></footer>
 </div>
 
-<!-- JavaScript to load components -->
 <script>
-async function loadComponent(elementId, filePath) {
-  try {
-    const response = await fetch(filePath);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const content = await response.text();
-    if (!content) {
-      console.warn(`File ${filePath} is empty or not loaded`);
-    }
-    document.getElementById(elementId).innerHTML = content;
-  } catch (error) {
-    console.error(`Error loading ${filePath}:`, error);
+  // EDIT ONLY THIS ARRAY
+  const booksByYear = {
+    "2025": [
+      { img: "templars.jpg",          title: "The Templars", author: "Dan Jones" },
+      { img: "eyeOfTheWorld.jpg",     title: "The Eye of the World", author: "Robert Jordan" },
+      { img: "theGreatHunt.jpg",      title: "The Great Hunt", author: "Robert Jordan" },
+      { img: "theBrokenSword.jpg",    title: "The Broken Sword", author: "Poul Anderson" },
+      { img: "againstTheMachine.jpg", title: "Against the Machine", author: "Paul Kingsnorth" },
+      { img: "taliesin.jpg",          title: "Taliesin", author: "Stephen R. Lawhead" , best: true}
+    ],
+    "2024": [
+      { img: "outlive.jpg", title: "Outlive", author: "Peter Attia" },
+      { img: "snowCrash.jpg", title: "Snow Crash", author: "Neal Stephenson" },
+      { img: "infiniteJest.jpg", title: "Infinite Jest", author: "David Foster Wallace" },
+      { img: "notesFromUnderground.jpg", title: "Notes from Underground", author: "Fyodor Dostoevsky" },
+      { img: "starshipToopers.jpg", title: "Starship Troopers", author: "Robert A. Heinlein" },
+      { img: "theFisherman.jpg", title: "The Fisherman", author: "John Langan" },
+      { img: "callOfTheWild.jpg", title: "The Call of the Wild", author: "Jack London" },
+      { img: "betweenTwoFires.jpg", title: "Between Two Fires", author: "Christopher Buehlman" },
+      { img: "housemaid1.jpg", title: "The Housemaid", author: "Freida McFadden" },
+      { img: "americanPsycho.jpg", title: "American Psycho", author: "Bret Easton Ellis" },
+      { img: "godGame.jpg", title: "The God Game", author: "Danny Tobey" },
+      { img: "nihilismRootOfRevolution.jpg", title: "Nihilism: The Root of the Revolution of the Modern Age", author: "Fr. Seraphim Rose" },
+      { img: "deathNote.jpg", title: "Death Note", author: "Tsugumi Ohba" },
+      { img: "murderRoad.jpg", title: "Murder Road", author: "Simone St. James" },
+      { img: "iconANovel.jpg", title: "Icon: A Novel", author: "Georgia Briggs" },
+      { img: "orthodoxWay.jpg", title: "The Orthodox Way", author: "Met. Kallistos Ware" },
+      { img: "kafkaOnTheShore.jpg", title: "Kafka on the Shore", author: "Haruki Murakami" },
+      { img: "hawthorne1.jpg", title: "The Inheritance Games", author: "Jennifer Lynn Barnes" },
+      { img: "hawthorne2.jpg", title: "The Hawthorne Legacy", author: "Jennifer Lynn Barnes" },
+      { img: "hawthorne3.jpg", title: "The Final Gambit", author: "Jennifer Lynn Barnes" },
+      { img: "bloodMeridian.jpg", title: "Blood Meridian", author: "Cormac McCarthy" },
+      { img: "crawdadsSing.jpg", title: "Where the Crawdads Sing", author: "Delia Owens" },
+      { img: "crimeAndPunishment.jpg", title: "Crime and Punishment", author: "Fyodor Dostoevsky" , best: true},
+      { img: "darkMatter.jpg", title: "Dark Matter", author: "Blake Crouch" },
+      { img: "earlyChristianWritings.jpg", title: "Early Christian Writings", author: "Various" },
+      { img: "godsBattalions.jpg", title: "God's Battalions", author: "Rodney Stark" },
+      { img: "hobbit.jpg", title: "The Hobbit", author: "J. R. R. Tolkien" },
+      { img: "metamorphosis.jpg", title: "The Metamorphosis", author: "Franz Kafka" },
+      { img: "originsOfTheFrenchRevolution.jpg", title: "The Origins of the French Revolution", author: "William Doyle" },
+      { img: "orthodoxChurch.jpg", title: "The Orthodox Church", author: "Met. Kallistos Ware" },
+      { img: "reflectionsBurke.jpg", title: "Reflections on the Revolution in France", author: "Edmund Burke" },
+      { img: "remina.jpg", title: "Remina", author: "Junji Ito" },
+      { img: "silentPatient.jpg", title: "The Silent Patient", author: "Alex Michaelides" },
+      { img: "theTrial.jpg", title: "The Trial", author: "Franz Kafka" },
+      { img: "wayToNicaea.jpg", title: "The Way to Nicaea", author: "John Behr" }
+    ]
+    
+  };
+
+  const bookshelf = document.getElementById("bookshelf");
+
+  // Sort years descending (2025 first, then 2024, etc.)
+  Object.keys(booksByYear).sort((a, b) => b - a).forEach(year => {
+    const section = document.createElement("div");
+    section.className = "year-section";
+
+    section.innerHTML = `<strong>${year}</strong><div class="posters"></div>`;
+    const posters = section.querySelector(".posters");
+
+    booksByYear[year].forEach(book => {
+  const zoom = document.createElement("div");
+  zoom.className = "zoom";
+  if (book.best) zoom.classList.add("best");   // glowing 
+
+  zoom.innerHTML = `
+    <img src="/images/books/${year}/${book.img}" class="book" alt="${book.title}">
+    <div class="text-box">${book.title}<br><em>${book.author}</em></div>
+  `;
+  posters.appendChild(zoom);
+});
+
+    bookshelf.appendChild(section);
+  });
+
+  // Load sidebar/footer 
+  async function loadComponent(id, path) {
+    try {
+      const res = await fetch(path);
+      if (!res.ok) throw new Error(res.status);
+      document.getElementById(id).innerHTML = await res.text();
+    } catch (e) { console.error(e); }
   }
-}
+  loadComponent("sideBarPlaceholder", "/components/sidebar.html");
+  loadComponent("footerPlaceholder", "/components/footer.html");
 
-// Load the components
-loadComponent("sideBarPlaceholder", "/components/sidebar.html");
-loadComponent("footerPlaceholder", "/components/footer.html");
-function isPrime(n) {
-    if (n < 2) return false;
-    for (let i = 2; i <= Math.sqrt(n); i++) {
-        if (n % i === 0) return false;
-    }
-    return true;
-}
-
-let currentNum = 2;
-function updatePrime() {
-    while (!isPrime(currentNum)) currentNum++;
-    document.getElementById("prime-number").textContent = currentNum;
-    currentNum++;
-}
-setInterval(updatePrime, 2000); // Updates every 2 seconds
-updatePrime();
+  // Your prime number easter egg 
+  function isPrime(n) { if (n < 2) return false; for (let i = 2; i <= Math.sqrt(n); i++) if (n % i === 0) return false; return true; }
+  let n = 2;
+  function updatePrime() { while (!isPrime(n)) n++; const el = document.getElementById("prime-number"); if (el) el.textContent = n; n++; }
+  setInterval(updatePrime, 2000); updatePrime();
 </script>
-</div>
+
 </body>
 </html>
