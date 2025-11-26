@@ -3,119 +3,190 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Justin Swain - Books</title>
+    <title>Justin Swain - Faith</title>
     <link rel="stylesheet" href="/style/style.css">
     <link rel="icon" href="/images/spacecat.png">
+
+    <style>
+      .faith-page main { max-width: 800px; margin: 0 auto; }
+      .creed {
+        /* font-family: Georgia, serif; */
+        font-size: 1.15rem;
+        line-height: 1.75;
+        text-align: center;
+        padding: 40px 30px;
+        background: rgba(0,0,0,0.25);
+        border: 1px solid #333;
+        border-radius: 12px;
+        margin: 30px 0;
+      }
+      .icon-row {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 30px;
+        flex-wrap: wrap;
+        margin: 40px 0;
+      }
+      .icon-row img { transition: transform 0.4s ease; }
+      .icon-row img:hover { transform: translateY(-12px); }
+      .saint {
+        text-align: center;
+        margin: 60px 0;
+      }
+      .saint img {
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        max-width: 320px;
+        width: 75%;
+      }
+      .saint h3 {
+        margin: 20px 0 8px;
+        font-size: 1.8rem;
+        color: #ffd700;
+      }
+      .saint p {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        max-width: 680px;
+        margin: 0 auto;
+      }
+      .glory {
+        text-align: center;
+        font-size: 2rem;
+        font-weight: bold;
+        margin: 80px 0 40px;
+        color: #ffd700;
+        text-shadow: 0 0 20px rgba(255,215,0,0.4);
+      }
+      .note {
+        font-style: italic;
+        text-align: center;
+        color: #aaa;
+        margin: 50px 0;
+        padding: 20px;
+        background: rgba(0,0,0,0.2);
+        border-radius: 10px;
+      }
+    </style>
   </head>
   <body>
-<div id="container"><div id="topBar">
-    <!--<marquee>Welcome!</marquee>-->
-</div>
-<div id="headerArea">
+
+<div id="container">
+  <div id="topBar"></div>
+  
+  <div id="headerArea">
     <div id="header">
-        <a href="/"><img src="/images/spacecat.png" height="120px"></a>
-            <a href="/" style="text-decoration: none;"><strong style="font-size: x-large;">justinswain.dev</strong></a>
+      <a href="/"><img src="/images/spacecat.png" height="120px" alt="Home"></a>
+      <a href="/" style="text-decoration: none;"><strong style="font-size: x-large;">justinswain.dev</strong></a>
     </div>
-</div>
+  </div>
 
-<div id="flex">
-
+  <div id="flex" >
     <main>
+      <div class="box">
         <h1>Faith</h1>
-        <div class="box">
-            <h3>Nicene Creed</h3>
-            <p>
-                I believe in one God, the Father Almighty, Maker of Heaven and Earth and of all things visible and invisible.
-            </p>
-            <p>
-                And in one Lord Jesus Christ, the Son of God, the only-begotten, begotten of the Father before all ages. Light of light; true God of true God; begotten, not made; of one essence with the Father; by Whom all things were made; Who for us men and for our salvation came down from Heaven, and was incarnate of the Holy Spirit and the Virgin Mary, and became man. And He was crucified for us under Pontius Pilate, and suffered, and was buried. And the third day He arose again, according to the Scriptures, and ascended into Heaven, and sits at the right hand of the Father; and He shall come again with glory to judge the living and the dead; Whose Kingdom shall have no end. 
-            </p>
-            <p>
-                And in the Holy Spirit, the Lord, the Giver of Life, Who proceeds from the Father; Who with the Father and the Son together is worshipped and glorified; Who spoke by the prophets.
-            </p>
-            <p>
-                In one Holy, Catholic, and Apostolic Church. I acknowledge one baptism for the remission of sins. I look for the resurrection of the dead and the life of the world to come. Amen.
-            </p>
-            <div id="flex" style="flex-wrap: wrap; flex-direction: row; justify-content: center;">
-                <img src="/images/candle.gif" height="100" style="margin-top: auto;">
-                <img src="/images/icons/theotokos.png" title="" class="zoom" width="30%">
-                <img src="/images/icons/christ.png" title="" class="zoom" width="30%">
-                <img src="/images/candle.gif" height="100" style="margin-top: auto;">
-            </div>
+
+        <!-- The Nicene Creed (325/381) -->
+        <div class="creed">
+          <p>I believe in <strong>one God</strong>, the Father Almighty,<br>
+          Maker of heaven and earth, and of all things visible and invisible.</p>
+
+          <p>And in <strong>one Lord Jesus Christ</strong>, the Son of God,<br>
+          the only-begotten, begotten of the Father before all ages;<br>
+          Light of Light, true God of true God,<br>
+          begotten, not made, of one essence with the Father,<br>
+          by whom all things were made;<br>
+          Who for us men and for our salvation came down from heaven,<br>
+          and was incarnate of the Holy Spirit and the Virgin Mary, and became man;<br>
+          and was crucified for us under Pontius Pilate,<br>
+          suffered and was buried;<br>
+          and the third day He rose again, according to the Scriptures;<br>
+          and ascended into heaven, and sits at the right hand of the Father;<br>
+          and He shall come again with glory to judge the living and the dead;<br>
+          Whose kingdom shall have no end.</p>
+
+          <p>And in the <strong>Holy Spirit</strong>, the Lord, the Giver of life,<br>
+          Who proceeds from the Father,<br>
+          Who with the Father and the Son together is worshiped and glorified,<br>
+          Who spoke by the prophets.</p>
+
+          <p>In <strong>one, holy, catholic, and apostolic Church</strong>.<br>
+          I acknowledge one baptism for the remission of sins.<br>
+          I look for the resurrection of the dead,<br>
+          and the life of the world to come.<br>
+          <strong>Amen.</strong></p>
         </div>
 
-        <br><br>
-
-        <div class="box">
-            <h2>Saints Whose Name I Share</h2>
-            <center>
-            <img src="/images/icons/justinMartyr.png" title="" class="zoom" width="30%">
-            </center>
-            <h3 style="margin-bottom: 0">Saint Justin Martyr</h3>
-            The Philosopher (114-165) - A student and teacher. Justin opened a school of Christian Philosophy where he defended the truth of Christ. He famously wrote two Apologies to the Roman Emperor and Senate. He was persecuted, tortured, and killed for his faith in Rome.<br>
-            <a href="https://www.oca.org/saints/lives/2024/06/01/101570-martyr-justin-the-philosopher-and-those-with-him-at-rome">Read about the life of St. Justin Martyr</a> <br>
-            <a href="https://www.earlychristianwritings.com/justin.html">Read the writings of St. Justin Martyr</a>
-            
-            <br><br>
-            <center>
-                <img src="/images/icons/justinian.png" title="" class="zoom" width="30%">
-                </center>
-            <h3 style="margin-bottom: 0">Saint Justinian</h3>
-            The Emperor (482-565) - The Great Christian Emperor of Rome.
-        <br>
-        <a href="https://www.oca.org/saints/lives/2024/11/14/103301-saint-justinian-the-emperor">Read about the life of St. Justinian</a>
+        <div class="icon-row">
+          <img src="/images/candle.gif" width="8%" alt="Candle">
+          <img src="/images/icons/christ.png" width="50%" alt="Christ Pantocrator">
+          <img src="/images/candle.gif" width="8%" alt="Candle">
         </div>
 
-        <br><br>
+        <div class="note">
+          <p>
+            He that dwelleth in the secret place of the most High shall abide under the shadow of the Almighty. I will say of the Lord, He is my refuge and my fortress: my God; in him will I trust.
+          </p>
+          Psalm 91:1-2
+        </div>
 
-        <center>
-        <strong style="color: white">Glory to God for all things!</strong>
-        </center>
-        
+        <h2 style="text-align:center; margin:50px 0 30px;">Saints Who Share My Name</h2>
+
+        <!-- Saint Justin Martyr -->
+        <div class="saint">
+          <img src="/images/icons/justinMartyr.png" alt="Saint Justin Martyr">
+          <h3>Saint Justin Martyr</h3>
+          <p>The Philosopher<br>
+             <small>165 AD, Rome</small></p>
+          <p>A former pagan philosopher who found the fullness of truth in Christ. He opened one of the earliest known Christian schools and wrote brilliant defenses of the faith to the Roman emperors. He was beheaded for refusing to sacrifice to the gods.</p>
+          <p>
+            <a href="https://www.oca.org/saints/lives/2024/06/01/101570-martyr-justin-the-philosopher-and-those-with-him-at-rome" target="_blank">Life of St. Justin</a> + 
+            <a href="https://www.earlychristianwritings.com/justin.html" target="_blank">His Writings</a>
+          </p>
+        </div>
+
+        <!-- Saint Justinian the Emperor -->
+        <div class="saint">
+          <img src="/images/icons/justinian.png" alt="Saint Justinian the Great">
+          <h3>Saint Justinian the Emperor</h3>
+          <p>The Great<br>
+             <small>565 AD, Constantinople</small></p>
+          <p>The last Roman emperor to rule over both East and West, builder of Hagia Sophia, codifier of Roman law, and defender of the orthodox faith. His reign is remembered as the high point of Byzantine Christian civilization.</p>
+          <p>
+            <a href="https://www.oca.org/saints/lives/2024/11/14/103301-saint-justinian-the-emperor" target="_blank">Life of St. Justinian</a>
+          </p>
+        </div>
+
+        <div class="glory">
+          Glory to God for all things!
+        </div>
+      </div>
     </main>
+
     <sideBar id="sideBarPlaceholder"></sideBar>
-</div>
-<footer id="footerPlaceholder" style="margin-top: 10px;"></footer>
+  </div>
+
+  <footer id="footerPlaceholder" style="margin-top: 10px;"></footer>
 </div>
 
-<!-- JavaScript to load components -->
 <script>
-async function loadComponent(elementId, filePath) {
-  try {
-    const response = await fetch(filePath);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const content = await response.text();
-    if (!content) {
-      console.warn(`File ${filePath} is empty or not loaded`);
-    }
-    document.getElementById(elementId).innerHTML = content;
-  } catch (error) {
-    console.error(`Error loading ${filePath}:`, error);
+  async function loadComponent(id, path) {
+    try {
+      const res = await fetch(path);
+      if (!res.ok) throw new Error(res.status);
+      document.getElementById(id).innerHTML = await res.text();
+    } catch (e) { console.error(e); }
   }
-}
+  loadComponent("sideBarPlaceholder", "/components/sidebar.html");
+  loadComponent("footerPlaceholder", "/components/footer.html");
 
-// Load the components
-loadComponent("sideBarPlaceholder", "/components/sidebar.html");
-loadComponent("footerPlaceholder", "/components/footer.html");
-function isPrime(n) {
-    if (n < 2) return false;
-    for (let i = 2; i <= Math.sqrt(n); i++) {
-        if (n % i === 0) return false;
-    }
-    return true;
-}
-
-let currentNum = 2;
-function updatePrime() {
-    while (!isPrime(currentNum)) currentNum++;
-    document.getElementById("prime-number").textContent = currentNum;
-    currentNum++;
-}
-setInterval(updatePrime, 2000); // Updates every 2 seconds
-updatePrime();
+  // Prime number easter egg
+  function isPrime(n) { if (n < 2) return false; for (let i = 2; i <= Math.sqrt(n); i++) if (n % i === 0) return false; return true; }
+  let n = 2;
+  function updatePrime() { while (!isPrime(n)) n++; const el = document.getElementById("prime-number"); if (el) el.textContent = n; n++; }
+  setInterval(updatePrime, 2000); updatePrime();
 </script>
-</div>
+
 </body>
 </html>
