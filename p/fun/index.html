@@ -1,116 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Justin Swain - Fun</title>
-    <link rel="stylesheet" href="/style/style.css">
-    <link rel="icon" href="/images/spacecat.png">
-  </head>
-  <body>
-<div id="container"><div id="topBar">
-    <!--<marquee>Welcome!</marquee>-->
-</div>
-<div id="headerArea">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Justin Swain - Fun</title>
+  <link rel="stylesheet" href="/style/style.css">
+  <link rel="icon" href="/images/spacecat.png">
+  <style>
+    .fun-portal {
+      text-align: center;
+      padding: 60px 20px;
+      background: linear-gradient(135deg, #001122, #000428);
+      border-radius: 20px;
+      margin: 40px 0;
+      border: 2px solid var(--space1);
+      box-shadow: 0 0 40px rgba(0,212,255,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .fun-portal::before {
+      content: "";
+      position: absolute;
+      top: -150%; left: -50%;
+      width: 200%; height: 400%;
+      background: repeating-conic-gradient(from 45deg, transparent, rgba(0,212,255,0.05) 5deg, transparent 10deg);
+      animation: rotate 60s linear infinite;
+      pointer-events: none;
+      opacity: 0.4;
+    }
+    @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    
+    .fun-portal h1 {
+      font-size: 4rem;
+      margin: 0 0 20px;
+      color: var(--space1);
+      text-shadow: 0 0 30px var(--space1);
+      animation: glow 4s ease-in-out infinite alternate;
+    }
+    @keyframes glow { from { text-shadow: 0 0 20px var(--space1); } to { text-shadow: 0 0 40px var(--space1), 0 0 60px var(--space1); } }
+
+    .fun-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1100px;
+      margin: 60px auto;
+    }
+    .fun-card {
+      background: rgba(0,0,0,0.5);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #333;
+      transition: all 0.4s ease;
+      position: relative;
+      text-align: center
+    }
+    .fun-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 20px 40px rgba(0,212,255,0.4);
+      border-color: var(--space1);
+    }
+    .fun-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      filter: brightness(0.9);
+      transition: filter 0.4s;
+    }
+    .fun-card:hover img { filter: brightness(1.1) contrast(1.1); }
+    .fun-card h3 {
+      margin: 20px 0 10px;
+      font-size: 1.6rem;
+      color: var(--space1);
+    }
+    .fun-card p {
+      padding: 0 20px 25px;
+      color: #ccc;
+      font-size: 1.1rem;
+    }
+    .fun-card a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .fun-card .emoji {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<div id="container">
+  <div id="topBar"></div>
+  <div id="headerArea">
     <div id="header">
-        <a href="/"><img src="/images/spacecat.png" height="120px"></a>
-            <a href="/" style="text-decoration: none;"><strong style="font-size: x-large;">justinswain.dev</strong></a>
+      <a href="/"><img src="/images/spacecat.png" height="120px"></a>
+      <a href="/" style="text-decoration: none;"><strong style="font-size: x-large;">justinswain.dev</strong></a>
     </div>
-</div>
+  </div>
 
-<div id="flex" id="container">
-
+  <div id="flex">
     <main>
+      <div class="fun-portal">
         <h1>Fun</h1>
-        <div class="box">
-            <p>This page provides links to pages on this site that are less work and more fun.
-            </p>
-            <br>
-            <ul style="list-style-type: none;">
-                
-                <li><a href="/p/fun/books/">Books</a>
-                    <p style="padding-left: 40px; ">
-                    Regularly updated list of books I've read, and my favorites.
-                    </p>
-                </li>
-                <li><a href="/p/fun/cats/">Cats</a>
-                    <p style="padding-left: 40px; ">
-                    A page dedicated to my cats.
-                    </p>
-                </li>
-                <li><a href="/p/fun/faith/">Faith</a>
-                    <p style="padding-left: 40px; ">
-                    A statement of my faith in Jesus Christ.
-                    </p>
-                </li>
-                <li><a href="/p/fun/links/">Links</a>
-                    <p style="padding-left: 40px; ">
-                    A directory of websites that I think are worth sharing.
-                    </p>
-                </li>
-                <li><a href="/p/fun/music/">Music</a>
-                    <p style="padding-left: 40px; ">
-                    A collection of my favorite music, concerts I have attended, and playlists.
-                    </p>
-                </li>
-                <li><a href="/p/fun/photos/">Photo Gallery</a>
-                    <p style="padding-left: 40px; ">
-                    My photo gallery.
-                    </p>
-                </li>
-                <li><a href="/p/fun/toys/">Toys</a></li>
-                <p style="padding-left: 40px;">Simple games and tools.</p>
-                <li><a href="/p/fun/games/">Video Games</a>
-                <p style="padding-left: 40px; ">
-                    My favorite games and a link to my Steam profile.
-                </p>
-                </li>
-            </ul>
+        <p style="font-size:1.4rem;color:#aaa;max-width:700px;margin:0 auto;">
+          A collection of things.
+        </p>
+      </div>
+
+      <div class="fun-grid">
+        <!-- Books -->
+        <div class="fun-card">
+          <a href="/p/fun/books/">
+            <img src="/images/cats/cat_book.JPEG" alt="Books">
+            <h3>Books</h3>
+            <p>My virtual bookshelf.</p>
+          </a>
         </div>
+
+        <!-- Cats -->
+        <div class="fun-card">
+          <a href="/p/fun/cats/">
+            <img src="/images/cats/jinx/jinxAndPloot.jpeg" alt="Cats">
+            <h3>Cats</h3>
+            <p>My five cats.</p>
+          </a>
+        </div>
+
+        <!-- Faith -->
+        <div class="fun-card">
+          <a href="/p/fun/faith/">
+            <img src="/images/icons/mt14.webp" alt="Faith">
+            <h3>Faith</h3>
+            <p>Christ is risen!</p>
+          </a>
+        </div>
+
+        <!-- Music -->
+        <div class="fun-card">
+          <a href="/p/fun/music/">
+            <img src="/images/cats/cat_trumpet.JPEG" alt="Music">
+            <h3>Music</h3>
+            <p>Concerts I attended, and my favorite music.</p>
+          </a>
+        </div>
+
+        <!-- Photos -->
+        <div class="fun-card">
+          <a href="/p/fun/photos/">
+            <img src="/images/photos/20251125_zed.jpg" alt="Photos">
+            <h3>Photo Gallery</h3>
+            <p>Some pics I took.</p>
+          </a>
+        </div>
+
+        <!-- Games -->
+        <div class="fun-card">
+          <a href="/p/fun/games/">
+            <img src="https://steamcdn-a.akamaihd.net/steam/apps/489830/library_hero.jpg" alt="Skyrim">
+            <h3>Video Games</h3>
+            <p>Live Steam stats, and favorite games.</p>
+          </a>
+        </div>
+
+        <!-- Toys -->
+        <div class="fun-card">
+          <a href="/p/fun/toys/">
+            <img src="/images/cats/catRoomThumbnail.png">
+            <h3>Toys</h3>
+            <p>Little tools and games.</p>
+          </a>
+        </div>
+
+        <!-- Links -->
+        <div class="fun-card">
+          <a href="/p/fun/links/">
+            <img src="/images/cats/catCoding.JPG">
+            <h3>Links</h3>
+            <p>Cool websites that you can visit right now!</p>
+          </a>
+        </div>
+      </div>
     </main>
     <sideBar id="sideBarPlaceholder"></sideBar>
-</div>
-<footer id="footerPlaceholder" style="margin-top: 10px;"></footer>
+  </div>
+  <footer id="footerPlaceholder"></footer>
 </div>
 
-<!-- JavaScript to load components -->
 <script>
-async function loadComponent(elementId, filePath) {
-  try {
-    const response = await fetch(filePath);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const content = await response.text();
-    if (!content) {
-      console.warn(`File ${filePath} is empty or not loaded`);
-    }
-    document.getElementById(elementId).innerHTML = content;
-  } catch (error) {
-    console.error(`Error loading ${filePath}:`, error);
-  }
+async function loadComponent(id, path) {
+  try { document.getElementById(id).innerHTML = await (await fetch(path)).text(); } catch(e) {}
 }
-// Load the components
 loadComponent("sideBarPlaceholder", "/components/sidebar.html");
 loadComponent("footerPlaceholder", "/components/footer.html");
 
-function isPrime(n) {
-    if (n < 2) return false;
-    for (let i = 2; i <= Math.sqrt(n); i++) {
-        if (n % i === 0) return false;
-    }
-    return true;
-}
-
-let currentNum = 2;
-function updatePrime() {
-    while (!isPrime(currentNum)) currentNum++;
-    document.getElementById("prime-number").textContent = currentNum;
-    currentNum++;
-}
-setInterval(updatePrime, 2000); // Updates every 2 seconds
-updatePrime();
+function isPrime(n) { if(n<2)return false; for(let i=2;i*i<=n;i++)if(n%i===0)return false; return true; }
+let n = 2;
+setInterval(() => { while(!isPrime(n))n++; const el=document.getElementById("prime-number"); if(el)el.textContent=n++; }, 2000);
 </script>
-</div>
+
 </body>
 </html>

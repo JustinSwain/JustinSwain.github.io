@@ -1,301 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Justin Swain - Research</title>
-    <link rel="stylesheet" href="/style/style.css">
-    <link rel="icon" href="/images/spacecat.png">
-  </head>
-  <body>
-<div id="container"><div id="topBar">
-    <!--<marquee>Welcome!</marquee>-->
-</div>
-<div id="headerArea">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Justin Swain - PhD Research (2019-2025)</title>
+  <link rel="stylesheet" href="/style/style.css">
+  <link rel="icon" href="/images/spacecat.png">
+  <style>
+    .archive-header {
+      text-align: center;
+      padding: 50px 20px;
+      background: linear-gradient(to bottom, rgba(0,7,27,0.9), rgba(0,0,0,0.7));
+      border-radius: 16px;
+      margin: 30px 0;
+      border: 1px solid #333;
+    }
+    .archive-header h1 {
+      font-size: 3rem;
+      margin: 0 0 12px;
+      color: var(--space0);
+    }
+    .archive-subtitle {
+      font-size: 1.5rem;
+      color: var(--space1);
+      font-style: italic;
+      margin: 10px 0;
+    }
+    .epitaph {
+      font-size: 1.3rem;
+      max-width: 800px;
+      margin: 30px auto;
+      line-height: 1.8;
+      color: #ccc;
+    }
+    .section {
+      background: rgba(0,0,0,0.4);
+      padding: 35px;
+      border-radius: 16px;
+      margin: 50px 0;
+      border: 1px solid #333;
+      text-align: center;
+    }
+    .section h2 {
+      font-size: 2.2rem;
+      color: var(--space1);
+      margin-bottom: 20px;
+    }
+    .pub-list {
+      text-align: left;
+      max-width: 900px;
+      margin: 40px auto;
+      line-height: 2;
+    }
+    .pub-list li { margin: 30px 0; padding-bottom: 20px; border-bottom: 1px solid #333; }
+    .pub-title { font-size: 1.35rem; font-weight: bold; color: #fff; }
+    .pub-authors { color: var(--space1); }
+    .pub-venue { font-style: italic; color: #aaa; }
+    .talk-list { text-align: left; }
+    .talk-list li { margin: 25px 0;}
+    .closing {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #aaa;
+      font-style: italic;
+      margin: 100px 0 60px;
+      padding: 40px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 16px;
+    }
+    .final-photo {
+      text-align: center;
+      margin: 80px 0;
+    }
+    .final-photo img {
+      max-width: 90%;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    }
+  </style>
+</head>
+<body>
+
+<div id="container">
+  <div id="topBar"></div>
+  <div id="headerArea">
     <div id="header">
-        <a href="/"><img src="/images/spacecat.png" height="120px"></a>
-            <a href="/" style="text-decoration: none;"><strong style="font-size: x-large;">justinswain.dev</strong></a>
+      <a href="/"><img src="/images/spacecat.png" height="120px"></a>
+      <a href="/" style="text-decoration: none;"><strong style="font-size: x-large;">justinswain.dev</strong></a>
     </div>
-</div>
+  </div>
 
-<div id="flex">
-
+  <div id="flex">
     <main>
-        <h1>Research</h1>
-        <div class="box">
-            <p>
-                As a Ph.D. student in applied mathematics I worked in the broad area of numerical methods for partial differential equation problems (PDEs).
-            </p>
-            <p>
-                The key idea is to work with PDE problems that can be viewed as a gradient flow of an energy, and design numerical schemes which satisfy a dissipative energy law at the discrete level similar to the continuous problem. Another aspect is balancing the accuracy of the numerical scheme with efficiency, since I have been focusing on real-world applications. Running simulations for these PDE problems in 3-dimensions requires a lot of computational resources.
-            </p>
-            <p>
-                I mainly focused on three projects.
-            </p>
-            <h3>Liquid Crystals: Numerical Schemes</h3>
-            <p>
-                Liquid Crystals (LCs) are unique materials that exhibit phase transitions between crystalline solid and isotropic liquid. The molecules that make up LCs are elongated, which causes them to align parallel to each other, and induces long range orientational order in the material. This ordering gives the material the macroscopic properties of a solid, but microscopic properties of a liquid.
-            </p>
-            <p>
-                LCs are anisotropic, meaning they have different properties when observed from different directions. This is why light shining through the material can make interesting patterns.
-            </p>
-            <p>
-                Many emergent technologies use LCs. For example, Liquid Crystal Displays (LCDs) use LCs to create images on a screen like TVs, monitors, e-books, and phones. LC Biosensors have been used to detect foreign objects inside of a cell using the optical anisotropy of the material, which can aid in medical diagnosis. Liquid Crystal Elastomers have been used to make smart fabrics, which can react to light or heat to change properties such as insulation. For instance, a LC sweater could be warmer when worn outside, and cooler when inside. Soft robotics using LCs is another interesting example where small robots are made with LCs that can preform actions in reseponse to light or heat.
-            </p>
-            <center>
-                <figure>
-                    <img src="/images/LCs/2dDefects.png" width="100%">
-                    <figcaption style="font-size: small;">
-                        Evolution of LC defects in 2D
-                    </figcaption>
-                </figure>
-            </center>
-            <p>
-                I have worked on building accurate, efficient, and energy stable numerical schemes for the Q-tensor model of LCs. This model can be viewed as a gradient flow of an energy which balances elastic and thermotropic contributions. and represents the average orientation of the molecules by the eigenvectors of a second order tensor Q.
-            </p>
-            <center>
-                <figure>
-                    <img src="/images/LCs/nematics.png" width="100%">
-                    <figcaption style="font-size: small;">
-                        Left: Optical microscope image of nematic LC. Middle and Right: Simulation images of LCs
-                    </figcaption>
-                </figure>
-            </center>
-            <h3>Liquid Crystals: Interdisciplinary Research</h3>
-            <p>
-                In a series of projects, I have applied my work on Liquid Crystals to collaborative projects with material scientists at UNT to provide supporting simulation data for their experimental work. 
-            </p>
-            <p>
-                The first project was focused on modeling the dynamics of defects inside small channels filled with LCs. Based on the boundary conditions and geometry of the channels we studied how stability of the defects.
-            </p>
-            <p>
-                Next, we worked on another phase of LCs called the Blue Phase. In this phase, the LCs form compicated geometric patterns of line defects inside the material. Our job was to investigate the deformation of line defects inside circular channels.
-            </p>
-            <figure>
-                <center>
-                <img src="/images/LCs/bluePhase.png" width="80%">
-                <figcaption style="font-size: small;">Blue Phase LC repeated line defect showing characteristic BPII 4-prong structure</figcaption>
-                </center>
-            </figure>
-            <p>
-                Recently, I have worked on modeling Cholesteric LCs. These materials are characterized by a balance of nematic ordering with a long range twist which is induced by molecules with high chirality.
-            </p>
-            <h3>Mixtures of Fluids: Phase-Field Modeling</h3>
-            <p>
-                I have also worked on numerical methods for mixtures of several phases or fluids by investigating an extension of the Cahn-Hilliard model to several components. This model can be viewed as a gradient flow of an energy which balances elastic energy and a double well pontential. The unknowns are concentration variables which are assumed to transition continuously between phases through a thin interfacial region.
-            </p>
-            <p>
-                Several interesting problems in math and engineering can be investigated using the Cahn-Hilliard equation. Multi-phase fluid flow is a challenging problem which uses this model. Tumor growth is another interesting and important problem. As with the classical Cahn-Hilliard equation, which was used to model metal alloy manufacturing, the multicomponent model can also be used for ternary metal alloys. Associated with this problem is the dynamics of the spinodal decomposition, or the separation of phases which are originally well mixed.
-            </p>
-            <center>
-                <figure>
-                    <img src="/images/PhaseField/spinodal2D.png" width="90%">
-                    <figcaption style="font-size: small;">2D three component spinodal decomposition</figcaption>
-                </figure>
-                <figure>
-                    <img src="/images/PhaseField/spinodal3D.png" width="90%">
-                    <figcaption style="font-size: small;">3D three component spinodal decomposition</figcaption>
-                </figure>
-            </center>
-            <strong>Topic Summaries:</strong>
-            <ul>
-                <li> <a href="/p/research/liquidCrystals/">Liquid Crystals</a></li>
-            </ul>
-            </div>
-        <br>
-        <div class="box">
+      <div class="archive-header">
+        <h1>PhD Research</h1>
+        <div class="archive-subtitle">University of North Texas  2019 - 2025</div>
+        <p class="epitaph">
+          Energy-stable numerical schemes for gradient flow problems:<br>
+          nematic + cholesteric liquid crystals,  blue phases,  multicomponent phase-field models.
+        </p>
+      </div>
+
+      <div class="section">
+        <h2>Liquid Crystals</h2>
+        <p>
+          I worked on energy stable numerical schemes for liquid crystals in the Q-tensor model.
+        </p>
+        <img src="/images/LCs/nematics.png" width="80%" style="border-radius:12px;margin:30px 0;">
+        <img src="/images/LCs/bluePhase.png" width="60%" style="border-radius:12px;">
+      </div>
+
+      <div class="section">
+        <h2>Multicomponent Phase-Field Models</h2>
+        <p>
+          I also worked on extending the classic Cahn-Hilliard model to three or more components.
+        </p>
+        <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin:30px 0;">
+          <img src="/images/PhaseField/spinodal2D.png" width="45%" style="border-radius:12px;">
+          <img src="/images/PhaseField/spinodal3D.png" width="45%" style="border-radius:12px;">
+        </div>
+      </div>
+
+      <div class="section">
         <h2>Publications</h2>
-            <ul>
-                <li>
-                    <p style="font-size: x-large; margin: 0;">
-                        Efficient Linear Schemes for a Penalized Ternary Cahn-Hilliard System
-                    </p>
-                    <p style="margin-top: 0;">
-                        Justin Swain and Giordano Tierra
-                        <br>
-                        Submitted March 2025
-                    </p>
-                </li>
-                <li>
-                    <p style="font-size: x-large; margin: 0;">
-                        Directed Self-Assembly of Chiral Liquid Crystals into Biomimetic Bouligand Structures in Thin Film with Superior Optical-Mechanical Properties
-                    </p>
-                    <p style="margin-top: 0;">
-                        Tejal Pawale, Justin Swain, Mesonma Anwasi, David A. Czaplewski, Ralu Nana Silvia Divan, Giordano Tierra, and Xiao Li
-                        <br>
-                        Submitted February 2025
-                        <br>
-                        Code: <a href="https://github.com/JustinSwain/Cholesteric3D.git">Github</a>
-                    </p>
-                </li>
-                <li>
-                    <p style="font-size: x-large; margin: 0;">
-                        Nucleation and Growth of Blue Phase 3D Cubic Structure under Continuously Changing Curved Boundary Conditions
-                    </p>
-                    <p style="margin-top: 0;">
-                        Xiaowei Wang, Tejal Pawale, Justin Swain, David A. Czaplewski, Ralu Nana Silvia Divan, Giordano Tierra, and Xiao Li
-                        <br>
-                        Advanced Optical Materials
-                        <br>
-                        doi: <a href="https://doi.org/10.1002/adom.202402886">10.1002/adom.202402886</a>
-                    </p>
-                </li>
-                <li>
-                    <p style="font-size: x-large; margin: 0;">
-                        Linear Numerical Schemes for a Q-Tensor System for Nematic Liquid Crystals
-                    </p>
-                    <p style="margin-top: 0;">
-                        Justin Swain and Giordano Tierra
-                        <br>
-                        Comp. Methods in App. Mechanics and Engineering
-                        <br>
-                        doi: <a href="https://doi.org/10.1016/j.cma.2024.117190">10.1016/j.cma.2024.117190</a>
-                    </p>
-                </li>
-                <li>
-                    <p style="font-size: x-large; margin: 0;">
-                        Dynamic Motions of Topological Defects in Nematic Liquid Crystals under Spatial Confinement
-                    </p>
-                    <p style="margin-top: 0;">
-                        Tejal Pawale, Justin Swain, Mohammad Reza Hashemi, Giordano Tierra, and Xiao Li
-                        <br>
-                        Advanced Materials Interfaces
-                        <br>
-                        doi: <a href="https://doi.org/10.1002/admi.202300136">10.1002/admi.202300136</a>
-                    </p>
-                </li>
-                <li>
-                    <p style="font-size: x-large; margin: 0;">
-                        Genome Sequences of Streptomyces Phages Amela and Verse
-                    </p>
-                    <p style="margin-top: 0;">
-                        Layton, S. R., Hemenway, R. M., Munyoki, C. M., Barnes, E. B., Barnett, S. E., Bond, A. M., Narvaez, J. M., Sirisakd, C. D., Smith, B. R., Swain, J., Syed, O., Bowman, C. A., Russell, D. A., Bhuiyan, S., Donegan-Quick, R., Benjamin, R. C., & Hughes, L. E.
-                        <br>
-                        Genome announcements
-                        <br>
-                        doi: <a href="https://doi.org/10.1128/genomeA.01589-15">10.1128/genomeA.01589-15</a>
-                    </p>
-                </li>
-            </ul>
-        </div>
-        <br>
-        <div class="box">
-        <h2>Conference Presentations</h2>
-        <ul>
-            <li >
-                <p style="font-size: x-large; margin: 0;">
-                    Efficient Numerical Schemes for Multi-Component Mixtures of Fluids
-                </p>
-                <p style="margin-top: 0;">
-                    Mini-symposium talk at SIAM CSE25 
-                    <br>
-                    Fort Worth TX, March 2025
-                </p>
-            </li>
-            <li >
-                <p style="font-size: x-large; margin: 0;">
-                    Efficient and Unconditionally Energy Stable Numerical Schemes for a Ternary Cahn-Hilliard System
-                </p>
-                <p style="margin-top: 0;">
-                    Mini-symposium talk at SIAM TX-LA Sectional Meeting 
-                    <br>
-                    Waco TX, October 2024
-                </p>
-            </li>
-            <li >
-                <p style="font-size: x-large; margin: 0;">
-                    Efficient and Unconditionally Energy Stable Numerical Scheme for a Ternary Cahn-Hilliard Model
-                </p>
-                <p style="margin-top: 0;">
-                    Poster presentation at UNT Research Day 2024 
-                    <br>
-                    Denton TX, October 2024
-                </p>
-            </li>
-            <li>
-                <p style="font-size: x-large; margin: 0;">
-                    Linear Numerical Schemes for a Q-Tensor Model of Nematic Liquid Crystals
-                </p>
-                <p style="margin-top: 0;">
-                    Mini-symposium talk at SIAM TX-LA Sectional Meeting 
-                    <br>
-                    Lafyette LA, November 2023
-                </p>
-            </li>
-            <li>
-                <p style="font-size: x-large; margin: 0;">
-                    Energy Stable Numerical Schemes for Nematic Liquid Crystals                </p>
-                <p style="margin-top: 0;">
-                    Poster presentation at SIAM Annual Meeting 
-                    <br>
-                    Pittsburgh PA, July 2022
-                </p>
-            </li>
-            <li>
-                <p style="font-size: x-large; margin: 0;">
-                    New Numerical Schemes for the <b>Q</b>-Tensor Model of Nematic Liquid Crystals                </p>
-                <p style="margin-top: 0;">
-                    Poster presentation at SIAM TX-LA Sectional Meeting 
-                    <br>
-                    Houston TX, November 2022
-                </p>
-            </li>
+        <ul class="pub-list">
+          <li>
+            <div class="pub-title">Efficient Linear Schemes for a Penalized Ternary Cahn-Hilliard System</div>
+            <div class="pub-authors">Justin Swain, Giordano Tierra</div>
+            <div class="pub-venue">Submitted March 2025</div>
+          </li>
+          <li>
+            <div class="pub-title">Directed Self-Assembly of Chiral Liquid Crystals into Biomimetic Bouligand Structures</div>
+            <div class="pub-authors">Tejal Pawale, Justin Swain, ..., Xiao Li</div>
+            <div class="pub-venue">Nature Communications 2025 - <a href="https://doi.org/10.1038/s41467-025-64332-y">doi</a> - <a href="https://github.com/JustinSwain/Cholesteric3D.git">code</a></div>
+          </li>
+          <li>
+            <div class="pub-title">Nucleation and Growth of Blue Phase 3D Cubic Structure</div>
+            <div class="pub-authors">Xiaowei Wang, Tejal Pawale, Justin Swain, ..., Xiao Li</div>
+            <div class="pub-venue">Advanced Optical Materials 2024 - <a href="https://doi.org/10.1002/adom.202402886">doi</a></div>
+          </li>
+          <li>
+            <div class="pub-title">Linear Numerical Schemes for a Q-Tensor System for Nematic Liquid Crystals</div>
+            <div class="pub-authors">Justin Swain, Giordano Tierra</div>
+            <div class="pub-venue">Comp. Meth. Appl. Mech. Eng. 2024 - <a href="https://doi.org/10.1016/j.cma.2024.117190">doi</a></div>
+          </li>
+          <li>
+            <div class="pub-title">Dynamic Motions of Topological Defects in Nematic Liquid Crystals</div>
+            <div class="pub-authors">Tejal Pawale, Justin Swain, ..., Xiao Li</div>
+            <div class="pub-venue">Advanced Materials Interfaces 2023 - <a href="https://doi.org/10.1002/admi.202300136">doi</a></div>
+          </li>
+          <li>
+            <div class="pub-title">Genome Sequences of Streptomyces Phages Amela and Verse</div>
+            <div class="pub-authors">Sonya Layton et al.</div>
+            <div class="pub-venue">Genome announcements  2016 - <a href="https://doi.org/10.1128/genomea.01589-15">doi</a></div>
+          </li>
         </ul>
-        </div>
-        <div style="text-align:center;">
-            <figure>
-                <img src="/images/photos/posterPresentation.jpeg" alt="SIAM TXLA Poster" style="width:70%">
-                <figcaption>Presenting my poster at SIAM TXLA 2022 in Houston, TX.</figcaption>
-            </figure>
-            <figure>
-                <img src="/images/photos/txla24Talk.jpeg" alt="SIAM TXLA Presentation" style="width:90%">
-                <figcaption>Giving a talk at SIAM TXLA 2024 at Baylor in Waco, TX.</figcaption>
-            </figure>  
-        </div>
+      </div>
+
+      <div class="section">
+        <h2>Conference Presentations</h2>
+        <ul class="talk-list">
+          <li><strong>SIAM CSE25</strong> - Fort Worth, Mar 2025</li>
+          <li><strong>SIAM TX-LA 2024</strong> - Waco, Oct 2024</li>
+          <li><strong>UNT Research Day 2024</strong> - Denton, Oct 2024</li>
+          <li><strong>SIAM TX-LA 2023</strong> - Lafayette, Nov 2023</li>
+          <li><strong>SIAM Annual 2022</strong> - Pittsburgh, Jul 2022</li>
+          <li><strong>SIAM TX-LA 2022</strong> - Houston, Nov 2022</li>
+        </ul>
+      </div>
+
+      <div class="final-photo">
+        <img src="/images/photos/posterPresentation.jpeg" alt="Final conference talk">
+        <p style="margin-top:15px;color:#aaa;font-style:italic;">My first conference presentation - SIAM TX-LA, Houston, October 2022</p>
+      </div>
+
+      <div class="closing">
+        <p>
+            Q:How many graduate students does it take to replace a lightbulb??
+        </p>
+        A:Only one: But it takes six years.
+      </div>
+
+      <div class="final-photo">
+        <img src="/images/photos/txla24Talk.jpeg" alt="Final conference talk">
+        <p style="margin-top:15px;color:#aaa;font-style:italic;">My last conference presentation - SIAM TX-LA, Waco, October 2024</p>
+      </div>
+      
     </main>
     <sideBar id="sideBarPlaceholder"></sideBar>
-</div>
-<footer id="footerPlaceholder" style="margin-top: 10px;"></footer>
+  </div>
+  <footer id="footerPlaceholder"></footer>
 </div>
 
-<!-- JavaScript to load components -->
 <script>
-async function loadComponent(elementId, filePath) {
-  try {
-    const response = await fetch(filePath);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const content = await response.text();
-    if (!content) {
-      console.warn(`File ${filePath} is empty or not loaded`);
-    }
-    document.getElementById(elementId).innerHTML = content;
-  } catch (error) {
-    console.error(`Error loading ${filePath}:`, error);
-  }
+async function loadComponent(id, path) {
+  try { document.getElementById(id).innerHTML = await (await fetch(path)).text(); } catch(e) {}
 }
-
-// Load the components
 loadComponent("sideBarPlaceholder", "/components/sidebar.html");
 loadComponent("footerPlaceholder", "/components/footer.html");
-function isPrime(n) {
-    if (n < 2) return false;
-    for (let i = 2; i <= Math.sqrt(n); i++) {
-        if (n % i === 0) return false;
-    }
-    return true;
-}
 
-let currentNum = 2;
-function updatePrime() {
-    while (!isPrime(currentNum)) currentNum++;
-    document.getElementById("prime-number").textContent = currentNum;
-    currentNum++;
-}
-setInterval(updatePrime, 2000); // Updates every 2 seconds
-updatePrime();
+function isPrime(n) { if(n<2)return false; for(let i=2;i*i<=n;i++)if(n%i===0)return false; return true; }
+let n = 2;
+setInterval(() => { while(!isPrime(n))n++; const el=document.getElementById("prime-number"); if(el)el.textContent=n++; }, 2000);
 </script>
-</div>
+
 </body>
 </html>

@@ -32,14 +32,6 @@ body {
     min-height: 100vh; /* Ensures footer stays at bottom if content is short */
 }
 
-/* Font switcher */
-body:has(input[value="Georgia"]:checked) {
-    font-family: Georgia, serif;
-}
-body:has(input[value="Arial"]:checked) {
-    font-family: Arial, sans-serif;
-}
-
 * {
     box-sizing: border-box;
 }
@@ -69,6 +61,7 @@ body:has(input[value="Arial"]:checked) {
     background: var(--space6);
     padding: 10px;
     margin-bottom: 10px;
+    border-radius: 8px;
 }
 #header {
     display: flex;
@@ -107,6 +100,7 @@ sideBar {
     max-width: 300px;
     background: var(--space5);
     padding: 15px;
+    border-radius: 8px;
 }
 .navbox {
     background: var(--space7);
@@ -164,7 +158,8 @@ footer {
     background: var(--space6);
     padding: 15px;
     text-align: center;
-    margin-top: auto; /* Pushes footer to bottom */
+    margin-top: 10px ; /* Pushes footer to bottom */
+    border-radius: 8px;
 }
 footer marquee {
     font-family: 'Arcade';

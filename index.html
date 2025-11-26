@@ -11,109 +11,155 @@
     <link rel="mask-icon" href="/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
+    <style>
+    .home-hero {
+      text-align: center;
+      padding: 80px 20px;
+      background: linear-gradient(to bottom, #000428, #001122);
+      border-radius: 20px;
+      margin: 40px 0;
+      border: 2px solid var(--space0);
+      box-shadow: 0 0 50px rgba(0,212,255,0.2);
+    }
+    .home-hero h1 {
+      font-size: 4.5rem;
+      margin: 0 0 20px;
+      color: var(--space0);
+      text-shadow: 0 0 30px var(--space1);
+    }
+    .home-hero .tagline {
+      font-size: 1.8rem;
+      color: var(--space1);
+      font-style: italic;
+      margin: 20px 0;
+    }
+    .home-photo {
+      text-align: center;
+      margin: 60px 0;
+    }
+    .home-photo img {
+      max-width: 90%;
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+    }
+    .home-photo p {
+      margin-top: 15px;
+      color: #aaa;
+      font-style: italic;
+    }
+    .home-sections {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px;
+      max-width: inherit;
+      margin: 60px auto;
+    }
+    .home-card {
+      background: rgba(0,0,0,0.5);
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      border: 1px solid #333;
+      transition: all 0.4s ease;
+    }
+    .home-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,212,255,0.3);
+      border-color: var(--space0);
+    }
+    .home-card h2 {
+      margin: 0 0 15px;
+      font-size: 2rem;
+      color: var(--space0);
+    }
+    .home-card p {
+      color: #ccc;
+      line-height: 1.7;
+    }
+    .home-card a {
+      color: inherit;
+      text-decoration: none;
+    }
+    
+  </style>
+</head>
+<body>
 
-
-  </head>
-
-  <script data-goatcounter="https://justinswain.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
-
-  <body>
-<div id="container"><div id="topBar">
-    <!--<marquee>Welcome!</marquee>-->
-</div>
-<div id="headerArea">
+<div id="container">
+  <div id="topBar"></div>
+  <div id="headerArea">
     <div id="header">
-            <a href="/"><img src="/images/spacecat.png" height="120px"></a>
-            <a href="/" style="text-decoration: none;"><strong style="font-size: x-large;">justinswain.dev</strong></a>
+      <a href="/"><img src="/images/spacecat.png" height="120px"></a>
+      <a href="/" style="text-decoration: none;"><strong style="font-size: x-large;">justinswain.dev</strong></a>
     </div>
-</div>
+  </div>
 
-<div id="flex">
-
+  <div id="flex">
     <main>
-        <h1>Welcome!</h1>
-    <div class = "box">
-        <h2>Hello!</h2>
-        <p>
-            My name is Justin Swain, and this is my personal website. Here you can find an overview of my professional work. 
+      <div class="home-hero">
+        <h1>Justin Swain</h1>
+        <div class="tagline">Mathematician + Developer + Cat Dad</div>
+        <p style="text-align:left;margin:10px auto;font-size:1.3rem;color:var(--space0);">
+          Hello! Welcome to my personal website. Here you will find some of my professional work but mostly just personal content.<br>
+          I am a mathematician. I earned a PhD from UNT in 2025, and now I work in cryptography.<br>
         </p>
-        <p>
-            Please take a look at the <a href="/p/research/">research</a> that I have done as a PhD math student. You can also see some information about the college math classes that I have <a href="/p/teaching/">taught.</a>
+      </div>
+
+      <div class="home-photo">
+        <img src="/images/photos/HikingInBrokenBow.JPEG" alt="Justin & Cassidy hiking">
+        <p>Hiking in Broken Bow with Cassidy - November 2025</p>
+      </div>
+
+      <div class="home-sections">
+        <div class="home-card">
+          <a href="/p/research/">
+            <h2>PhD Research</h2>
+            <p>Liquid crystals, phase-field models, energy-stable schemes.</p>
+          </a>
+        </div>
+
+        <div class="home-card">
+          <a href="/p/teaching/">
+            <h2>Teaching</h2>
+            <p>My time teaching Calculus, Linear Algebra, Probability, and more.</p>
+          </a>
+        </div>
+
+        <div class="home-card">
+          <a href="/p/fun/">
+            <h2>Fun</h2>
+            <p>Books + Cats + Music + Photos + Video Games + Faith + Toys + Links.</p>
+          </a>
+        </div>
+
+      <div class="home-card">
+        <h2>Contact</h2>
+        <p>justin at justinswain dot dev<br>
+             Texas, USA <br>
+              Central Time
         </p>
-        <p>
-            I have written and programmed a few things related to <a href="/p/math/">math</a> that you might find interesting.
-        </p>
-    </div>
-    
-    <br><br>
-
-    <div style="text-align: center;">
-        <img src="images/photos/HikingInBrokenBow.JPEG" alt="Hiking in Broken Bow, OK" style="width:80%">
-        <p style="font-style: italic;">Hiking in Broken Bow with Cassidy. (Nov 2025)</p>
-    </div>
-    
-    <br><br>
-
-    <div class="box">
-        <p>
-            I also have several personal <a href="/p/fun/">pages</a> about my hobbies, cats, music, books, faith, and links to other useful websites.
-        </p>
-    </div>
-
-    <br>
-
-    <div class="box">
-        <h2>Contact Information:</h2>
-            <ul style="padding-left:40px;">
-                <li>Email: justin at justinswain dot dev</li>
-                <li>Timezone: Central US</li>
-            </ul>
-    </div>
+      </div>
+      </div>
+      <p style="text-align: center;color:#777;">
+        <em>Thanks for visiting!</em>
+      </p>
     </main>
-<sideBar id="sideBarPlaceholder"></sideBar>
-</div>
-<footer id="footerPlaceholder" style="margin-top: 10px;"></footer>
+    <sideBar id="sideBarPlaceholder"></sideBar>
+  </div>
+  <footer id="footerPlaceholder"></footer>
 </div>
 
-<!-- JavaScript to load components -->
 <script>
-async function loadComponent(elementId, filePath) {
-  try {
-    const response = await fetch(filePath);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const content = await response.text();
-    if (!content) {
-      console.warn(`File ${filePath} is empty or not loaded`);
-    }
-    document.getElementById(elementId).innerHTML = content;
-  } catch (error) {
-    console.error(`Error loading ${filePath}:`, error);
-  }
+async function loadComponent(id, path) {
+  try { document.getElementById(id).innerHTML = await (await fetch(path)).text(); } catch(e) {}
 }
-
-// Load the components
 loadComponent("sideBarPlaceholder", "/components/sidebar.html");
 loadComponent("footerPlaceholder", "/components/footer.html");
-function isPrime(n) {
-    if (n < 2) return false;
-    for (let i = 2; i <= Math.sqrt(n); i++) {
-        if (n % i === 0) return false;
-    }
-    return true;
-}
 
-let currentNum = 2;
-function updatePrime() {
-    while (!isPrime(currentNum)) currentNum++;
-    document.getElementById("prime-number").textContent = currentNum;
-    currentNum++;
-}
-setInterval(updatePrime, 2000); // Updates every 2 seconds
-updatePrime();
+function isPrime(n) { if(n<2)return false; for(let i=2;i*i<=n;i++)if(n%i===0)return false; return true; }
+let n = 2;
+setInterval(() => { while(!isPrime(n))n++; const el=document.getElementById("prime-number"); if(el)el.textContent=n++; }, 2000);
 </script>
-</div>
+
 </body>
 </html>

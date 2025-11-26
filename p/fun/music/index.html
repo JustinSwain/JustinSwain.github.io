@@ -8,6 +8,11 @@
     <link rel="icon" href="/images/spacecat.png">
 
     <style>
+    .concert-photo img {
+      max-width: 90%;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+    }
       .album-cover { 
         max-width: 100%; 
         display: block; 
@@ -88,7 +93,7 @@
 
 /* Ribbon label */
 .zoom.best::after {
-  content: "★ BEST OF YEAR ★";
+  content: "★ BEST OF THE YEAR ★";
   position: absolute;
   top: -34px;
   left: 50%;
@@ -128,8 +133,8 @@
 
   <div id="flex">
     <main>
+      <h1>Music</h1>
       <div class="box">
-        <h1>Music</h1>
 
         <h3>Favorite Music by Year</h3>
         <div class="spotify-embed">
@@ -147,7 +152,7 @@
             <ul>
               <li><a href="https://www.youtube.com/watch?v=-xUqa6pYqnY" target="_blank">Monomyth</a></li>
               <li><a href="https://www.youtube.com/watch?v=lNjOFNBkja4" target="_blank">Kepler</a></li>
-              <li><a href="https://www.youtube.com/watch?v=7LKHkRtmHSY" target="_blank">CAFO Live</a></li>
+              <li><a href="https://www.youtube.com/watch?v=7LKHkRtmHSY" target="_blank">The Woven Web</a></li>
               <li><a href="https://www.youtube.com/watch?v=mzYcGXT0v8s" target="_blank">35 BPM Solo</a></li>
             </ul>
           </li>
@@ -163,15 +168,19 @@
           <li><strong>Mario Duplantier</strong> (Gojira)
             <ul><li><a href="https://www.youtube.com/watch?v=R2zTNT2YPZE" target="_blank">The Art of Dying</a></li></ul>
           </li>
-          <li><strong>II</strong> (Sleep Token)
-            <ul><li><a href="https://www.youtube.com/watch?v=sAy2FfAjefU" target="_blank">The Summoning (Live)</a></li></ul>
-          </li>
         </ol>
       </div>
       <br>
       <div class="box">
         <h3>Concerts I've Attended</h3>
         <div id="concerts"></div> <!-- All concert posters injected here -->
+      </div>
+
+      <br>
+
+      <div class="concert-photo" style="text-align: center;">
+        <img src="/images/photos/rock_cats.JPEG" alt="Rock Cats concert 2025">
+        <p style="margin-top:15px;color:#aaa;font-style:italic;">At the Rock Cats concert 2025</p>
       </div>
     </main>
     <sideBar id="sideBarPlaceholder"></sideBar>
