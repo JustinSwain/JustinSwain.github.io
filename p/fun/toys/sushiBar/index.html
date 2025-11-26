@@ -360,7 +360,7 @@
                     <button onclick="catchFish()">Catch Fish</button>
                     <p>Catch Chance: <span id="catch-rate"></span></p>
                     <div style="display: flex; align-items: center; justify-content: space-around;">
-                    <img id="fisherman" class="sprite" src="/images/catFisherman.png" style="display: none;">
+                    <img id="fisherman" class="sprite" src="/images/toys/catFisherman.png" style="display: none;">
                     </div>
                 </div>
                 <div id="farms" class="screen">
@@ -368,8 +368,8 @@
                     <p>Rice Farm: <span id="rice-farm-rate">0</span> rice/s</p>
                     <p>Tea Farm: <span id="tea-farm-rate">0</span> tea/s</p>
                     <div style="display: flex; align-items: center; justify-content: space-around;">
-                    <img id="rice-farm" class="sprite" src="/images/catRice.png" style="display: none;">
-                    <img id="tea-farm" class="sprite" src="/images/catTea.png" style="display: none;">
+                    <img id="rice-farm" class="sprite" src="/images/toys/catRice.png" style="display: none;">
+                    <img id="tea-farm" class="sprite" src="/images/toys/catTea.png" style="display: none;">
                     </div>
                 </div>
             </div>
@@ -380,8 +380,8 @@
                 <p>Tea Price: $<span id="tea-price">6</span></p>
                 <p id="time-display">Time: Day (15s left)</p>
                 <div id="restaurant-area">
-                    <img id="player" class="sprite" src="/images/ninja.png">
-                    <img id="waiter" class="sprite" src="/images/pluto.png" style="display: none;">
+                    <img id="player" class="sprite" src="/images/toys/ninja.png">
+                    <img id="waiter" class="sprite" src="/images/toys/pluto.png" style="display: none;">
                     <div id="tables">
                         <div class="table" id="table-0"><span class="order-display"></span></div>
                         <div class="table" id="table-1"><span class="order-display"></span></div>
@@ -452,7 +452,7 @@
         let moneyPerSecond = 0;
         let lastMoney = 10;
 
-        const customerImages = ['/images/jinx2.png', '/images/beans.png' , '/images/zed.png'];
+        const customerImages = ['/images/toys/jinx2.png', '/images/toys/beans.png' , '/images/toys/zed.png'];
 
         function generateRandomOrder() {
             const orders = ["sushi", "tea", "both"];
