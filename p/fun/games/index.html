@@ -119,7 +119,17 @@ async function loadSteamData() {
     appid: g.appid,
   }));
 
-    const data = { player, level, totalGames, top5 };
+    const recent3 = gamesData.games
+    .filter(g => g.rtime_last_played > 60 && g.appid)
+    .sort((a,b) => b.rtime_last_played - a.rtime_last_played)
+    .slice(0, 3)
+    .map(g => ({
+    name: g.name,
+    hours: Math.round(g.playtime_forever / 60),
+    appid: g.appid,
+  }));
+
+    const data = { player, level, totalGames, top5, recent3};
     localStorage.setItem('steamFullCache', JSON.stringify({ data, ts: Date.now() }));
     render(data);
 
@@ -153,7 +163,23 @@ async function loadSteamData() {
             <br>
             `).join('')}
         </div>
+      </div>
+      
+      <div class="top-games">
+        <h3>Recent Played</h3>
+        <div style="margin:20px;">
+            ${d.recent3.map(g => `
+            <div style="text-align:center;background-image:url(https://steamcdn-a.akamaihd.net/steam/apps/${g.appid}/library_hero.jpg);background-size:cover;padding:20px;border-radius:14px;border:1px solid #333;">
+                <a href="https://store.steampowered.com/agecheck/app/${g.appid}"><img src="https://steamcdn-a.akamaihd.net/steam/apps/${g.appid}/capsule_616x353.jpg" 
+                    alt="${cleanGameName(g.name)}"
+                    style="height: auto;border-radius:8px;box-shadow:0 4px 15px rgba(0,212,255,0.4);"></a>
+                <p style="margin:15px 0 6px;font-weight:bold;font-size:1.2rem;color:#fff;text-shadow: 0 0 20px var(--space2);">${cleanGameName(g.name)}</p>
+                <p style="color:var(--space0);font-size:1.6rem;font-weight:bold;margin:0;">${g.hours}h</p>
+            </div>
+            <br>
+            `).join('')}
         </div>
+      </div>
       <p style="margin-top:30px">
         <a href="${d.player.profileurl}" target="_blank">View my full Steam profile →</a>
       </p>
