@@ -116,6 +116,7 @@ async function loadSteamData() {
     .map(g => ({
     name: g.name,
     hours: Math.round(g.playtime_forever / 60),
+    lastPlayed: g.rtime_last_played,
     appid: g.appid,
   }));
 
@@ -126,6 +127,7 @@ async function loadSteamData() {
     .map(g => ({
     name: g.name,
     hours: Math.round(g.playtime_forever / 60),
+    lastPlayed: g.rtime_last_played,
     appid: g.appid,
   }));
 
@@ -158,6 +160,7 @@ async function loadSteamData() {
                     alt="${cleanGameName(g.name)}"
                     style="height: auto;border-radius:8px;box-shadow:0 4px 15px rgba(0,212,255,0.4);"></a>
                 <p style="margin:15px 0 6px;font-weight:bold;font-size:1.2rem;color:#fff;text-shadow: 0 0 20px var(--space2);">${cleanGameName(g.name)}</p>
+                <p style="color:var(--space0);font-size:1.1rem;margin:5px 0;">Last played ${timeAgo(g.lastPlayed)}</p>
                 <p style="color:var(--space0);font-size:1.6rem;font-weight:bold;margin:0;">${g.hours}h</p>
             </div>
             <br>
@@ -174,6 +177,7 @@ async function loadSteamData() {
                     alt="${cleanGameName(g.name)}"
                     style="height: auto;border-radius:8px;box-shadow:0 4px 15px rgba(0,212,255,0.4);"></a>
                 <p style="margin:15px 0 6px;font-weight:bold;font-size:1.2rem;color:#fff;text-shadow: 0 0 20px var(--space2);">${cleanGameName(g.name)}</p>
+                <p style="color:var(--space0);font-size:1.1rem;margin:5px 0;">Last played ${timeAgo(g.lastPlayed)}</p>
                 <p style="color:var(--space0);font-size:1.6rem;font-weight:bold;margin:0;">${g.hours}h</p>
             </div>
             <br>
@@ -185,6 +189,13 @@ async function loadSteamData() {
       </p>
     `;
     card.style.display = 'block';
+
+  function timeAgo(ts) {
+    const diff = Math.floor((Date.now() / 1000 - ts) / 86400);
+    if (diff === 0) return 'today';
+    if (diff < 7) return `${diff}d ago`;
+    return new Date(ts * 1000).toLocaleDateString();
+  }
   }
 }
 
