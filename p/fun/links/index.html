@@ -1,151 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Justin Swain - Links</title>
-    <link rel="stylesheet" href="/style/style.css">
+    <title>★ JUSTIN SWAIN • INTERNET TREASURE VAULT ★</title>
     <link rel="icon" href="/images/spacecat.png">
-  </head>
-  <body>
+    <link rel="stylesheet" href="/style/style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Press+Start+2P&family=Silkscreen&display=swap');
 
-<div id="container"><div id="topBar">
-    <!--<marquee>Welcome!</marquee>-->
-</div>
-<div id="headerArea">
-    <div id="header">
-        <a href="/"><img src="/images/spacecat.png" height="120px"></a>
-            <a href="/" style="text-decoration: none;"><strong style="font-size: x-large;">justinswain.dev</strong></a>
+        .rainbow-banner {
+            background: linear-gradient(90deg, #ff00ff, #00ffff, #ffff00, #00ff00, #ff00ff);
+            background-size: 300%;
+            animation: rainbow 12s linear infinite;
+            color: black;
+            text-align: center;
+            padding: 14px;
+            font-family: "Press Start 2P", cursive;
+            font-size: 1.4rem;
+            text-shadow: 2px 2px 0 white;
+            border-bottom: 6px double yellow;
+        }
+        @keyframes rainbow { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
+
+        .link-section {
+            background: var(--space6);
+            border: 4px double var(--space1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            box-shadow: 0 0 25px rgba(0,100,255,0.3);
+        }
+        .link-section h3 {
+            font-family: "Silkscreen", cursive;
+            color: var(--space0);
+            font-size: 2rem;
+            text-align: center;
+            margin-top: 0;
+            text-shadow: 0 0 10px var(--space1);
+        }
+        .link-section ul {
+            columns: 2;
+            column-gap: 40px;
+            list-style: none;
+            padding: 0;
+        }
+        .link-section li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+        .link-section li::before {
+            content: "★";
+            color: var(--space0);
+            position: absolute;
+            left: 0;
+            animation: blink 2s infinite;
+        }
+        @keyframes blink { 50% { opacity: 0.3; } }
+
+        .link-section a {
+            color: var(--space0);
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .link-section a:hover {
+            color: white;
+            text-shadow: 0 0 15px var(--space1);
+            transform: translateX(8px);
+        }
+
+        @media (max-width: 800px) {
+            .link-section ul { columns: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <div id="headerArea">
+        <div id="header">
+            <a href="/"><img src="/images/spacecat.png" height="120px"></a>
+            <a href="/" style="text-decoration:none;"><strong>justinswain.dev</strong></a>
+        </div>
     </div>
+
+    <div id="flex">
+        <main>
+            <h1>Links</h1>
+
+            <div class="box" style="text-align:center; font-size:1.4rem; margin-bottom:40px;">
+                Hand-picked corners of the internet that are <strong>actually worth your time</strong>.
+            </div>
+
+            <!-- EDUCATION -->
+            <div class="link-section" id="education">
+                <h3>EDUCATION & LEARNING</h3>
+                <ul>
+                    <li><a href="http://jsforcats.com/">JS for Cats</a> : intro to JavaScript</li>
+                    <li><a href="https://www.nand2tetris.org/">Nand2Tetris</a> : build a computer from NAND gates</li>
+                    <li><a href="https://craftinginterpreters.com/">Crafting Interpreters</a> : write your own programming language</li>
+                    <li><a href="https://teachyourselfcs.com/">Teach Yourself Computer Science</a> : free CS curriculum</li>
+                </ul>
+            </div>
+
+            <!-- MATH -->
+            <div class="link-section" id="math">
+                <h3>MATH & CRYPTOGRAPHY</h3>
+                <ul>
+                    <li><a href="http://davidbau.com/conformal/#z">Complex Function Plotter</a> : zoom into conformal maps</li>
+                    <li><a href="https://www.math.unt.edu/~gt0141/index.html">My PhD Advisor</a></li>
+                    <li><a href="https://www.siam.org/">SIAM</a> : Society for Industrial & Applied Math</li>
+                    <li><a href="https://tutorial.math.lamar.edu/">Paul's Online Notes</a> : best free math resource</li>
+                    <li><a href="https://www.iacr.org/">IACR</a> : International Association for Cryptologic Research</li>
+                    <li><a href="https://cr.yp.to/">DJ Bernstein's site</a> : cryptography legend</li>
+                    <li><a href="https://eprint.iacr.org/">ePrint Archive</a> : the latest crypto papers</li>
+                    <li><a href="https://www.math.utah.edu/~cherk/mathjokes.html">Math Jokes</a> : the best collection</li>
+                </ul>
+            </div>
+
+            <!-- RETRO WEB -->
+            <div class="link-section" id="retro">
+                <h3>RETRO WEB & OLD INTERNET</h3>
+                <ul>
+                    <li><a href="https://geocities.restorativland.org/">GeoCities Archive</a> : 90s web</li>
+                    <li><a href="https://wiby.me/">Wiby.me</a> : "surprise me"</li>
+                    <li><a href="https://text-mode.tumblr.com/">Text-mode Art Tumblr</a></li>
+                    <li><a href="https://archive.org/details/softwarelibrary_msdos_games">Archive.org MS-DOS Games</a></li>
+                    <li><a href="https://retromags.com/">RetroMags</a> : old game magazines</li>
+                    <li><a href="https://www.my90stv.com/">My 90s TV</a> : simulated 1997 television</li>
+                    <li><a href="https://cameronsworld.net/">Cameron's World</a> : GeoCities collage masterpiece</li>
+                    <li><a href="https://amstereo.org/">AM Stereo</a> : The official AM Stereo webpage. @VWestlife on YouTube</li>
+                </ul>
+            </div>
+
+            <!-- VIDEOS / YOUTUBE -->
+            <div class="link-section" id="youtube">
+                <h3>YOUTUBE & STREAMS</h3>
+                <ul>
+                    <li><a href="https://www.weathertrackertv.com/">WeatherTrackerTV</a> : best DFW weather</li>
+                    <li><a href="https://www.youtube.com/@ReedTimmerWx">Reed Timmer</a> : extreme storm chaser</li>
+                    <li><a href="https://www.youtube.com/@CrackingTheCryptic">Cracking The Cryptic</a> : god-tier Sudoku</li>
+                    <li><a href="https://www.youtube.com/@3blue1brown">3Blue1Brown</a> : math visualization heaven</li>
+                    <li><a href="https://www.youtube.com/@Matt_Parker_2">Stand-up Maths</a></li>
+                    <li><a href="https://www.youtube.com/@TechnologyConnections">Technology Connections</a> : deep dives on everyday tech</li>
+                </ul>
+            </div>
+
+            <!-- OTHER / MISC -->
+            <div class="link-section" id="other">
+                <h3>OTHER COOL STUFF</h3>
+                <ul>
+                    <li><a href="https://neilsperry.com/e-gardens/">Neil Sperry e-Gardens</a> : Texas gardening tips</li>
+                    <li><a href="https://www.narythe3rd.com/">NaryThe3rd</a> : taditional tattos in dfw</li>
+                    <li><a href="https://gifypet.neocities.org/">GifyPet</a> : raise pixel pets (you already use it!)</li>
+                    <li><a href="https://webneko.net/">Web Neko</a> : the original desktop cat</li>
+                    <li><a href="https://cat-bounce.com/">Cat Bounce</a> : exactly what it says</li>
+                    <li><a href="https://longcat.iscool.net/">Longcat is Looooong</a></li>
+                </ul>
+            </div>
+
+        </main>
+
+        <sideBar id="sideBarPlaceholder"></sideBar>
+    </div>
+
+    <footer id="footerPlaceholder"></footer>
 </div>
 
-<div id="flex">
-
-    <main>
-        <h1>Links</h1>
-        <div class="box">
-            The following directory will link you to websites that I think are interesting and worth sharing!
-        </div>
-
-        <br>
-
-        <div class="box" id="directory">
-            <h3>Contents</h3>
-            <ul>
-                <li><a href="#education">Education</a></li>
-                <li><a href="#math">Math</a></li>
-                <li><a href="#retro">Retro Webites</a></li>
-                <li><a href="#youtube">YouTube</a></li>
-                <li><a href="#other">Other</a></li>
-            </ul>
-        </div>
-
-        <br><br>
-
-        <div class="box" id="education">
-            <h3>Education</h3>
-            <ul>
-                <li>
-                    <a href="http://jsforcats.com/">jsforcats.com</a>
-                </li>
-            </ul>
-        </div>
-
-        <br><br>
-
-        <div class="box" id="math">
-            <h3>Math</h3>
-            <ul>
-                <li><a href="http://davidbau.com/conformal/#z">Conformal Mapping</a> - plot functions in &#x2102</li>
-                <li><a href="https://www.math.unt.edu/~gt0141/index.html">My PhD Advisor</a></li>
-                <li><a href="https://www.siam.org/">SIAM</a> - Society for Industrial and Applied Mathematics</li>
-                <li><a href="https://tutorial.math.lamar.edu/">Paul's Online Notes</a></li> - free resource for college level math College Algebra through Ordinary Differential Equations
-                <li><a href="https://www.mathjobs.org/jobs">mathjobs.org</a> - for finding jobs in mathematics</li>
-                <li><a href="https://www.math.utah.edu/~cherk/mathjokes.html">Math Jokes</a> - a huge collection</li>
-            </ul>
-        </div>
-
-        <br><br>
-
-        <div class="box" id="retro">
-            <h3>Retro Websites</h3>
-            <ul>
-                <li><a href="https://geocities.restorativland.org/">GeoCities.Restorativland</a> - a good GeoCities archive (avoid neocities) </li>
-                <li><a href="https://wiby.me/">wiby.me</a> - Click on "surprise me..."</li>
-                <li><a href="https://www.retromags.com/">RetroMags</a> - retro magazine and game strategy guides</li>
-                <li><a href="https://speeddemosarchive.com/">Speed Demos Archive</a> - video game speed running forum</li>
-                <li><a href="http://www.amstereo.org/">AM Stereo</a> - The official AM Stereo web site</li>
-            </ul>
-        </div>
-
-        <br><br>
-
-        <div class="box" id="Videos">
-            <h3>Videos</h3>
-            <ul>
-                <li><a href="https://www.weathertrackertv.com/">WeatherTrackerTV</a> - this is the best FREE weather channel for DFW. Especially during tornado season</li>
-
-                <li><a href="https://www.youtube.com/@ReedTimmerWx">Reed Timmer</a> - the best storm chaser</li>
-
-                <li><a href="https://www.youtube.com/@CrackingTheCryptic">CrackingTheCryptic</a> - entertaining channel focused on Sudoku puzzles. Some are extremely difficult!</li>
-            </ul>
-        </div>
-
-        <br><br>
-
-        <div class="box" id="other">
-            <h3>Other</h3>
-            <ul>
-                <li><a href="https://neilsperry.com/e-gardens/">Neil Sperry</a> - e-gardens newsletter for weekly gardening tips in Texas.</li>
-                <li><a href="https://www.narythe3rd.com/">NaryThe3rd</a></li>
-            </ul>
-        </div>
-
-        <br><br>
-    </main>
-    <sideBar id="sideBarPlaceholder"></sideBar>
-</div>
-<footer id="footerPlaceholder" style="margin-top: 10px;"></footer>
-</div>
-
-<!-- JavaScript to load components -->
 <script>
-async function loadComponent(elementId, filePath) {
-  try {
-    const response = await fetch(filePath);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const content = await response.text();
-    if (!content) {
-      console.warn(`File ${filePath} is empty or not loaded`);
-    }
-    document.getElementById(elementId).innerHTML = content;
-  } catch (error) {
-    console.error(`Error loading ${filePath}:`, error);
-  }
+async function loadComponent(id, file) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    try {
+        const res = await fetch(file);
+        if (res.ok) el.innerHTML = await res.text();
+    } catch (e) { console.error("Load failed:", file); }
 }
-
-// Load the components
 loadComponent("sideBarPlaceholder", "/components/sidebar.html");
 loadComponent("footerPlaceholder", "/components/footer.html");
-function isPrime(n) {
-    if (n < 2) return false;
-    for (let i = 2; i <= Math.sqrt(n); i++) {
-        if (n % i === 0) return false;
-    }
-    return true;
-}
 
+// Prime ticker
+function isPrime(n) { if (n < 2) return false; for (let i = 2; i <= Math.sqrt(n); i++) if (n % i === 0) return false; return true; }
 let currentNum = 2;
 function updatePrime() {
     while (!isPrime(currentNum)) currentNum++;
-    document.getElementById("prime-number").textContent = currentNum;
+    const el = document.getElementById("prime-number");
+    if (el) el.textContent = currentNum;
     currentNum++;
 }
-setInterval(updatePrime, 2000); // Updates every 2 seconds
+setInterval(updatePrime, 2000);
 updatePrime();
 </script>
-</div>
+
 </body>
 </html>

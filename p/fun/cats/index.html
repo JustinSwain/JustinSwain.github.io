@@ -1,182 +1,296 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Justin Swain - Cats</title>
-    <link rel="stylesheet" href="/style/style.css">
+    <title>★ JUSTIN SWAIN - CAT GALAXY ★</title>
     <link rel="icon" href="/images/spacecat.png">
+    <link rel="stylesheet" href="/style/style.css">
+
     <style>
-        .thumbnail {
-            display: inline-block;    
-            margin: 0px;          
-            text-align: center;    
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Press+Start+2P&display=swap');
+
+        body {
+            background: var(--space7) url('/images/bluespace.gif') repeat;
+            color: white;
+            font-family: 'Dos', monospace;
         }
 
-        .thumbnail a {
-            display: block;      
-            max-width: 100%;   
+        h1#title {
+            font-family: "Orbitron", sans-serif;
+            font-size: 2rem;
+            text-align: center;
+            margin: 30px 0;
+            color: var(--space0);
+            text-shadow: 
+                0 0 10px var(--space1),
+                4px 4px 0 var(--space2),
+                8px 8px 0 var(--space3);
+            animation: pulse 4s infinite;
         }
-        .thumbnail img {
-            width: 100%;          
-            height: auto;        
-            border-radius: 10px;  
-            border: 2px solid var(--space1);
+        @keyframes pulse { 50% { text-shadow: 0 0 20px var(--space1), 6px 6px 0 var(--space2), 12px 12px 0 var(--space4); } }
+
+        .cat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 25px;
+            padding: 30px;
+            max-width: 100%;
+            margin: 0 auto;
         }
-        .thumbnail:hover img {
-            transform: scale(1.05); 
-            transition: transform 0.3s; 
-            border: 2px solid var(--space0);
+
+        .cat-card {
+            background: var(--space7);
+            border: 4px double var(--space1);
+            border-radius: 15px;
+            overflow: hidden;
+            text-align: center;
+            transition: all 0.4s;
+            box-shadow: 0 0 20px rgba(0,100,255,0.5);
         }
-        .thumbnail .caption {
-            margin-top: 5px;        
-            color: white;           
+        .cat-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 0 40px var(--space0);
+            border-color: var(--space0);
+        }
+        .cat-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            image-rendering: pixelated;
+            transition: transform 0.3s;
+        }
+        .cat-card:hover img { transform: scale(1.1); }
+        .cat-card h3 {
+            font-family: "Arcade", cursive;
+            color: var(--space0);
+            margin: 10px 0;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px var(--space1);
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 100%;
+            margin: 40px auto;
+        }
+        .game-thumb {
+            background: var(--space6);
+            border: 3px solid var(--space1);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .game-thumb:hover {
+            border-color: var(--space0);
+            box-shadow: 0 0 25px var(--space0);
+            transform: scale(1.03);
+        }
+        .game-thumb img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+        .game-thumb p {
+            text-align: center;
+            padding: 10px;
+            margin: 0;
+            background: rgba(0,0,0,0.5);
+            font-weight: bold;
+        }
+
+        .gify-frame {
+            border: 8px ridge var(--space1);
+            box-shadow: 0 0 30px var(--space0);
+            border-radius: 15px;
+            overflow: hidden;
+            display: block;
+            margin: 40px auto;
+        }
+
+        .neko-notice {
+            text-align: center;
+            font-size: 1.3rem;
+            margin: 20px;
+            color: var(--space0);
+            text-shadow: 0 0 10px var(--space1);
         }
     </style>
-  </head>
-  <body>
-<div id="container"><div id="topBar">
-    <!--<marquee>Welcome!</marquee>-->
-</div>
-<div id="headerArea">
-    <div id="header">
-        <a href="/"><img src="/images/spacecat.png" height="120px"></a>
-            <a href="/" style="text-decoration: none;"><strong style="font-size: x-large;">justinswain.dev</strong></a>
+</head>
+<body>
+
+<div id="container">
+    <div id="headerArea">
+        <div id="header">
+            <a href="/"><img src="/images/spacecat.png" height="120px"></a>
+            <a href="/" style="text-decoration:none;"><strong>justinswain.dev</strong></a>
+        </div>
     </div>
+
+    <div id="flex">
+        <main>
+            <h1 id="title">★ CAT GALAXY ★</h1>
+
+            <!-- <div class="neko-notice">
+                <script>NekoType="orange"</script>
+                <script src="https://webneko.net/n20171213.js"></script>
+                Beans will follow your mouse! Click him for zoomies! <a href="https://webneko.net">Neko</a>
+            </div> -->
+
+            <div class="box" style="margin: 30px auto;">
+                <h2>Choose Your Planet</h2>
+                <p>Visit our cat's personal planets.</p>
+
+
+                <!-- CAT PLANETS GRID -->
+
+                <div class="cat-grid" id="catGrid">
+                </div>
+
+                <script>
+                    const cats = [
+                    {name:"Jinx",   planet:"jinx",   color:"#ff1744", glow:"#ff8e8e"},
+                    {name:"Ninja",  planet:"ninja",  color:"#ebb934", glow:"#ffdd77"},
+                    {name:"Pluto",  planet:"pluto",  color:"#ff76f4", glow:"#00ff9d"},
+                    {name:"Beans",  planet:"beans",  color:"#ff8800", glow:"#ffaf76"},
+                    {name:"Zed",    planet:"zed",    color:"skyblue", glow:"springgreen"}
+                    ];
+
+                    // Pick random featured cat
+                    const featured = cats[Math.floor(Math.random() * cats.length)];
+                    const others = cats.filter(c => c !== featured);
+
+                    let html = `<div class="cat-card" style="border:8px double ${featured.glow}; box-shadow:0 0 50px ${featured.glow}; transform:scale(1.1);">
+                    <a href="/p/fun/cats/${featured.planet}/">
+                        <img src="/images/cats/${featured.planet}/${featured.planet}Planet.png" alt="${featured.name}">
+                        <h3 style="font-size:1.2rem; color:${featured.glow}; text-shadow:0 0 20px ${featured.color};">Cat of the Hour <br>★${featured.name.toUpperCase()}★</h3>
+                    </a>
+                    </div>`;
+
+                    others.forEach(cat => {
+                    html += `<div class="cat-card">
+                        <a href="/p/fun/cats/${cat.planet}/">
+                        <img src="/images/cats/${cat.planet}/${cat.planet}Planet.png" alt="${cat.name}">
+                        <h3>${cat.name}'s PLANET</h3>
+                        </a>
+                    </div>`;
+                    });
+
+                    document.getElementById("catGrid").innerHTML = html;
+                </script>
+            </div>
+
+            <div class="box" style="margin: 30px auto;">
+                <h2>Cat Games</h2>
+                <p>Play with the boys!</p>
+
+                <!-- GAMES GRID -->
+                <div class="games-grid">
+                    <div class="game-thumb">
+                        <a href="/p/fun/toys/catRoom/">
+                            <img src="/images/cats/catRoomThumbnail.png" alt="Cat Simulator">
+                            <p>Cat Simulator</p>
+                        </a>
+                    </div>
+                    <div class="game-thumb">
+                        <a href="/p/fun/toys/larryAttack/">
+                            <img src="/images/cats/larryAttackThumbnail.png" alt="Larry Space Attack">
+                            <p>Larry Space Attack</p>
+                        </a>
+                    </div>
+                    <div class="game-thumb">
+                        <a href="/p/fun/toys/sushiBar/">
+                            <img src="/images/cats/sushiBarThumbnail.png" alt="Ninja's Sushi Bar">
+                            <p>Ninja's Sushi Bar</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align:center; margin: 30px auto;">
+                    <img src="/images/cats/catCoding.JPG" style="max-width:90%; border-radius:15px; border:4px solid var(--space1);">
+                    <p><em>More games in development...</em></p>
+                </div>
+
+            <div class="box" style="margin:30px auto;">
+                <h3 style="text-align:center; color:gold; text-shadow:0 0 10px orange;">
+                    ★ TOP 10 CAT GALAXY VISITORS ★
+                </h3>
+                <marquee direction="left" scrolldelay="80" scrollamount="4" style="font-weight:bold; color:var(--space0);">
+                    #1 BeansLover2005 - #2 xXJinx_FANXx - #3 PlutoDefenseSquad - #4 NinjaIsMyAlpha - 
+                    #5 ZedSafetyInspector - #6 KittyForever99 - #7 OrangeCatChaos - #8 xXPlutoHaterXx - 
+                    #9 MeowMeowMaster - #10 Guest_999999
+                </marquee>
+            </div>
+
+            <!-- GIFY PET -->
+            <div class="box">
+                <h2>Take Care of Jinx!</h2>
+                <iframe class="gify-frame" width="340" height="360" scrolling="no"
+                    src="https://gifypet.neocities.org/pet/pet.html?name=Jinx&dob=1706997838&gender=m&element=Fire&pet=cat.gif&map=night.gif&background=1995.png&tablecolor=black&textcolor=white"
+                    frameborder="0" loading="lazy"></iframe>
+            </div>
+
+            <div class="box" id="catfact" style="margin:30px auto; font-size:1.3rem; text-align:center;">
+                <strong>🐾 Random Cat Fact 🐾</strong><br>
+                <span id="fact"></span>
+            </div>
+
+        <script>
+        const catFacts = [
+            "Jinx once beat cancer and became a three-legged legend.",
+            "Beans has never been full. Ever. Scientists are baffled.",
+            "Pluto is 12 inches tall but believes he is 6'5\".",
+            "Ninja is too smart for laser pointers — he knows it's just a dot.",
+            "Zed smells like warm sugar cookies.",
+            "Black cats like Jinx actually bring GOOD luck!",
+            "Beans has triangle pupils because he is slightly alien. (He has coloboma)",
+            "Zed sings like an angel when he thinks nobody is listening.",
+            "Pluto has stolen 47 collars and is wanted in three rooms."
+        ];
+        document.getElementById("fact").textContent = catFacts[Math.floor(Math.random() * catFacts.length)];
+        </script>
+
+        </main>
+
+        <sideBar id="sideBarPlaceholder"></sideBar>
+    </div>
+
+    <footer id="footerPlaceholder"></footer>
 </div>
 
-<div id="flex">
-    <main>
-        <script>NekoType="orange"</script>
-        <h1 id=nl><script src="https://webneko.net/n20171213.js"></script><a href="https://webneko.net">Neko</a></h1>
-        <h1>Cats</h1>
-        <div class="box">
-            <p>
-                I think cats are cool. Below you will find web shrines dedicated to each of my five cats Ninja, Zed, Jinx, Pluto, and Beans. 
-            </p>
-            <p>
-                Scroll down to play games with Jinx.
-            </p>
-            <p>
-                Beans is sitting in the top left corner, if you click on him he will follow your mouse!
-            </p>
-        </div>
-
-        <br><br>
-
-        <div class="box">
-            <h3>Cat Games</h3>
-            <div id="flex">
-            <div class="thumbnail">
-                <a href="/p/fun/toys/catRoom/"><img src="/images/cats/catRoomThumbnail.png" width="30%" class="thumbnail"></a>
-                <span class="caption">Cat Simulator</span>
-            </div>
-            <div class="thumbnail">
-                <a href="/p/fun/toys/larryAttack/"><img src="/images/cats/larryAttackThumbnail.png" width="30%" class="thumbnail"></a>
-                <span class="caption">Larry Space Attack</span>
-            </div>
-            <div class="thumbnail">
-                <a href="/p/fun/toys/sushiBar/"><img src="/images/cats/sushiBarThumbnail.png" width="30%" class="thumbnail"></a>
-                <span class="caption">Ninja's Sushi Bar</span>
-            </div>
-            </div>
-            </div>
-        <br>
-        <div style="width:100%; text-align: center;">
-            <img src="/images/cats/catCoding.JPG" style="width: 50%;">
-            <p style="font-style: italic;">
-                More games coming soon.
-            </p>
-        </div>
-
-        <div class="box" style="background: url('/images/bluespace.gif')">
-            <h3>Cat Rooms</h3>
-            <p>Click on the cats to visit their planet!</p>
-            <div id="flex" style="flex-wrap: wrap; flex-direction: row; justify-content: center;">
-                <figure>
-                    <a href="/p/fun/cats/jinx/"><img src="/images/cats/jinx/jinxPlanet.png"
-                        height="100" class="zoom"></a>
-                    <figcaption>Jinx's Planet</figcaption>
-                </figure>
-
-                <figure>
-                <a href="/p/fun/cats/ninja/"><img src="/images/cats/ninja/ninjaPlanet.png"
-                    height="100" class="zoom"></a>
-                <figcaption>Ninja's Planet</figcaption>
-                </figure>
-                <figure>
-                <a href="/p/fun/cats/pluto/"><img src="/images/cats/pluto/plutoPlanet.png"
-                    height="100" class="zoom"></a>
-                <figcaption>Pluto's Planet</figcaption>
-                </figure>
-                <figure>
-                <a href="/p/fun/cats/beans/"><img src="/images/cats/beans/beansPlanet.png"
-                    height="100" class="zoom"></a>
-                <figcaption>Beans's Planet</figcaption>
-                </figure>
-                <figure>
-                <a href="/p/fun/cats/zed/"><img src="/images/cats/zed/zedPlanet.png"
-                    height="100" class="zoom"></a>
-                <figcaption>Zed's Planet</figcaption>
-                </figure>
-            </div>
-        </div>
-
-        <br><br>
-
-        <div class="box">
-            <h3>Take care of Jinx!</h3>
-            <center>
-            <iframe width="314" height="321" scrolling="no" src="https://gifypet.neocities.org/pet/pet.html?name=Jinx&dob=1706997838&gender=m&element=Fire&pet=cat.gif&map=night.gif&background=1995.png&tablecolor=black&textcolor=black" frameborder="0" loading="lazy"></iframe>
-            </center>
-        </div>
-        <br>
-        
-    </main>
-
-    <sideBar id="sideBarPlaceholder"></sideBar>
-</div>
-<footer id="footerPlaceholder" style="margin-top: 10px;"></footer>
-</div>
-
-<!-- JavaScript to load components -->
+<!-- Load sidebar & footer -->
 <script>
-async function loadComponent(elementId, filePath) {
-  try {
-    const response = await fetch(filePath);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const content = await response.text();
-    if (!content) {
-      console.warn(`File ${filePath} is empty or not loaded`);
-    }
-    document.getElementById(elementId).innerHTML = content;
-  } catch (error) {
-    console.error(`Error loading ${filePath}:`, error);
-  }
+async function loadComponent(id, file) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    try {
+        const res = await fetch(file);
+        if (res.ok) el.innerHTML = await res.text();
+    } catch (e) { console.error("Load failed:", file); }
 }
-
-// Load the components
 loadComponent("sideBarPlaceholder", "/components/sidebar.html");
 loadComponent("footerPlaceholder", "/components/footer.html");
+
+// Prime ticker
 function isPrime(n) {
     if (n < 2) return false;
-    for (let i = 2; i <= Math.sqrt(n); i++) {
-        if (n % i === 0) return false;
-    }
+    for (let i = 2; i <= Math.sqrt(n); i++) if (n % i === 0) return false;
     return true;
 }
-
 let currentNum = 2;
 function updatePrime() {
     while (!isPrime(currentNum)) currentNum++;
-    document.getElementById("prime-number").textContent = currentNum;
+    const el = document.getElementById("prime-number");
+    if (el) el.textContent = currentNum;
     currentNum++;
 }
-setInterval(updatePrime, 2000); // Updates every 2 seconds
+setInterval(updatePrime, 2000);
 updatePrime();
 </script>
-</div>
+
 </body>
 </html>

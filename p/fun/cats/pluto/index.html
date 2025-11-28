@@ -1,263 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pluto's Planet</title>
-    <link rel="stylesheet" href="/style/style.css">
+    <title>☠ PLUTO'S PLANET ☠ Tiny Bully, Huge Attitude ☠</title>
     <link rel="icon" href="/images/spacecat.png">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Bangers&family=Noto+Sans+Display:wght@900&display=swap');
+
         :root {
-            --text_bg_image: url('/images/cats/beans/redweb.gif');
-            --body-bg-image: url('/images/cats/pluto/multi175.jpg');
+            --hotpink: #ff76f4;
+            --toxic: #00ff9d;
+            --orange: #ff5e00;
+            --bg: #080808;
+        }
 
-            /* colors */
-            --space0: #ff76f4; /* Links */
-            --space1: #0055c5; /* Headings */
-            --space2: #009a36; /* Box Border */
-            --space3: #c35515;
-            --space4: #ddce00;
-            --space5: #a1ba00;
-            --space6: #1a1a1a; /* Box Bakground */
-            --space7: #080808; 
-
-        }
-        .jinxbox {
-            border: 10px solid var(--space7);
-            padding: 10px;
-            position: sticky;
-            top: 20px;
-            border-radius: 10px;
-            background: linear-gradient(var(--space2), var(--space5));
-        }
-        main {
-            background-color: rgba(255, 255, 255, 0.0);
-            flex: 1;
-            padding: 20px;
-            order: 2;
-            margin-top: 10px;
-            margin-bottom: 10px;
-            text-align: center;
-            font-size: x-large;
-        }
-        aside {
-            /* background-image: var(--text_bg_image);*/
-            width: 35%;
-            padding: 10px;
-            font-size: small;
-            margin-top: 20px;
-        }
         body {
-            font-family: 'Arcade';
             margin: 0;
-            background-color: var(--space7);
+            background: var(--bg) url('/images/toys/example.jpg');
             background-size: auto;
             color: white;
-            background-image: var(--body-bg-image);
+            font-family: "Comic Sans MS", "Arial Black", sans-serif;
+            image-rendering: pixelated;
         }
-        @media only screen and (max-width: 1000px) {
-    #flex {
-        flex-direction: column;
-    }
-    #container {
-        max-width: 100%;
-        margin: 0px;
-    }
-    aside {
-        width: 100%;
-    }
 
-    main {
-        order: 1;
-    }
+        .construction {
+            background: linear-gradient(90deg, red, yellow, red);
+            color: black;
+            text-align: center;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 1.3rem;
+            animation: blink 1.2s steps(5, start) infinite;
+            border-bottom: 5px dashed yellow;
+        }
+        @keyframes blink { to { visibility: hidden; } }
 
-    #leftSidebar {
-        order: 3;
-    }
+        #container {
+            max-width: 1160px;
+            margin: 20px auto;
+            padding: 15px;
+            background: rgba(0,0,0,0.85);
+            border: 8px ridge var(--hotpink);
+            box-shadow: 0 0 40px var(--orange), inset 0 0 30px rgba(255,118,244,0.3);
+            min-height: 100vh;
+        }
 
-    #rightSidebar {
-        order: 2;
-    }
-    #navbar {
-        text-align: center;
-    }
-    #navbar ul {
-        height: 100px;
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        list-style-image: none;
-    }
-    #navbar ul > ul {
-        display: none;
-    }
-    aside {
-        margin-left: 0px;
-        margin-bottom: 70px;
-        display: flex;
-        justify-content: space-around;
-    }
+        marquee {
+            font-family: "Bangers", cursive;
+            background: black;
+            color: var(--toxic);
+            padding: 12px;
+            font-size: 1.4rem;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px var(--hotpink);
+        }
 
-    .jinxbox {
-        max-width: 350px;
-    }
-}
+        h1 {
+            font-family: "Creepster", cursive;
+            color: var(--hotpink);
+            text-align: center;
+            font-size: 4.5rem;
+            margin: 10px 0;
+            text-shadow: 
+                0 0 10px var(--orange),
+                4px 4px 0 black,
+                8px 8px 0 var(--toxic);
+            transform: rotate(-3deg);
+        }
+
+        /* TRADING CARD — Delinquent Edition */
+        .trading-card {
+            width: 340px;
+            margin: 20px auto;
+            padding: 18px;
+            background: linear-gradient(135deg, #111, #000);
+            border: 10px double var(--hotpink);
+            box-shadow: 
+                0 0 30px var(--orange),
+                inset 0 0 20px rgba(255,118,244,0.4);
+            position: relative;
+            font-family: "Bangers", cursive;
+        }
+        .trading-card::before {
+            content: "WANTED ☠ DEAD OR ALIVE";
+            position: absolute;
+            top: -20px; left: 50%;
+            transform: translateX(-50%) rotate(-5deg);
+            background: red;
+            color: yellow;
+            padding: 8px 20px;
+            font-size: 1.2rem;
+            border: 5px dashed black;
+            box-shadow: 0 0 15px orange;
+        }
+        .card-img {
+            width: 100%;
+            border: 6px solid var(--toxic);
+            box-shadow: 0 0 20px var(--hotpink);
+        }
+        .card-stats {
+            background: rgba(0,0,0,0.9);
+            padding: 15px;
+            margin-top: 15px;
+            border: 4px dashed var(--orange);
+        }
+        .card-stats table {
+            width: 100%;
+            color: var(--toxic);
+            font-size: 1.1rem;
+        }
+        .card-stats td:first-child { color: var(--hotpink); font-weight: bold; }
+        .rarity { 
+            font-size: 1.5rem; 
+            color: var(--orange); 
+            text-shadow: 0 0 15px red;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 50% { text-shadow: 0 0 25px red; } }
+
+        /* Layout */
+        #flex {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        main {
+            flex: 1;
+            min-width: 320px;
+            padding: 20px;
+            text-align: center;
+            line-height: 1.8;
+            font-size: 1.2rem;
+        }
+        aside { max-width: 380px; }
+
+        img { max-width: 100%; height: auto; }
+        .zoom { transition: transform 0.4s; }
+        .zoom:hover { transform: scale(2.5); z-index: 999; }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin: 25px 0;
+        }
+
+        .skulls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .return-btn {
+            position: fixed;
+            bottom: 15px;
+            left: 15px;
+            z-index: 9999;
+        }
+
+        @media (max-width: 1000px) {
+            #flex { flex-direction: column; align-items: center; }
+            h1 { font-size: 3.2rem; }
+            .trading-card { width: 92%; }
+        }
     </style>
-  </head>
-
+</head>
 <body>
+
+<div class="construction">☠ WARNING: TINY TERROR ON THE LOOSE ☠</div>
+
 <div id="container">
+    <marquee scrolldelay="50">
+        ☠ PLUTO RULES ☠ ORANGE CATS DROOL ☠ TABBIES FOREVER ☠ BITE FIRST ASK LATER ☠
+    </marquee>
 
-<div id="flex">
-    <main>
-        <img class="zoom" src="/images/cats/pluto/plutoPlanet.png" width="100px">
+    <h1>☠ PLUTO'S PLANET ☠</h1>
 
-        <div id="flex" style="flex-direction: row; justify-content: space-evenly; align-items: center;">
-            <img src="/images/cats/pluto/cool.gif" width="10%">
-        <p>
-            Welcome to Pluto's planet!  
-        </p>
-        <img src="/images/cats/pluto/cool.gif" width="10%">
-        </div>
+    <div id="flex">
 
-        <br>
-
-        <img src="/images/cats/pluto/plutoBaby.jpeg" width = 80%>
-
-        <br><br>
-
-        Pluto is a tiny tabby cat. He is a terrible, awful, no good, very bad brother. 
-
-        <br><br>
-
-        <img src="/images/cats/pluto/plutoNinja.jpeg" width="50%">
-
-        <br><br>
-
-        From an early age, Ninja taught him the way of the tabby. However, not even Ninja realized how much of a monster he created. Pluto thinks tabbies are awesome and orange cats are stupid.
-
-        <br><br>
-
-        <img src="/images/cats/pluto/Bully.gif" width = 20%>
-        <img src="/images/cats/pluto/kid.gif" width = 20%>
-
-        <br><br>
-
-        Pluto likes to push his brothers heads into the ground, steal their food, bite their tails, and tear off their collars. All while appearing to be a sweet baby.
-
-        <br><br>
-
-        <img src="/images/cats/pluto/plutoHide.jpeg" width = 80%>
-
-        <br><br>
-
-        It could be that he has a case of "Little Man Syndorme." Pluto is the tiniest out of the five, even smaller than Beans who is a kitty. He thinks <a href="/pages/fun/cats/jinx.html">Jinx</a> is his baby brother since he was adopted first but Jinx is actually older and bigger.
-
-        <br><br>
-
-        <img src="/images/cats/pluto/plutoJinx.jpeg" width="70%">
-
-        <br><br>
-
-        <img src="/images/cats/pluto/mousecatline.gif" width="90%">
-
-        <!--Pluto's favorite toys are mousies. Its probably because he sort of looks like a tiny mouse.--> He was so proud of himself when he grew big enough to be able to pick up his toys in his mouth.
-
-        <br><br>
-
-        <img src="/images/cats/pluto/catandmouse2.gif" width = 15%>
-        <img src="/images/cats/pluto/catandmouse2.gif" width = 15%>
-        <img src="/images/cats/pluto/catandmouse2.gif" width = 15%>
-        <br>
-        <img src="/images/cats/pluto/plutoMouse.jpeg" width = 70%>
-        <img src="/images/cats/pluto/dmouseANIM.gif" width = 80%>
-
-        <br><br>
-
-        When he is not playing with mousies or bullying his brothers he is probably judging people. He likes to sit in the window and glare at people as they walk by.
-
-        <br><br>
-
-        <img src="/images/cats/pluto/plutoJudgement.jpeg" width="70%">
-
-        <br><br>
-
-        <!--Despite being so mean, he is still a tiny baby though so his brothers don't take him too seriously.-->
-
-        <br><br>
-
-        <img src="/images/cats/pluto/plutoMean.jpeg" width = 70%>
-
-        <br>
-        <br>
-
-        Thank you for visiting Pluto's Planet!
-
-        <br><br><br>
-
-        Below will be a growing collection of things that Pluto thinks are cool. If you want to learn about Pluto's brothers you can do that <a href="/pages/fun/cats.html">here!</a>
-
-        <br><br>
-
-        <img src="/images/cats/pluto/abkitty.gif" width="30%">
-
-        <div id="flexgallery">
-            <img src="/images/cats/pluto/plutoBeanBag.jpeg" width="40%">
-            <img src="/images/cats/pluto/plutoCool.jpeg" width="60%">
-            <img src="/images/cats/pluto/plutoUhOh.jpeg" width="40%"
-            
-        </div>
-        
-    </main>
-
-    <aside id="rightSidebar">
-        <div class="jinxbox">
-            <div class="box" style="padding: 3px; text-align: center;">
-                <h2 style="margin: 0px;">Pluto</h2>
+        <!-- ==================== WANTED POSTER TRADING CARD ==================== -->
+        <aside>
+            <div class="trading-card">
+                <img src="/images/cats/pluto/plutoLay-noBG.png" class="card-img" alt="Pluto the Terrible">
+                <div class="card-stats">
+                    <h2 style="margin:5px; color:var(--hotpink); text-align:center;">PLUTO</h2>
+                    <table>
+                        <tr><td>B-Day</td><td>Aug 12 2020</td></tr>
+                        <tr><td>Sex</td><td>M</td></tr>
+                        <tr><td>Alignment</td><td>Lawful Evil</td></tr>
+                        <tr><td>Role</td><td>Professional Bully</td></tr>
+                        <tr><td>Trait</td><td>Rotten to the Core</td></tr>
+                        <tr><td>Size</td><td>Little Man Syndrome</td></tr>
+                        <tr><td>Rarity</td><td class="rarity">☠ INFAMOUS ☠</td></tr>
+                    </table>
+                </div>
             </div>
 
-            <br><br><br><br>
+            <div class="skulls">
+                <img src="/images/cats/pluto/cool.gif" width="70">
+                <img src="/images/cats/pluto/Bully.gif" width="70">
+                <img src="/images/cats/pluto/cool.gif" width="70">
+            </div>
+        </aside>
 
-                <img src="/images/cats/pluto/plutoLay-noBG.png" width = "90%" style="float: right;">
-            
-            <br><br>
+        <!-- ==================== MAIN CONTENT ==================== -->
+        <main>
+            <img class="zoom" src="/images/cats/pluto/plutoPlanet.png" width="110">
 
-            <table width="100%">
-                <tr>
-                    <td>B-day:</td>
-                    <td style="text-align: right;">Aug. 12, 2020</td>
-                </tr>
-                <tr>
-                    <td>Sex:</td>
-                    <td style="text-align: right;">M</td>
-                </tr>
-                <tr>
-                    <td>Alignment:</td>
-                    <td style="text-align: right;">Lawful Evil</td>
-                </tr>
-                <tr>
-                    <td>Role:</td>
-                    <td style="text-align: right;">Bully</td>
-                </tr>
-                <tr>
-                    <td>Character:</td>
-                    <td style="text-align: right;">Rotten</td>
-                </tr>
-                <tr>
-                    <td>Size:</td>
-                    <td style="text-align: right;">Little Man</td>
-                </tr>
-            </table>
+            <div class="skulls">
+                <img src="/images/cats/pluto/cool.gif" width="80">
+                <p><strong>WELCOME TO PLUTO'S PLANET</strong></p>
+                <img src="/images/cats/pluto/cool.gif" width="80">
+            </div>
 
-        </div>
+            <p>Enter at your own risk. Pluto is the smallest cat but the biggest jerk in the house.</p>
 
-        <p style="bottom: 0%; left: 10px; position: fixed; text-align: center;">
-            <a href="/p/fun/cats/">
-                <img src="/images/cats/pluto/back.gif"
-                width="60%">
-            </a>
-        </p>
-    </aside>
+            <img src="/images/cats/pluto/plutoBaby.jpeg" width="80%">
+
+            <p>He was trained by Ninja… and immediately surpassed his master in pure chaos.</p>
+
+            <img src="/images/cats/pluto/plutoNinja.jpeg" width="60%">
+
+            <p>Specialties include: head-pushing, tail-biting, collar-ripping, and looking innocent while committing crimes.</p>
+
+            <div class="gallery">
+                <img src="/images/cats/pluto/Bully.gif">
+                <img src="/images/cats/pluto/kid.gif">
+                <img src="/images/cats/pluto/plutoHide.jpeg" width="70%">
+            </div>
+
+            <p>Thinks he's the oldest brother. Thinks Jinx is his baby. In reality, he's the runt.</p>
+            <img src="/images/cats/pluto/plutoJinx.jpeg" width="75%">
+
+            <img src="/images/cats/pluto/mousecatline.gif" width="90%">
+
+            <p>Obsessed with mousies (probably because he looks like one).</p>
+            <div class="gallery">
+                <img src="/images/cats/pluto/catandmouse2.gif">
+                <img src="/images/cats/pluto/plutoMouse.jpeg" width="60%">
+                <img src="/images/cats/pluto/dmouseANIM.gif">
+            </div>
+
+            <p>When not terrorizing his brothers, he sits in the window judging passers-by like a tiny dictator.</p>
+            <img src="/images/cats/pluto/plutoJudgement.jpeg" width="70%">
+
+            <img src="/images/cats/pluto/plutoMean.jpeg" width="75%">
+
+            <p><strong>Thanks for surviving Pluto's Planet.</strong></p>
+
+            <p>Want to meet his victims? Do it <a href="/pages/fun/cats.html">here</a></p>
+
+            <img src="/images/cats/pluto/abkitty.gif" width="40%">
+
+            <div class="gallery">
+                <img src="/images/cats/pluto/plutoBeanBag.jpeg">
+            </div>
+        </main>
+    </div>
+
+    <div class="return-btn">
+        <a href="/p/fun/cats/">
+            <img src="/images/cats/pluto/back.gif" width="160" alt="FLEE">
+        </a>
+    </div>
 </div>
-</div>
+
 </body>
+</html>

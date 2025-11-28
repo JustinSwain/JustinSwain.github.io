@@ -1,233 +1,264 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zed's' Planet</title>
-    <link rel="stylesheet" href="/style/style.css">
+    <title>☁ ZED'S PLANET ☁ the safest place in the universe ☁</title>
     <link rel="icon" href="/images/spacecat.png">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@700&family=Patrick+Hand&family=Reenie+Beanie&display=swap');
+
         :root {
-    --text_bg_image: url('/images/cats/beans/redweb.gif');
-    --body-bg-image: url('/images/cats/zed/MoonBG.gif');
+            --sky: skyblue;
+            --mint: springgreen;
+            --peach: #ffaf76;
+            --cloud: #ffffff;
+            --fluff: #fff0f8;
+        }
 
-    /* colors */
-    --space0: #ffaf76; /* Links */
-    --space1: skyblue; /* Headings */
-    --space2: springgreen; /* Box Border */
-    --space3: #c35515;
-    --space4: #dd7a00;
-    --space5: #ba4100;
-    --space6: #1a1a1a; /* Box Background */
-    --space7: #080808; 
+        body {
+            margin: 0;
+            background: #080808 url('/images/cats/zed/MoonBG.gif') fixed center;
+            background-size: cover;
+            color: black;
+            font-family: "Patrick Hand", cursive;
+            image-rendering: pixelated;
+            min-height: 100vh;
+        }
 
-}
-        .jinxbox {
-            border: 10px solid var(--space7);
+        .construction {
+            background: linear-gradient(90deg, skyblue, pink, springgreen, pink, skyblue);
+            color: navy;
+            text-align: center;
             padding: 10px;
-            position: sticky;
-            top: 20px;
-            border-radius: 10px;
-            background: linear-gradient(var(--space2), var(--space0));
+            font-size: 1.4rem;
+            font-weight: bold;
+            animation: rainbow 8s linear infinite;
+            border-bottom: 6px double white;
+        }
+        @keyframes rainbow { 0%{background-position:0% 50%} 100%{background-position:100% 50%} }
+
+        #container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 25px;
+            background: rgba(255,255,255,0.95);
+            border: 12px double var(--sky);
+            box-shadow: 0 0 50px rgba(135,206,235,0.9);
+            border-radius: 30px;
+            min-height: 100vh;
+        }
+
+        marquee {
+            font-family: "Kalam", cursive;
+            background: white;
+            color: deeppink;
+            padding: 12px;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px pink;
+            border: 4px dotted skyblue;
+        }
+
+        h1 {
+            font-family: "Reenie Beanie", cursive;
+            color: deeppink;
+            text-align: center;
+            font-size: 5.5rem;
+            margin: 15px 0;
+            text-shadow: 
+                4px 4px 0 var(--sky),
+                8px 8px 0 var(--mint);
+            transform: rotate(-2deg);
+        }
+
+        /* TRADING CARD — Angelic Safety Edition */
+        .trading-card {
+            width: 360px;
+            margin: 20px auto;
+            padding: 25px;
+            background: linear-gradient(135deg, #fff8ff, #f0f8ff);
+            border: 14px ridge var(--mint);
+            box-shadow: 0 0 40px rgba(0,255,0,0.5);
+            position: relative;
+            font-family: "Patrick Hand", cursive;
+        }
+        .trading-card::before {
+            content: "♡ SAFEST BOY ♡";
+            position: absolute;
+            top: -25px; left: 50%;
+            transform: translateX(-50%);
+            background: pink;
+            color: white;
+            padding: 10px 30px;
+            font-size: 1.3rem;
+            border: 6px solid white;
+            border-radius: 50px;
+            box-shadow: 0 0 20px deeppink;
+        }
+        .card-img {
+            width: 100%;
+            border: 10px solid white;
+            border-radius: 20px;
+            box-shadow: 0 0 30px skyblue;
+        }
+        .card-stats {
+            background: rgba(255,255,255,0.95);
+            padding: 18px;
+            margin-top: 18px;
+            border: 5px dotted var(--sky);
+            border-radius: 20px;
+        }
+        .card-stats table {
+            width: 100%;
+            font-size: 1.2rem;
+            color: navy;
+        }
+        .card-stats td:first-child { color: deeppink; font-weight: bold; }
+        .rarity { 
+            font-size: 1.8rem; 
+            color: var(--mint); 
+            text-shadow: 0 0 15px lime;
+            animation: sparkle 3s infinite;
+        }
+        @keyframes sparkle { 50% { text-shadow: 0 0 30px lime; } }
+
+        /* Layout */
+        #flex {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         main {
-            background-color: rgba(255, 255, 255, 0.0);
             flex: 1;
+            min-width: 320px;
             padding: 20px;
-            order: 2;
-            margin-top: 10px;
-            margin-bottom: 10px;
             text-align: center;
-            font-size: x-large;
-        }
-        aside {
-            /* background-image: var(--text_bg_image);*/
-            width: 35%;
-            padding: 10px;
-            font-size: small;
-            margin-top: 20px;
-        }
-        body {
-            font-family: 'Arcade';
-            margin: 0;
-            background-color: var(--space7);
-            background-size: auto;
+            line-height: 1.9;
+            font-size: 1.3rem;
             color: black;
-            background-image: var(--body-bg-image);
         }
-        @media only screen and (max-width: 1000px) {
-    #flex {
-        flex-direction: column;
-    }
-    #container {
-        max-width: 100%;
-        margin: 0px;
-    }
-    aside {
-        width: 100%;
-    }
+        aside { max-width: 420px; }
 
-    main {
-        order: 1;
-    }
+        img { max-width: 100%; height: auto; }
+        .zoom { transition: transform 0.4s; }
+        .zoom:hover { transform: scale(2.2); z-index: 999; }
 
-    #leftSidebar {
-        order: 3;
-    }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            justify-content: center;
+            margin: 30px 0;
+        }
 
-    #rightSidebar {
-        order: 2;
-    }
-    #navbar {
-        text-align: center;
-    }
-    #navbar ul {
-        height: 100px;
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        list-style-image: none;
-    }
-    #navbar ul > ul {
-        display: none;
-    }
-    aside {
-        margin-left: 0px;
-        margin-bottom: 70px;
-        display: flex;
-        justify-content: space-around;
-    }
+        .teddies {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 25px 0;
+        }
 
-    .jinxbox {
-        max-width: 350px;
-    }
-}
+        .return-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 9999;
+        }
+
+        @media (max-width: 1000px) {
+            #flex { flex-direction: column; align-items: center; }
+            h1 { font-size: 3.8rem; }
+            .trading-card { width: 92%; }
+        }
     </style>
-  </head>
-
+</head>
 <body>
+
+<div class="construction">♡ FLUFFY ZONE ♡</div>
+
 <div id="container">
+    <marquee scrolldelay="80">
+        ♡ ZED IS THE SWEETEST BOY ♡ SAFETY FIRST ♡ FLUFFY ANGEL ♡
+    </marquee>
 
-<div id="flex">
-    <main>
-        <img class="zoom" src="/images/cats/zed/zedPlanet.png" width="100px">
+    <h1>☁ ZED'S PLANET ☁</h1>
 
-        <div id="flex" style="flex-direction: row; justify-content: space-evenly; align-items: center;">
-            <img src="/images/cats/zed/teddyBear.gif" width="10%">
-        <p>
-            Welcome to Zed's planet!  
-        </p>
-        <img src="/images/cats/zed/teddyBear.gif" width="10%">
-        </div>
+    <div id="flex">
 
-        <br>
-
-        <img src="/images/cats/zed/zedLook.jpeg" width = 80%>
-
-        <br><br>
-
-        Zed is a medium hair orange cat. He is very fluffy and sweet. He was adopted in Jan. 2017 from the ASPCA in Mesquite, TX. He is the only one of the five to be born a stray. He was scared of the streets so he turned himself in.
-
-        <br><br>
-
-        <img src="/images/cats/zed/zedCute.jpeg" width="70%">
-
-        <br><br>
-
-        His number one concern is saftey. Zed will never stay anywhere that is unsafe. He always imagines the worst will happen.
-
-        <br><br>
-
-        <img src="/images/cats/zed/img5.gif" width = 70%>
-
-        <br><br>
-
-        If you are <a href="/pages/fun/cats/ninja.html">Ninja</a> or Cassidy then Zed is nice to you. Everyone else gets the Zed glare.
-
-        <br><br>
-
-        <img src="/images/cats/zed/zedNice.jpeg" width = 40%>
-        <img src="/images/cats/zed/zedMean.jpeg" width = 40%>
-
-        <br><br>
-
-        Zed's favorite toy is his laser pointer. It is very safe to chase lasers.
-
-        <br><br>
-
-        <img src="/images/cats/zed/hopkitty.gif" width="50%">
-
-        <br><br>
-
-        Zed is a man of schedules. If we stay up late and don't put him to bed on time he will go upstairs and yell at us to put him to bed.
-
-        <br><br>
-
-        <img src="/images/cats/zed/zedCuddle.jpeg" width = 70%>
-
-        <br><br>
-
-        When he thinks he is alone, Zed likes to sing beautiful songs. He has the voice of an angel.
-
-        <br><br>
-
-        <img src="/images/cats/zed/zedWindow.jpeg" width="60%">
-
-        <br><br>
-
-        Thank you for visiting Zed's Planet!
-
-        <br><br><br>
-
-        Below will be a growing collection of safe things. If you want to learn about Zed's brothers you can do that <a href="/pages/fun/cats.html">here!</a>
-        
-    </main>
-
-    <aside id="rightSidebar">
-        <div class="jinxbox">
-            <div class="box" style="padding: 3px; text-align: center;">
-                <h2 style="margin: 0px;">Zed</h2>
+        <!-- ==================== SAFEST BOY TRADING CARD ==================== -->
+        <aside>
+            <div class="trading-card">
+                <img src="/images/cats/zed/zed1-noBG.png" class="card-img" alt="Zed the Fluffy Angel">
+                <div class="card-stats">
+                    <h2 style="margin:5px; color:deeppink; text-align:center;">ZED</h2>
+                    <table>
+                        <tr><td>B-Day</td><td>Sept 17 2016</td></tr>
+                        <tr><td>Sex</td><td>M</td></tr>
+                        <tr><td>Alignment</td><td>Lawful Good</td></tr>
+                        <tr><td>Role</td><td>Defense</td></tr>
+                        <tr><td>Safety</td><td>Maximum</td></tr>
+                        <tr><td>Special Skill</td><td>Beautiful Singing</td></tr>
+                        <tr><td>Rarity</td><td class="rarity">♡ ANGELIC ♡</td></tr>
+                    </table>
+                </div>
             </div>
 
-                <img src="/images/cats/zed/zed1-noBG.png" width = "80%" style="margin-left: 0px;">
-            
+            <div class="teddies">
+                <img src="/images/cats/zed/teddyBear.gif" width="90">
+                <img src="/images/cats/zed/teddyBear.gif" width="90">
+                <img src="/images/cats/zed/teddyBear.gif" width="90">
+            </div>
+        </aside>
 
-            <table width="100%">
-                <tr>
-                    <td>B-day:</td>
-                    <td style="text-align: right;">Sept. 17, 2016</td>
-                </tr>
-                <tr>
-                    <td>Sex:</td>
-                    <td style="text-align: right;">M</td>
-                </tr>
-                <tr>
-                    <td>Alignment:</td>
-                    <td style="text-align: right;">Lawful Good</td>
-                </tr>
-                <tr>
-                    <td>Role:</td>
-                    <td style="text-align: right;">Defense</td>
-                </tr>
-                <tr>
-                    <td>Saftey:</td>
-                    <td style="text-align: right;">Maximimzed</td>
-                </tr>
-                <tr>
-                    <td>Ability:</td>
-                    <td style="text-align: right;">Hide</td>
-                </tr>
-            </table>
+        <!-- ==================== MAIN CONTENT ==================== -->
+        <main>
+            <img class="zoom" src="/images/cats/zed/zedPlanet.png" width="120">
 
-        </div>
+            <div class="teddies">
+                <img src="/images/cats/zed/teddyBear.gif" width="90">
+                <p><strong>WELCOME TO ZED'S PLANET</strong></p>
+                <img src="/images/cats/zed/teddyBear.gif" width="90">
+            </div>
 
-        <p style="bottom: 0%; left: 10px; position: fixed; text-align: center;">
-            <a href="/p/fun/cats/">
-                <img src="/images/cats/zed/back.gif"
-                width="70%">
-            </a>
-        </p>
-    </aside>
+            <p>Zed is the fluffiest, medium-hair orange boy who is so sweet he smells like pure sugar.</p>
+
+            <img src="/images/cats/zed/zedLook.jpeg" width="80%">
+
+            <p>Adopted January 2017 from the ASPCA after turning himself in from the scary streets.</p>
+
+            <img src="/images/cats/zed/zedCute.jpeg" width="75%">
+
+            <p>His #1 priority: SAFETY. Nothing unsafe is ever allowed.</p>
+            <img src="/images/cats/zed/img5.gif" width="70%">
+
+            <div class="gallery">
+                <img src="/images/cats/zed/zedNice.jpeg" width="45%">
+                <img src="/images/cats/zed/zedMean.jpeg" width="45%">
+            </div>
+            <p>Nice to Ninja & Cassidy only. Everyone else gets The Glare.</p>
+
+            <p>Favorite toy: laser pointer (100% safe chasing activity).</p>
+            <img src="/images/cats/zed/hopkitty.gif" width="60%">
+
+            <p>Strict bedtime enforcer. Will yell upstairs if you're late tucking him in.</p>
+            <img src="/images/cats/zed/zedCuddle.jpeg" width="75%">
+
+            <p>When alone, he sings the most beautiful angelic songs you've ever heard.</p>
+            <img src="/images/cats/zed/zedWindow.jpeg" width="65%">
+
+            <p><strong>Thank you for visiting the safest planet in the universe!</strong></p>
+
+            <p>Want to meet Zed's brothers? Do it safely <a href="/pages/fun/cats.html">here</a>.</p>
+        </main>
+    </div>
+
+    <div class="return-btn">
+        <a href="/p/fun/cats/">
+            <img src="/images/cats/zed/back.gif" width="180" alt="return safely">
+        </a>
+    </div>
 </div>
-</div>
+
 </body>
+</html>

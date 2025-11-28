@@ -1,253 +1,264 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ninja's Planet</title>
-    <link rel="stylesheet" href="/style/style.css">
+    <title>✦ NINJA'S PLANET ✦ Supreme Alpha Tabby ✦ Est. 2016 ✦</title>
     <link rel="icon" href="/images/spacecat.png">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Uncial+Antiqua&family=Orbitron:wght@700&display=swap');
+
         :root {
-    --text_bg_image: url('/images/cats/beans/redweb.gif');
-    --body-bg-image: url('/images/toys/example.jpg');
+            --gold0: #ffdd77;
+            --gold1: #ebb934;
+            --gold2: #c58000;
+            --gold3: #866400;
+            --gold4: #533600;
+            --royal: #301e00;
+            --bg: #080808;
+        }
 
-    /* colors */
-    --space0: #eb9900; /* Links */
-    --space1: #c58000; /* Headings */
-    --space2: #865700; /* Box Border */
-    --space3: #533600;
-    --space4: #301e00;
-    --space5: #353535;
-    --space6: #1a1a1a; /* Box Bakground */
-    --space7: #080808; 
+        body {
+            margin: 0;
+            background: var(--bg) url('/images/toys/example.jpg') fixed center;
+            color: #fceaff;
+            font-family: Georgia, serif;
+            image-rendering: pixelated;
+            min-height: 100vh;
+        }
 
-}
-        .jinxbox {
-            border: 10px solid var(--space7);
+        .construction {
+            background: black;
+            color: maroon;
+            text-align: center;
+            padding: 6px;
+            font-weight: bold;
+            animation: blink 1.8s steps(5, start) infinite;
+            border-bottom: 4px double maroon;
+        }
+        @keyframes blink { to { visibility: hidden; } }
+
+        #container {
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 15px;
+            background: rgba(8,8,8,0.88);
+            border: 6px double var(--gold1);
+            box-shadow: 0 0 30px rgba(235,185,52,0.6);
+            min-height: 100vh;
+        }
+
+        marquee {
+            font-family: "Orbitron", sans-serif;
+            background: linear-gradient(to right, black, var(--gold3), black);
+            color: gold;
             padding: 10px;
-            position: sticky;
-            top: 20px;
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+        }
+
+        h1 {
+            font-family: "Cinzel Decorative", cursive;
+            color: var(--gold0);
+            text-align: center;
+            font-size: 3.8rem;
+            margin: 20px 0;
+            text-shadow: 4px 4px 0 #000, 8px 8px 0 var(--gold3);
+            letter-spacing: 6px;
+        }
+
+        /* TRADING CARD — Royal Edition */
+        .trading-card {
+            width: 340px;
+            margin: 20px auto;
+            padding: 20px;
+            background: linear-gradient(145deg, #1a0d00, #000);
+            border: 10px ridge gold;
+            box-shadow: 0 0 30px rgba(255,215,0,0.9), inset 0 0 25px rgba(255,255,255,0.15);
+            position: relative;
+            font-family: "Uncial Antiqua", cursive;
+        }
+        .trading-card::before {
+            content: "✦ LEGENDARY ALPHA ✦";
+            font-size: x-small;
+            position: absolute;
+            top: -18px; left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(gold, #b8860b);
+            color: maroon;
+            padding: 8px 20px;
+            font-weight: bold;
+            border: 4px solid maroon;
             border-radius: 10px;
-            background: linear-gradient(var(--space2), var(--space5));
+            box-shadow: 0 0 15px gold;
+        }
+        .card-img {
+            width: 100%;
+            border: 6px solid gold;
+            box-shadow: 0 0 20px gold;
+        }
+        .card-stats {
+            background: rgba(0,0,0,0.85);
+            padding: 15px;
+            margin-top: 15px;
+            border: 3px double var(--gold1);
+        }
+        .card-stats table {
+            width: 100%;
+            font-size: 1rem;
+            color: var(--gold0);
+        }
+        .card-stats td:first-child { color: #ffdd77; font-weight: bold; }
+        .rarity { font-size: 1.3rem; color: gold; text-shadow: 0 0 10px orange; }
+
+        /* Layout */
+        #flex {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         main {
-            background-color: rgba(255, 255, 255, 0.0);
             flex: 1;
+            min-width: 320px;
             padding: 20px;
-            order: 2;
-            margin-top: 10px;
-            margin-bottom: 10px;
             text-align: center;
-            font-size: x-large;
+            line-height: 1.8;
+            font-size: 1.15rem;
         }
-        aside {
-            /* background-image: var(--text_bg_image);*/
-            width: 35%;
-            padding: 10px;
-            font-size: small;
-            margin-top: 20px;
+        aside { max-width: 380px; }
+
+        img { max-width: 100%; height: auto; }
+        .zoom { transition: transform 0.4s; }
+        .zoom:hover { transform: scale(2.2); z-index: 999; }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin: 25px 0;
         }
-        body {
-        font-family: 'Arcade';
-        margin: 0;
-        background-size: auto;
-        color: #fceaff;
-        background: linear-gradient(var(--space0), var(--space4) ,var(--space7));
-        background-color: #080808;
+
+        .crowns {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
         }
-        @media only screen and (max-width: 1000px) {
-    #flex {
-        flex-direction: column;
-    }
-    #container {
-        max-width: 100%;
-        margin: 0px;
-    }
-    aside {
-        width: 100%;
-    }
 
-    main {
-        order: 1;
-    }
+        .return-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
 
-    #leftSidebar {
-        order: 3;
-    }
-
-    #rightSidebar {
-        order: 2;
-    }
-    #navbar {
-        text-align: center;
-    }
-    #navbar ul {
-        height: 100px;
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        list-style-image: none;
-    }
-    #navbar ul > ul {
-        display: none;
-    }
-    aside {
-        margin-left: 0px;
-        margin-bottom: 70px;
-        display: flex;
-        justify-content: space-around;
-    }
-
-    .jinxbox {
-        max-width: 350px;
-    }
-}
+        @media (max-width: 1000px) {
+            #flex { flex-direction: column; align-items: center; }
+            h1 { font-size: 2.8rem; }
+            .trading-card { width: 90%; }
+        }
     </style>
-  </head>
-
+</head>
 <body>
+
+<div class="construction">✦ NOW ENTERING A ROYAL DOMAIN ✦</div>
+
 <div id="container">
+    <marquee scrolldelay="70">
+        ✦ ALL HAIL KING NINJA ✦ SUPREME ALPHA TABBY ✦ MOST HANDSOME ✦ EST. MARCH 10 2016 ✦
+    </marquee>
 
-<div id="flex">
-    <main>
-        <img class="zoom" src="/images/cats/ninja/ninjaPlanet.png" width="100px">
-        
+    <h1>✦ NINJA'S PLANET ✦</h1>
 
-        <div id="flex" style="flex-direction: row; justify-content: space-evenly; align-items: center;">
-            <img src="/images/cats/ninja/crown.gif" width="10%">
-        <p>
-            Welcome to Ninja's planet!  
-        </p>
-        <img src="/images/cats/ninja/crown.gif" width="10%">
-        </div>
+    <div id="flex">
 
-        <br>
-
-        <img src="/images/cats/ninja/ninja1.jpeg" width = 80%>
-
-        <br>
-
-        You have entered the domain of the one and only alpha cat. Is he not the most handsome tabby cat you have ever seen?
-
-        <br>
-
-        <img src="/images/cats/ninja/ninja2.jpeg" width="50%">
-
-        <br>
-
-        Behold! His many many awards!
-
-        <br>
-
-        <img src="/images/cats/ninja/trophy1.gif" width = 15%>
-        <img src="/images/cats/ninja/trophy1.gif" width = 15%>
-        <img src="/images/cats/ninja/trophy1.gif" width = 15%>
-        <img src="/images/cats/ninja/trophy1.gif" width = 15%>
-
-        <br>
-
-        Ninja is the oldest and first adopted among the five. Thus he stakes his claim to be the alpha. He was born and coronated on March 10, 2016.
-
-        <br>
-
-        <img src="/images/cats/ninja/ninja4.jpeg" width = 80%>
-
-        <br>
-
-        Ninja has a complex mind with many interesting layers. He enjoys boxes, sunlight, and obedient brothers. Note: he is too smart for laser pointers.
-
-        <br>
-        <img src="/images/cats/ninja/goldstars.gif" width="20%">
-        <img src="/images/cats/ninja/ninjaSmile.jpeg" width="40%">
-        <img src="/images/cats/ninja/goldstars.gif" width="20%">
-
-        <br>
-
-        The smartest, most handsome, and most interesting person Ninja has ever met is himself. This pleases him greatly.
-
-        <br>
-
-        <img src="/images/cats/ninja/ninjaMirror.jpeg" width="70%">
-
-        <br>
-
-        <div id="flexgallery">
-            <img src="/images/cats/ninja/pawgold.gif">
-            <img src="/images/cats/ninja/pawgold.gif">
-            <img src="/images/cats/ninja/pawgold.gif">
-            <img src="/images/cats/ninja/pawgold.gif">
-            <img src="/images/cats/ninja/pawgold.gif">
-        </div>
-
-        <br><br>
-
-        <!--Are you not entertained?-->
-
-        <br>
-        <br>
-        <br>
-
-        <img src="/images/cats/ninja/ninjaMajestic.jpeg" width = 70%>
-
-        <br>
-        <br>
-
-        Thank you for visiting Ninja's Planet!
-
-        <br><br><br>
-
-        Below will be a growing collection of Ninja's favorite things. If you want to learn about Ninja's loyal subjects you can do that <a href="/pages/fun/cats.html">here!</a>
-
-        <br><br>
-
-        <img src="/images/cats/ninja/kittyBox.gif" width="30%">
-        
-    </main>
-
-    <aside id="rightSidebar">
-        <div class="jinxbox">
-            <div class="box" style="padding: 3px; text-align: center;">
-                <h2 style="margin: 0px;">Ninja</h2>
+        <!-- ==================== ROYAL TRADING CARD ==================== -->
+        <aside>
+            <div class="trading-card">
+                <img src="/images/cats/ninja/ninja3-noBG.png" class="card-img" alt="His Majesty Ninja">
+                <div class="card-stats">
+                    <h2 style="margin:5px; color:gold; text-align:center;">NINJA</h2>
+                    <table>
+                        <tr><td>B-Day</td><td>March 10, 2016</td></tr>
+                        <tr><td>Sex</td><td>Male</td></tr>
+                        <tr><td>Alignment</td><td>True Neutral</td></tr>
+                        <tr><td>Title</td><td>Alpha Male</td></tr>
+                        <tr><td>Appearance</td><td>Extremely Handsome</td></tr>
+                        <tr><td>Trait</td><td>Magnificent Conceit</td></tr>
+                        <tr><td>Rarity</td><td class="rarity">✦ LEGENDARY ✦</td></tr>
+                    </table>
+                </div>
             </div>
 
-                <img src="/images/cats/ninja/ninja3-noBG.png" width = "80%" style="float: right;">
+            <div style="text-align:center; margin:20px 0;">
+                <img src="/images/cats/ninja/crown.gif" width="80">
+                <img src="/images/cats/ninja/trophy1.gif" width="80">
+                <img src="/images/cats/ninja/crown.gif" width="80">
+            </div>
+        </aside>
 
-            <table width="100%">
-                <tr>
-                    <td>B-day:</td>
-                    <td style="text-align: right;">Mar. 10, 2016</td>
-                </tr>
-                <tr>
-                    <td>Sex:</td>
-                    <td style="text-align: right;">M</td>
-                </tr>
-                <tr>
-                    <td>Alignment:</td>
-                    <td style="text-align: right;">True Neutral</td>
-                </tr>
-                <tr>
-                    <td>Role:</td>
-                    <td style="text-align: right;">Alpha Male</td>
-                </tr>
-                <tr>
-                    <td>Appearence:</td>
-                    <td style="text-align: right;">Handsome</td>
-                </tr>
-                <tr>
-                    <td>Propensity:</td>
-                    <td style="text-align: right;">Conceit</td>
-                </tr>
-            </table>
+        <!-- ==================== MAIN CONTENT ==================== -->
+        <main>
+            <img class="zoom" src="/images/cats/ninja/ninjaPlanet.png" width="110">
+            
+            <div class="crowns">
+                <img src="/images/cats/ninja/crown.gif" width="80">
+                <p><strong>WELCOME TO NINJA'S PLANET</strong></p>
+                <img src="/images/cats/ninja/crown.gif" width="80">
+            </div>
 
-        </div>
+            <p>You stand before the one and only true <strong>Alpha Cat</strong>. Behold the most handsome tabby in existence.</p>
 
-        <p style="bottom: 0%; left: 10px; position: fixed; text-align: center;">
-            <a href="/p/fun/cats/">
-                <img src="/images/cats/ninja/return.png"
-                width="40%">
-            </a>
-        </p>
-    </aside>
+            <img src="/images/cats/ninja/ninja1.jpeg" width="80%">
+
+            <p>Look at all of his awards.</p>
+            <div class="gallery">
+                <img src="/images/cats/ninja/trophy1.gif">
+                <img src="/images/cats/ninja/trophy1.gif">
+                <img src="/images/cats/ninja/trophy1.gif">
+                <img src="/images/cats/ninja/trophy1.gif">
+                <img src="/images/cats/ninja/trophy1.gif">
+            </div>
+
+            <p>Crowned on March 10, 2016, Ninja is the eldest and undisputed ruler. He enjoys boxes, sunlight, and the unwavering loyalty of his brothers.</p>
+
+            <img src="/images/cats/ninja/ninja4.jpeg" width="80%">
+
+            <div class="gallery">
+                <img src="/images/cats/ninja/goldstars.gif">
+                <img src="/images/cats/ninja/ninjaSmile.jpeg" width="40%">
+                <img src="/images/cats/ninja/goldstars.gif">
+            </div>
+
+            <p>The smartest, most interesting, and unquestionably most attractive being Ninja has ever met is… himself. He is very pleased with this.</p>
+            <img src="/images/cats/ninja/ninjaMirror.jpeg" width="70%">
+
+            <div class="gallery">
+                <img src="/images/cats/ninja/pawgold.gif">
+                <img src="/images/cats/ninja/pawgold.gif">
+                <img src="/images/cats/ninja/pawgold.gif">
+                <img src="/images/cats/ninja/pawgold.gif">
+                <img src="/images/cats/ninja/pawgold.gif">
+            </div>
+
+            <img src="/images/cats/ninja/ninjaMajestic.jpeg" width="75%">
+
+            <p><strong>Thank you for paying tribute on Ninja's Planet.</strong></p>
+
+            <p>Want to meet his loyal subjects? Do so <a href="/pages/fun/cats.html">here</a>.</p>
+
+            <img src="/images/cats/ninja/kittyBox.gif" width="40%">
+        </main>
+    </div>
+
+    <div class="return-btn">
+        <a href="/p/fun/cats/">
+            <img src="/images/cats/ninja/return.png" width="140" alt="Return to the Kingdom">
+        </a>
+    </div>
 </div>
-</div>
+
 </body>
+</html>

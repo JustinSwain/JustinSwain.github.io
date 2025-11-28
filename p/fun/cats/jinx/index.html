@@ -1,320 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jinx's Planet</title>
-    <link rel="stylesheet" href="/style/style.css">
+    <title>✦ JINX'S PLANET ✦ the best black cat ever!! ✦</title>
     <link rel="icon" href="/images/spacecat.png">
     <style>
-        :root {
-            --text_bg_image: url('/images/cats/beans/redweb.gif');
-            --body-bg-image: url('/images/toys/example.jpg');
-
-            /* colors */
-            --space0: #ff8e8e; /* Links */
-            --space1: #c50000; /* Headings */
-            --space2: #9a0000; /* Box Border */
-            --space3: #710000;
-            --space4: #420808;
-            --space5: #353535;
-            --space6: #1a1a1a; /* Box Bakground */
-            --space7: #080808; 
-
+        @font-face {
+            font-family: "Arcade";
+            src: url('/style/fonts/JMH Cthulhumbus Arcade.otf') format("opentype");
         }
-        .jinxbox {
-            border: 10px solid var(--space7);
+        :root {
+            --red0: #ff8e8e;
+            --red1: #ff1744;
+            --red2: #c50000;
+            --red3: #9a0000;
+            --red4: #710000;
+            --red5: #420808;
+            --bg: #080808;
+            --box: #1a1a1a;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg) url('/images/toys/example.jpg') fixed;
+            color: white;
+            font-family: Arcade, Tahoma, Verdana, sans-serif;
+            image-rendering: pixelated;
+        }
+
+        /* Blinking "Under Construction" banner */
+        .construction {
+            background: black;
+            color: red;
+            font-weight: bold;
+            text-align: center;
+            padding: 5px;
+            animation: blink 1.5s steps(5, start) infinite;
+        }
+        @keyframes blink { to { visibility: hidden; } }
+
+        #container {
+            max-width: 1100px;
+            margin: 0 auto;
             padding: 10px;
-            position: sticky;
-            top: 20px;
-            border-radius: 10px;
-            background: linear-gradient(var(--space2), var(--space5));
+            background: rgba(0,0,0,0.7);
+            border: 4px double var(--red1);
+            min-height: 100vh;
+        }
+
+        h1, h2 {
+            font-family: "Creepster", "Comic Sans MS", cursive;
+            color: var(--red1);
+            text-align: center;
+            text-shadow: 3px 3px 0 #000, 6px 6px 0 var(--red3);
+            letter-spacing: 3px;
+        }
+
+        marquee {
+            font-family: "Press Start 2P", cursive;
+            color: yellow;
+            background: black;
+            padding: 8px;
+        }
+
+        /* TRADING CARD - the star of the show */
+        .trading-card {
+            width: 320px;
+            margin: 20px auto;
+            padding: 15px;
+            background: linear-gradient(145deg, #222, #000);
+            border: 8px ridge gold;
+            box-shadow: 0 0 20px rgba(255,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.1);
+            position: relative;
+            font-family: "Anime Scribble", "Comic Sans MS", cursive;
+        }
+        .trading-card::before {
+            content: "★ ULTRA RARE ★";
+            font-size: small;;
+            position: absolute;
+            top: -15px; left: 50%;
+            transform: translateX(-50%);
+            background: gold;
+            color: red;
+            padding: 5px 15px;
+            font-weight: bold;
+            border: 3px solid red;
+        }
+        .card-img {
+            width: 100%;
+            border: 5px solid white;
+            image-rendering: pixelated;
+        }
+        .card-stats {
+            background: rgba(0,0,0,0.8);
+            padding: 10px;
+            margin-top: 10px;
+            border: 2px dashed var(--red1);
+        }
+        .card-stats table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .card-stats td {
+            padding: 4px;
+            border-bottom: 1px dotted var(--red1);
+        }
+        .card-stats td:first-child { color: var(--red0); }
+        .rarity { color: gold; text-shadow: 2px 2px red; }
+
+        /* Main layout */
+        #flex {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         main {
-            background-color: rgba(255, 255, 255, 0.0);
             flex: 1;
+            min-width: 300px;
             padding: 20px;
-            order: 2;
-            margin-top: 10px;
-            margin-bottom: 10px;
             text-align: center;
-            font-size: x-large;
+            line-height: 1.6;
         }
         aside {
-            /* background-image: var(--text_bg_image);*/
-            width: 35%;
-            padding: 10px;
-            font-size: small;
-            margin-top: 20px;
+            min-width: 300px;
+            max-width: 350px;
         }
-        body {
-            font-family: 'Arcade';
-            margin: 0;
-            background-color: var(--space7);
-            background-size: auto;
-            color: white;
-            background-image: var(--body-bg-image);
+
+        img { 
+            max-width: 100%; 
+            height:max-content; 
         }
-        @media only screen and (max-width: 1000px) {
-    #flex {
-        flex-direction: column;
-    }
-    #container {
-        max-width: 100%;
-        margin: 0px;
-    }
-    aside {
-        width: 100%;
-    }
+        .zoom { transition: transform 0.3s; }
+        .zoom:hover { transform: scale(2); }
 
-    main {
-        order: 1;
-    }
-    .box {
-        margin: 0px;
-    }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
 
-    #leftSidebar {
-        order: 3;
-    }
+        /* Blinkies & buttons */
+        .blinkies {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .blinkies img {
+            height: 31px;
+            margin: 0 5px;
+        }
 
-    #rightSidebar {
-        order: 2;
-    }
-    #navbar {
-        text-align: center;
-    }
-    #navbar ul {
-        height: 100px;
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        list-style-image: none;
-    }
-    #navbar ul > ul {
-        display: none;
-    }
-    aside {
-        margin-left: 0px;
-        margin-bottom: 70px;
-        display: flex;
-        justify-content: space-around;
-    }
+        /* Return button */
+        .return-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 999;
+        }
 
-    .jinxbox {
-        max-width: 350px;
-    }
-}
+        @media (max-width: 1000px) {
+            #flex { flex-direction: column; align-items: center; }
+            .trading-card { width: 90%; }
+        }
     </style>
-  </head>
-
+</head>
 <body>
+
+<div class="construction">⚠ Black Cat ZONE ⚠</div>
+
 <div id="container">
+    <marquee behavior="scroll" direction="left" scrolldelay="60">
+        ★☆★ WELCOME TO JINX'S PLANET ★☆★
+    </marquee>
 
-<div id="flex">
-    <main>
-        <img class="zoom" src="/images/cats/jinx/jinxPlanet.png" width="100px">
-        <div id="flex" style="flex-direction: row; justify-content: space-evenly;">
-            <img src="/images/cats/jinx/drktorch.gif" width="10%">
-        <p>
-            Welcome to Jinx's Planet!  
-        </p>
-        <img src="/images/cats/jinx/drktorch.gif" width="10%">
-        </div>
+    <h1>✦ JINX'S PLANET ✦</h1>
 
-        <img src="/images/cats/jinx/jinxSmile.jpeg"
-            width = "70%">
-        
-        <p>
-            Jinx is a happy, friendly, all around good-natured black cat! He brings good luck!
-        </p>
-
-        <img src="/images/cats/jinx/PanthRoar.gif" width="15%">
-        <img src="/images/cats/jinx/jinxROAR.jpeg"
-            width = "40%">
-        <img src="/images/cats/jinx/PanthRoar.gif" width="15%">
-
-        <!--<p>
-            If his room looks dark and spooky don't worry! Jinx likes it that way!
-        </p>-->
-        <p>
-            Jinx was adopted from the Dallas Humane Society on March 26, 2021. He was born in a house of cat hoarders that would frequently drop off large groups of black cats at the shelter. Sad!
-        </p>
-        <!--<p>
-           For this reason, Jinx tends to like dark and spooky things like tunnels, and dragons. But don't be fooled, he is very friendly!
-        </p>-->
-
-        <img src="/images/cats/jinx/dragon001.gif">
-
-        <p>
-            He loves to sun himself in the window all day until his black fur turns brown.
-        </p>
-
-        <img src="/images/cats/jinx/jinxSun.jpeg"
-            width="60%">
-        
-        <p>
-            You will never catch Jinx in a bad mood. He is always willing to play, or cuddle, or nap. Whatever you want to do, Jinx is happy to join.
-        </p>
-
-        <img src="/images/cats/jinx/jinxCrazy.jpeg"
-            width="50%">
-
-        <p>
-            He is goofy and has long legs that go wild in every direction when he plays. He usually gets short bursts of energy that he spends by sprinting around the house.
-        </p>
-
-        <img src="/images/catRunning.gif"
-            width = "100%">
-
-        <p>
-            In Summer 2023, Jinx developed a small mass on his back left leg. It turned out to be Feline Injection Site Sarcoma (FISS), a rare cancer caused by injections (typically the rabies vaccine).
-        </p>
-        <p>
-            Within the week he had his mass removed and tested. Fortunately, the cancer was removed but only very narrowly.
-        </p>
-        <p>
-            Therefore, at the advice of a vet oncologist, Jinx had his back left leg amputated in August 2023.
-        </p>
-
-        <img src="/images/cats/jinx/jinxCone.jpeg"
-            width="60%">
-        
-        <p>
-            If you think Jinx slowed down after losing one of his legs, then think again!
-        </p>
-        <!--<p>
-            The recovery process was a bit rough, but he got through it and is a happy tripod cat. He can run, and play, and jump, and do all the things he did before. (except scratch his left ear)
-        </p>-->
-
-        <img src="/images/cats/jinx/blackcatzoningout_meme.jpg"
-            width = "40%">
-        <img src="/images/cats/jinx/jinxMemeFace.jpeg"
-            width = "40%">
-
-        <p>
-            Thanks for visiting Jinx's planet!
-        </p>
-
-        <img src="/images/cats/jinx/jinxWokeUp-noBG.png"
-            width="60%">
-
-        <p>
-            Below will be a growing collection of Jinx's favorite things. If you want to play with Jinx you can do that <a href="/pages/fun/cats.html">here!</a>
-        </p>
-
-        <img src="/images/cats/jinx/dragondivider.gif"
-            width="90%">
-
-        <br>
-        <div id="flexgallery">
-
-            <img src="/images/cats/jinx/ckmember9.jpg" width="20%">
-            
-            <img src="/images/cats/jinx/dragonCastle.gif" width="40%">
-
-            <img src="/images/cats/jinx/crazycaticon.gif" width="20%">
-        </div>
-        
-        <br>
-
-        <div id="flexgallery">
-
-            <img src="/images/cats/jinx/dragonleft.gif" width="20%">
-            <img src="/images/cats/jinx/babyToy.jpeg" width="50%">
-            <img src="/images/cats/jinx/dragonright.gif" width="20%">
-        </div>
-
-        <strong>Baby toy!</strong>
-
-        <br>
-
-        <img src="/images/cats/jinx/jinxCrazy-noBG.png" width="30%">
-        <img src="/images/cats/jinx/jinxCrazy-noBG.png" width="30%">
-        <img src="/images/cats/jinx/jinxCrazy-noBG.png" width="30%">
-        
-        <br>
-
-        <img src="/images/cats/jinx/windowWatching.gif" width="40%">
-
-        <br>
-
-        <img src="/images/cats/jinx/halloweenCostume.jpeg" width = 40%>
-        <img src="/images/cats/jinx/christmas.jpeg" width = 40%>
-
-        <strong>Halloween and Christmas!</strong>
-
-        <div id="flexgallery">
-            <img src="/images/cats/jinx/chickenDance.gif" width="20%">
-            <img src="/images/cats/jinx/Chicken.gif" width="20%">
-            <img src="/images/cats/jinx/eating.gif" width="20%">
-            <img src="/images/cats/jinx/Chicken.gif" width="20%">
-            <img src="/images/cats/jinx/chickenDance.gif" width="20%">
-        </div>
-
-        <div id="flexgallery">
-            <img src="/images/cats/jinx/jinxAndPloot.jpeg" width="40%">
-            <img src="/images/cats/jinx/cuddlePuddle.jpeg" width="40%">
-        </div>  
-
-        <img src="/images/cats/jinx/sun.gif" width="30%">
-
-        <div id="flexgallery">
-            <img src="/images/cats/jinx/jinxSun2.jpeg" width="40%">
-            <img src="/images/cats/jinx/jinxSun1.jpeg" width="40%">
-            <img src="/images/cats/jinx/jinxSun3.jpeg" width="40%">
-            <img src="/images/cats/jinx/jinxTongue.jpeg" width="40%">
-            <img src="/images/cats/jinx/jinxStretch.jpeg" width="60%">
-        </div>
-
-        
-        
-    </main>
-
-    <aside id="rightSidebar">
-        <div class="jinxbox">
-            <div class="box" style="padding: 3px; text-align: center;">
-                <h2 style="margin: 0px;">Jinx</h2>
+    <div id="flex">
+        <!-- ==================== TRADING CARD ==================== -->
+        <aside>
+            <div class="trading-card">
+                <img src="/images/cats/jinx/jinxHi-noBG.png" class="card-img" alt="Jinx">
+                <div class="card-stats">
+                    <h2 style="margin:5px; color:gold;">JINX</h2>
+                    <table>
+                        <tr><td>B-Day</td><td>Jan 17 2020</td></tr>
+                        <tr><td>Sex</td><td>M</td></tr>
+                        <tr><td>Alignment</td><td>Chaotic Good</td></tr>
+                        <tr><td>Role</td><td>Wildcard</td></tr>
+                        <tr><td>Favorite Food</td><td>CHICKEN!!</td></tr>
+                        <tr><td>Special Move</td><td>3-Legged Dash!!!</td></tr>
+                        <tr><td>Rarity</td><td class="rarity">✦ ULTRA RARE ✦</td></tr>
+                    </table>
+                </div>
             </div>
 
-            <img src="/images/cats/jinx/jinxHi-noBG.png" width = "80%" style="float: right">
+            <div class="blinkies">
+                <img src="/images/cats/jinx/dragonleft.gif">
+                <img src="/images/cats/jinx/windowWatching.gif">
+                <img src="/images/cats/jinx/dragonright.gif">
+            </div>
+        </aside>
 
-            <table width="100%">
-                <tr>
-                    <td>B-day:</td>
-                    <td style="text-align: right;">Jan. 17, 2020</td>
-                </tr>
-                <tr>
-                    <td>Sex:</td>
-                    <td style="text-align: right;">M</td>
-                </tr>
-                <tr>
-                    <td>Alignment:</td>
-                    <td style="text-align: right;">Chaotic Good</td>
-                </tr>
-                <tr>
-                    <td>Role:</td>
-                    <td style="text-align: right;">Wildcard</td>
-                </tr>
-                <tr>
-                    <td>Favorite Food:</td>
-                    <td style="text-align: right;">Chicken</td>
-                </tr>
-                <tr>
-                    <td>Special Move:</td>
-                    <td style="text-align: right;">&nbsp 3 Legged Dash!</td>
-                </tr>
-            </table>
+        <!-- ==================== MAIN CONTENT ==================== -->
+        <main>
+            <img class="zoom" src="/images/cats/jinx/jinxPlanet.png" width="100">
+            <p><strong>Welcome to Jinx's Planet!</strong> The coolest black cat on the internet!</p>
 
-        </div>
+            <img src="/images/cats/jinx/jinxSmile.jpeg" width="70%">
 
-        <p style="bottom: 0%; left: 10px; position: fixed; text-align: center;">
-            <a href="/p/fun/cats/">
-                <img src="/images/cats/jinx/return_fire.gif"
-                width="80%">
-            </a>
-        </p>
-    </aside>
+            <p>Jinx is a happy, friendly, all-around good-natured black cat! He brings good luck!</p>
+
+            <div class="gallery">
+                <img src="/images/cats/jinx/PanthRoar.gif">
+                <img src="/images/cats/jinx/jinxROAR.jpeg" width="40%">
+                <img src="/images/cats/jinx/PanthRoar.gif">
+            </div>
+
+            <p>Jinx was adopted from the Dallas Humane Society on March 26, 2021. He looks kinda spooky but he is super friendly!</p>
+
+            <img src="/images/cats/jinx/dragon001.gif" width="100%">
+
+            <p>He loves sunbathing until his fur turns brown!</p>
+            <img src="/images/cats/jinx/sun.gif" width="30%"><br>
+            <img src="/images/cats/jinx/jinxSun.jpeg" width="60%">
+
+            <p>In 2023 Jinx beat Feline Injection-Site Sarcoma and became the strongest 3-legged cat ever!</p>
+            <img src="/images/cats/jinx/jinxCone.jpeg" width="60%">
+
+            <p>Goofy tripod boy with endless zoomies!</p>
+            <img src="/images/cats/jinx/catRunning.gif" width="100%">
+
+            <p>Thanks for visiting Jinx's planet!!!</p>
+            <img src="/images/cats/jinx/jinxWokeUp-noBG.png" width="60%">
+
+            <p>Wanna play with Jinx? Click <a href="/pages/fun/cats.html">here</a>!</p>
+
+            <img src="/images/cats/jinx/dragondivider.gif" width="90%">
+
+            <!-- Gallery sections -->
+            <div class="gallery">
+                <img src="/images/cats/jinx/dragonCastle.gif" width="40%">
+                <img src="/images/cats/jinx/crazycaticon.gif">
+            </div>
+
+            <div class="gallery">
+                <img src="/images/cats/jinx/babyToy.jpeg" width="50%">
+            </div>
+
+            <strong>Baby toy!!!</strong><br>
+            <img src="/images/cats/jinx/jinxCrazy-noBG.png" width="30%">
+            <img src="/images/cats/jinx/jinxCrazy-noBG.png" width="30%">
+            <img src="/images/cats/jinx/jinxCrazy-noBG.png" width="30%">
+
+            <br><br>
+            <strong>Halloween + Christmas Jinx!</strong><br>
+            <img src="/images/cats/jinx/halloweenCostume.jpeg" width="40%">
+            <img src="/images/cats/jinx/christmas.jpeg" width="40%">
+
+            <div class="gallery">
+                <img src="/images/cats/jinx/chickenDance.gif">
+                <img src="/images/cats/jinx/Chicken.gif">
+                <img src="/images/cats/jinx/eating.gif">
+            </div>
+        </main>
+    </div>
+
+    <div class="return-btn">
+        <a href="/p/fun/cats/">
+            <img src="/images/cats/jinx/return_fire.gif" width="150" alt="Back to Cat Shrine">
+        </a>
+    </div>
 </div>
-</div>
+
 </body>
+</html>

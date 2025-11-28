@@ -1,100 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Justin Swain - Links</title>
-    <link rel="stylesheet" href="/style/style.css">
+    <title>★ JUSTIN SWAIN • WEB TOYS ★</title>
     <link rel="icon" href="/images/spacecat.png">
-  </head>
-  <body>
+    <link rel="stylesheet" href="/style/style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Press+Start+2P&family=Bangers&display=swap');
 
-<div id="container"><div id="topBar">
-    <!--<marquee>Welcome!</marquee>-->
-</div>
-<div id="headerArea">
-    <div id="header">
-        <a href="/"><img src="/images/spacecat.png" height="120px"></a>
-            <a href="/" style="text-decoration: none;"><strong style="font-size: x-large;">justinswain.dev</strong></a>
-    </div>
-</div>
+        .toys-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 30px;
+            max-width: 100%;
+            margin: 0 auto;
+        }
 
-<div id="flex">
+        .toy-card {
+            background: var(--space6);
+            border: 5px double var(--space1);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            position: relative;
+        }
+        .toy-card::before {
+            content: "NEW!";
+            position: absolute;
+            top: -10px; right: -10px;
+            background: #ff00ff;
+            color: black;
+            padding: 5px 12px;
+            font-family: "Bangers", cursive;
+            font-size: 1rem;
+            transform: rotate(15deg);
+            box-shadow: 0 0 15px magenta;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .toy-card:hover::before { opacity: 1; }
 
-    <main>
-        <h1>Toys</h1>
-        <div class="box">
-            <ul>
-                <li>
-                    <a href="/p/fun/toys/catRoom/"> Cat Simulator </a>
-                </li>
-                <li>
-                    <a href="/p/fun/toys/larryAttack/">Larry Space Attack</a>
-                </li>
-                <li>
-                    <a href="/p/fun/toys/sushiBar/">Ninja's Sushi Bar</a>
-                </li>
-                <li>
-                    <a href="/p/fun/toys/pong/">Pong</a>
-                </li>
-                <li>
-                    <a href="/p/fun/toys/reactionDiffusion/">Reaction Diffusion Simulation</a>
-                </li>
-                <li>
-                    <a href="/p/fun/toys/sierpinskiCarpet/">Sierpinski Carpet Fractal</a>
-                </li>
-                <li>
-                    <a href="/p/fun/toys/ultTicTacToe/"> Ultimate Tic-tac-toe</a>
-                </li>
-                <li>
-                    <a href="/p/fun/toys/envelopeProblem/"> The Two Envelopes "Paradox"</a>
-                </li>
-            </ul>
+        .toy-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            border-color: var(--space0);
+            box-shadow: 0 0 40px var(--space0);
+        }
+        .toy-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            image-rendering: pixelated;
+        }
+        .toy-card h3 {
+            font-family: "Arcade", cursive;
+            color: var(--space0);
+            margin: 15px;
+            font-size: 1.6rem;
+            text-align: center;
+            text-shadow: 0 0 10px var(--space1);
+        }
+        .toy-card p {
+            padding: 0 15px 20px;
+            text-align: center;
+            color: #ccc;
+        }
+
+        .coming-soon {
+            opacity: 0.6;
+            filter: grayscale(80%);
+        }
+        .coming-soon::after {
+            content: "COMING SOON";
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: "Press Start 2P";
+            font-size: 1.4rem;
+            color: red;
+            text-shadow: 3px 3px 0 black;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <div id="headerArea">
+        <div id="header">
+            <a href="/"><img src="/images/spacecat.png" height="120px"></a>
+            <a href="/" style="text-decoration:none;"><strong>justinswain.dev</strong></a>
         </div>
-    </main>
-    <sideBar id="sideBarPlaceholder"></sideBar>
-</div>
-<footer id="footerPlaceholder" style="margin-top: 10px;"></footer>
+    </div>
+
+    <div id="flex">
+        <main>
+            <h1 >Toys</h1>
+
+            <div class="box" style="margin-bottom:40px; text-align:center;">
+                <p style="font-size:1.4rem;">
+                    Hand-crafted browser toys, games, and experiments.
+                </p>
+            </div>
+
+            <div class="toys-grid">
+
+                <!-- CAT SIMULATOR -->
+                <div class="toy-card">
+                    <a href="/p/fun/toys/catRoom/">
+                        <img src="/images/cats/catRoomThumbnail.png" alt="Cat Simulator">
+                        <h3>CAT SIMULATOR</h3>
+                        <p>Visit my cats. Throw a ball and watch them chase it.</p>
+                    </a>
+                </div>
+
+                <!-- LARRY SPACE ATTACK -->
+                <div class="toy-card">
+                    <a href="/p/fun/toys/larryAttack/">
+                        <img src="/images/cats/larryAttackThumbnail.png" alt="Larry Space Attack">
+                        <h3>LARRY SPACE ATTACK</h3>
+                        <p>Defend the galaxy from the evil Larry empire!</p>
+                    </a>
+                </div>
+
+                <!-- NINJA'S SUSHI BAR -->
+                <div class="toy-card">
+                    <a href="/p/fun/toys/sushiBar/">
+                        <img src="/images/cats/sushiBarThumbnail.png" alt="Ninja's Sushi Bar">
+                        <h3>NINJA'S SUSHI BAR</h3>
+                        <p>Help Ninja serve sushi!</p>
+                    </a>
+                </div>
+
+                <!-- PONG -->
+                <div class="toy-card">
+                    <a href="/p/fun/toys/pong/">
+                        <img src="https://via.placeholder.com/400x180/000000/00ffff?text=PONG" alt="Pong">
+                        <h3>PONG</h3>
+                        <p>The classic.</p>
+                    </a>
+                </div>
+
+                <!-- REACTION DIFFUSION -->
+                <div class="toy-card">
+                    <a href="/p/fun/toys/reactionDiffusion/">
+                        <img src="https://via.placeholder.com/400x180/000011/00ff00?text=REACTION+DIFFUSION" alt="Reaction Diffusion">
+                        <h3>REACTION DIFFUSION</h3>
+                        <p>Watch beautiful organic patterns emerge from math.</p>
+                    </a>
+                </div>
+
+                <!-- SIERPINSKI CARPET -->
+                <div class="toy-card">
+                    <a href="/p/fun/toys/sierpinskiCarpet/">
+                        <img src="https://via.placeholder.com/400x180/110000/ff00ff?text=SIERPINSKI+CARPET" alt="Sierpinski">
+                        <h3>SIERPINSKI CARPET</h3>
+                        <p>Infinite fractal zoom. Click to go deeper.</p>
+                    </a>
+                </div>
+
+                <!-- ULTIMATE TIC-TAC-TOE -->
+                <div class="toy-card">
+                    <a href="/p/fun/toys/ultTicTacToe/">
+                        <img src="https://via.placeholder.com/400x180/001133/ffff00?text=ULTIMATE+TIC-TAC-TOE" alt="Ultimate TTT">
+                        <h3>ULTIMATE TIC-TAC-TOE</h3>
+                        <p>Tic-tac-toe, but inside tic-tac-toe. Mind = blown.</p>
+                    </a>
+                </div>
+
+                <!-- TWO ENVELOPES -->
+                <div class="toy-card">
+                    <a href="/p/fun/toys/envelopeProblem/">
+                        <img src="https://via.placeholder.com/400x180/220011/ff00aa?text=TWO+ENVELOPES" alt="Two Envelopes">
+                        <h3>TWO ENVELOPES PARADOX</h3>
+                        <p>A probability puzzle that hurts your brain (in a good way).</p>
+                    </a>
+                </div>
+
+                <!-- COMING SOON PLACEHOLDERS (optional) -->
+                <!--
+                <div class="toy-card coming-soon">
+                    <a href="#">
+                        <img src="https://via.placeholder.com/400x180/000033/00ffff?text=ASTEROIDS+CLONE" alt="">
+                        <h3>ASTEROIDS 2025</h3>
+                    </a>
+                </div>
+                -->
+
+            </div>
+
+            <div class="box" style="margin:60px auto; text-align:center;">
+                <h2 style="color:gold; text-shadow:0 0 10px orange;">MORE TOYS COMING SOON...</h2>
+                <p style="font-size:1.3rem;"></p>
+            </div>
+
+        </main>
+
+        <sideBar id="sideBarPlaceholder"></sideBar>
+    </div>
+
+    <footer id="footerPlaceholder"></footer>
 </div>
 
-<!-- JavaScript to load components -->
+<!-- Load components + prime ticker -->
 <script>
-async function loadComponent(elementId, filePath) {
-  try {
-    const response = await fetch(filePath);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const content = await response.text();
-    if (!content) {
-      console.warn(`File ${filePath} is empty or not loaded`);
-    }
-    document.getElementById(elementId).innerHTML = content;
-  } catch (error) {
-    console.error(`Error loading ${filePath}:`, error);
-  }
+async function loadComponent(id, file) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    try {
+        const res = await fetch(file);
+        if (res.ok) el.innerHTML = await res.text();
+    } catch (e) { console.error("Load failed:", file); }
 }
-
-// Load the components
 loadComponent("sideBarPlaceholder", "/components/sidebar.html");
 loadComponent("footerPlaceholder", "/components/footer.html");
-function isPrime(n) {
-    if (n < 2) return false;
-    for (let i = 2; i <= Math.sqrt(n); i++) {
-        if (n % i === 0) return false;
-    }
-    return true;
-}
 
+// Prime ticker
+function isPrime(n) { if (n < 2) return false; for (let i = 2; i <= Math.sqrt(n); i++) if (n % i === 0) return false; return true; }
 let currentNum = 2;
 function updatePrime() {
     while (!isPrime(currentNum)) currentNum++;
-    document.getElementById("prime-number").textContent = currentNum;
+    const el = document.getElementById("prime-number");
+    if (el) el.textContent = currentNum;
     currentNum++;
 }
-setInterval(updatePrime, 2000); // Updates every 2 seconds
+setInterval(updatePrime, 2000);
 updatePrime();
 </script>
-</div>
+
 </body>
 </html>

@@ -1,237 +1,270 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beans's Planet</title>
-    <link rel="stylesheet" href="/style/style.css">
+    <title>✨ BEANS'S PLANET ✨</title>
     <link rel="icon" href="/images/spacecat.png">
     <style>
-        :root {
-    --text_bg_image: url('/images/cats/beans/redweb.gif');
-    --body-bg-image: url('/images/cats/beans/pizzasliceswhtbg.gif');
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Annie+Use+Your+Telescope&family=Patrick+Hand+SC&display=swap');
 
-    /* colors */
-    --space0: #ffaf76; /* Links */
-    --space1: #c55c00; /* Headings */
-    --space2: #ff8800; /* Box Border */
-    --space3: #c35515;
-    --space4: #dd7a00;
-    --space5: #ba4100;
-    --space6: #1a1a1a; /* Box Background */
-    --space7: #080808; 
+        :root {
+            --orange0: #ffaf76;
+            --orange1: #ff8800;
+            --orange2: #c55c00;
+            --orange3: #ba4100;
+            --bg: #080808;
         }
-        .jinxbox {
-            border: 10px solid var(--space7);
-            padding: 10px;
-            position: sticky;
-            top: 20px;
-            border-radius: 10px;
-            background: linear-gradient(var(--space2), var(--space5));
+
+        body {
+            margin: 0;
+            background: var(--bg) url('/images/cats/beans/pizzasliceswhtbg.gif') fixed;
+            color: black;
+            font-family: "Comic Neue", "Comic Sans MS", cursive;
+            image-rendering: pixelated;
+            min-height: 100vh;
+        }
+
+        .construction {
+            background: #ff8800;
+            color: white;
+            text-align: center;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 1.3rem;
+            animation: blink 1.4s steps(5, start) infinite;
+            border-bottom: 6px double #c55c00;
+            text-shadow: 2px 2px 0 black;
+        }
+        @keyframes blink { to { visibility: hidden; } }
+
+        #container {
+            max-width: 1180px;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(255,255,255,0.92);
+            border: 10px double var(--orange1);
+            box-shadow: 0 0 40px rgba(255,136,0,0.8);
+            min-height: 100vh;
+        }
+
+        marquee {
+            font-family: "Patrick Hand SC", cursive;
+            background: black;
+            color: var(--orange1);
+            padding: 12px;
+            font-size: 1.5rem;
+            letter-spacing: 4px;
+            text-shadow: 0 0 10px orange;
+        }
+
+        h1 {
+            font-family: "Annie Use Your Telescope", cursive;
+            color: var(--orange2);
+            text-align: center;
+            font-size: 5rem;
+            margin: 10px 0 20px;
+            text-shadow: 
+                4px 4px 0 white,
+                8px 8px 0 var(--orange1);
+            transform: rotate(-2deg);
+        }
+
+        /* TRADING CARD — Eternal Kitty Edition */
+        .trading-card {
+            width: 350px;
+            margin: 20px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #fff8e1, #ffe0b2);
+            border: 12px double var(--orange1);
+            box-shadow: 0 0 30px rgba(255,136,0,0.9);
+            position: relative;
+            font-family: "Comic Neue", cursive;
+        }
+        .trading-card::before {
+            content: "✨ KITTY ✨";
+            position: absolute;
+            top: -22px; left: 50%;
+            transform: translateX(-50%);
+            background: var(--orange1);
+            color: white;
+            padding: 10px 25px;
+            font-size: 1.3rem;
+            border: 5px solid black;
+            border-radius: 20px;
+            box-shadow: 0 0 20px orange;
+        }
+        .card-img {
+            width: 100%;
+            border: 8px solid white;
+            box-shadow: 0 0 20px var(--orange2);
+        }
+        .card-stats {
+            background: rgba(255,255,255,0.95);
+            padding: 15px;
+            margin-top: 15px;
+            border: 4px dashed var(--orange2);
+            color: black;
+        }
+        .card-stats table {
+            width: 100%;
+            font-size: 1.1rem;
+        }
+        .card-stats td:first-child { color: var(--orange2); font-weight: bold; }
+        .rarity { 
+            font-size: 1.6rem; 
+            color: var(--orange1); 
+            text-shadow: 0 0 15px orange;
+            animation: kittysparkle 2s infinite;
+        }
+        @keyframes kittysparkle { 50% { text-shadow: 0 0 25px #ff8800; } }
+
+        /* Layout */
+        #flex {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         main {
-            background-color: rgba(255, 255, 255, 0.0);
             flex: 1;
+            min-width: 320px;
             padding: 20px;
-            order: 2;
-            margin-top: 10px;
-            margin-bottom: 10px;
             text-align: center;
-            font-size: x-large;
-        }
-        aside {
-            /* background-image: var(--text_bg_image);*/
-            width: 35%;
-            padding: 10px;
-            font-size: small;
-            margin-top: 20px;
-        }
-        body {
-            font-family: 'Arcade';
-            margin: 0;
-            background-color: var(--space7);
-            background-size: auto;
+            line-height: 1.8;
+            font-size: 1.25rem;
             color: black;
-            background-image: var(--body-bg-image);
         }
-        @media only screen and (max-width: 1000px) {
-    #flex {
-        flex-direction: column;
-    }
-    #container {
-        max-width: 100%;
-        margin: 0px;
-    }
-    aside {
-        width: 100%;
-    }
+        aside { max-width: 400px; }
 
-    main {
-        order: 1;
-    }
+        img { max-width: 100%; height: auto; }
+        .zoom { transition: transform 0.4s; }
+        .zoom:hover { transform: scale(2.3); z-index: 999; }
 
-    #leftSidebar {
-        order: 3;
-    }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+        }
 
-    #rightSidebar {
-        order: 2;
-    }
-    #navbar {
-        text-align: center;
-    }
-    #navbar ul {
-        height: 100px;
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        list-style-image: none;
-    }
-    #navbar ul > ul {
-        display: none;
-    }
-    aside {
-        margin-left: 0px;
-        margin-bottom: 70px;
-        display: flex;
-        justify-content: space-around;
-    }
+        .kittyfeet {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 20px 0;
+        }
 
-    .jinxbox {
-        max-width: 350px;
-    }
-}
+        .return-btn {
+            position: fixed;
+            bottom: 15px;
+            left: 15px;
+            z-index: 9999;
+        }
+
+        @media (max-width: 1000px) {
+            #flex { flex-direction: column; align-items: center; }
+            h1 { font-size: 3.5rem; }
+            .trading-card { width: 92%; }
+        }
     </style>
-  </head>
-
+</head>
 <body>
+
+<div class="construction">✨ KITTY ZONE ✨</div>
+
 <div id="container">
+    <marquee scrolldelay="60">
+        ✨ BEANS IS KITTY ✨ ALWAYS HUNGRY ✨
+    </marquee>
 
-<div id="flex">
-    <main>
-            <img class="zoom" src="/images/cats/beans/beansPlanet.png" width="100px">
+    <h1>✨ BEANS'S PLANET ✨</h1>
 
-        <div id="flex" style="flex-direction: row; justify-content: space-evenly; align-items: center;">
-            <img src="/images/cats/beans/kitty_wiggly_feet.gif" width="10%">
-        <p>
-            Welcome to Beans's planet!  
-        </p>
-        <img src="/images/cats/beans/kitty_wiggly_feet.gif" width="10%">
-        </div>
+    <div id="flex">
 
-        <br>
-
-        <img src="/images/cats/beans/beansEyes3.jpeg" width = 80%>
-
-        <br><br>
-
-        Beans is orange, long, skinny, wirey, hungry, but most of all he is kitty. 
-
-        <br><br>
-
-        <img src="/images/cats/beans/beansKitty.jpeg" width="50%">
-
-        <br><br>
-
-        Beans was adopted in June 2023 from the Denton Animal Shelter. <!--Maybe because he was so long they thought he was older than one year, but he was definitely still a kitty.-->
-
-        <br><br>
-
-        <img src="/images/cats/beans/kittyPlay.gif" width = 90%>
-
-        <br><br>
-
-        Beans has zero ability to focus and he doesn't learn rules after he gets in trouble. He knows he is on the bottom of the cat totem pole because he will bow his head to his brothers and wait for kisses.
-
-        <br><br>
-
-        <img src="/images/cats/beans/beansEyes4.jpeg" width = 40%>
-
-        <br><br>
-
-        Beans has triangle shaped pupils. We think he may have <a href="https://pictures-of-cats.org/domestic-cat-with-triangular-shaped-pupils-coloboma.html">coloboma</a>. Apparently, it doesn't hurt Beans, but it makes it hard for him to see in bright sunlight.
-
-        <br><br>
-
-        <img src="/images/cats/beans/beansEyes2.jpeg" width = 40%>
-        <img src="/images/cats/beans/kittywashesfaceani.gif" width="20%">
-
-        <br><br>
-
-        Beans is permanently hungry, and never gets fat no matter how much he eats. He constantly tries to find food in the trash, or in the sink.
-
-        <br><br>
-
-        <img src="/images/cats/beans/kittyTrash.gif" width = 15%>
-        <img src="/images/cats/beans/kittyTrash.gif" width = 15%>
-        <img src="/images/cats/beans/kittyTrash.gif" width = 15%>
-        <br><br>
-        <img src="/images/cats/beans/beansAwkward.jpeg" width = 70%>
-
-        <br><br>
-
-        For some reason Beans likes to sit in front of our cat camera and stare into it. It makes it look like he is in a Zoom meeting.
-
-        <br><br>
-
-        <img src="/images/cats/beans/beansZoom1.jpeg" width="40%">
-        <img src="/images/cats/beans/beansZoom2.jpeg" width="40%">
-
-        <br><br>
-
-        Thank you for visiting Beans' Planet!
-
-        <br><br><br>
-
-        Below will be a growing collection of kitty things. If you want to learn about Beans' big brothers you can do that <a href="/pages/fun/cats.html">here!</a>
-        
-    </main>
-
-    <aside id="rightSidebar">
-        <div class="jinxbox">
-            <div class="box" style="padding: 3px; text-align: center;">
-                <h2 style="margin: 0px;">Beans</h2>
+        <!-- ==================== ETERNAL KITTY TRADING CARD ==================== -->
+        <aside>
+            <div class="trading-card">
+                <img src="/images/cats/beans/beans1-noBG.png" class="card-img" alt="Beans the Eternal Kitty">
+                <div class="card-stats">
+                    <h2 style="margin:5px; color:var(--orange2); text-align:center;">BEANS</h2>
+                    <table>
+                        <tr><td>B-Day</td><td>Nov 15 2022</td></tr>
+                        <tr><td>Sex</td><td>M</td></tr>
+                        <tr><td>Alignment</td><td>Chaotic Neutral</td></tr>
+                        <tr><td>Role</td><td>Eternal Kitty</td></tr>
+                        <tr><td>Hunger</td><td>Infinite ∞</td></tr>
+                        <tr><td>Eyes</td><td>Triangles</td></tr>
+                        <tr><td>Rarity</td><td class="rarity">✨ KITTY ✨</td></tr>
+                    </table>
+                </div>
             </div>
 
-                <img src="/images/cats/beans/beans1-noBG.png" width = "80%" style="display: block;margin-left: auto; margin-right: auto;">
-            
+            <div class="kittyfeet">
+                <img src="/images/cats/beans/kitty_wiggly_feet.gif" width="80">
+                <img src="/images/cats/beans/kitty_wiggly_feet.gif" width="80">
+                <img src="/images/cats/beans/kitty_wiggly_feet.gif" width="80">
+            </div>
+        </aside>
 
-            <table width="100%">
-                <tr>
-                    <td>B-day:</td>
-                    <td style="text-align: right;">Nov. 15, 2022</td>
-                </tr>
-                <tr>
-                    <td>Sex:</td>
-                    <td style="text-align: right;">M</td>
-                </tr>
-                <tr>
-                    <td>Alignment:</td>
-                    <td style="text-align: right;">Chaotic Neutral</td>
-                </tr>
-                <tr>
-                    <td>Role:</td>
-                    <td style="text-align: right;">Kitty</td>
-                </tr>
-                <tr>
-                    <td>Hunger:</td>
-                    <td style="text-align: right;">Infinite</td>
-                </tr>
-                <tr>
-                    <td>Physique:</td>
-                    <td style="text-align: right;">Skinny</td>
-                </tr>
-            </table>
+        <!-- ==================== MAIN CONTENT ==================== -->
+        <main>
+            <img class="zoom" src="/images/cats/beans/beansPlanet.png" width="120">
 
-        </div>
+            <div class="kittyfeet">
+                <img src="/images/cats/beans/kitty_wiggly_feet.gif" width="90">
+                <p><strong>WELCOME TO BEANS'S PLANET</strong></p>
+                <img src="/images/cats/beans/kitty_wiggly_feet.gif" width="90">
+            </div>
 
-        <p style="bottom: 0%; left: 10px; position: fixed; text-align: center;">
-            <a href="/p/fun/cats/">
-                <img src="/images/cats/beans/back.gif"
-                width="90%">
-            </a>
-        </p>
-    </aside>
+            <p>Beans is orange, long, skinny, wirey, hungry, and — most importantly — <strong>kitty</strong>.</p>
+
+            <img src="/images/cats/beans/beansEyes3.jpeg" width="80%">
+
+            <p>Adopted June 2023 from Denton Animal Shelter. Still 100% kitty forever.</p>
+
+            <img src="/images/cats/beans/kittyPlay.gif" width="90%">
+
+            <p>He has zero focus, and learns nothing. He begs his brothers for forehead kisses</p>
+
+            <div class="gallery">
+                <img src="/images/cats/beans/beansEyes4.jpeg">
+            </div>
+
+            <p>Beans has rare triangle-shaped pupils (coloboma). It doesn't hurt, but bright sun is not his friend.</p>
+
+            <div class="gallery">
+                <img src="/images/cats/beans/beansEyes2.jpeg">
+                <img src="/images/cats/beans/kittywashesfaceani.gif">
+            </div>
+
+            <p>Permanently starving. Can eat infinite food and stay noodle-shaped. Favorite hobbies: trash diving and sink surfing.</p>
+
+            <div class="gallery">
+                <img src="/images/cats/beans/kittyTrash.gif">
+                <img src="/images/cats/beans/kittyTrash.gif">
+                <img src="/images/cats/beans/beansAwkward.jpeg" width="70%">
+            </div>
+
+            <p>Professional Zoom meeting attendee (stares directly into cat camera).</p>
+            <div class="gallery">
+                <img src="/images/cats/beans/beansZoom1.jpeg">
+                <img src="/images/cats/beans/beansZoom2.jpeg">
+            </div>
+
+            <p><strong>Thank you for visiting Beans's Planet!</strong></p>
+
+            <p>Wanna meet his big brothers? Go <a href="/pages/fun/cats.html">here</a>!</p>
+        </main>
+    </div>
+
+    <div class="return-btn">
+        <a href="/p/fun/cats/">
+            <img src="/images/cats/beans/back.gif" width="180" alt="back to big boys">
+        </a>
+    </div>
 </div>
-</div>
+
 </body>
+</html>

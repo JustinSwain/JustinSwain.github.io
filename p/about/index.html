@@ -1,129 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Justin Swain - About</title>
-    <link rel="stylesheet" href="/style/style.css">
+    <title>★ JUSTIN SWAIN • ABOUT ME • CRYPTOGRAPHER • CAT DAD ★</title>
     <link rel="icon" href="/images/spacecat.png">
-  </head>
-  <body>
-<div id="container"><div id="topBar">
-    <!--<marquee>Welcome!</marquee>-->
-</div>
-<div id="headerArea">
-    <div id="header">
-        <a href="/"><img src="/images/spacecat.png" height="120px"></a>
-            <a href="/" style="text-decoration: none;"><strong style="font-size: x-large;">justinswain.dev</strong></a>
+    <link rel="stylesheet" href="/style/style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Press+Start+2P&family=Silkscreen&family=Creepster&display=swap');
+
+        .about-card {
+            background: var(--space6);
+            border: 6px double var(--space1);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 0 30px rgba(74,112,226,0.6);
+            position: relative;
+            overflow: hidden;
+        }
+        .about-card h2 {
+            font-family: "Arcade", cursive;
+            color: var(--space0);
+            font-size: 2.5rem;
+            text-align: center;
+            text-shadow: 0 0 15px var(--space1);
+        }
+
+        .cat-family {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .cat-family img {
+            border-radius: 50%;
+            border: 5px solid var(--space1);
+            box-shadow: 0 0 20px var(--space0);
+            transition: all 0.4s;
+        }
+        .cat-family img:hover {
+            transform: scale(1.3) rotate(10deg);
+            box-shadow: 0 0 40px white;
+        }
+        .cat-family figcaption {
+            margin-top: 8px;
+            font-weight: bold;
+            color: var(--space0);
+        }
+
+        .button-parade {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border: 4px dashed var(--space1);
+            border-radius: 15px;
+        }
+
+        .cbox-frame {
+            border: 8px ridge gold;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 40px gold;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <div id="headerArea">
+        <div id="header">
+            <a href="/"><img src="/images/spacecat.png" height="120px"></a>
+            <a href="/" style="text-decoration:none;"><strong>justinswain.dev</strong></a>
+        </div>
     </div>
-</div>
 
-<div id="flex">
-
-    <main>
-        <h1>About</h1>
-            <div class = "box">
-                <h2>About Me</h2>
-                        <p>
-                            I am a mathematician working in cryptography at <a href="https://www.endosec.com/">EndoSec</a>.<br>
-                            I earned a PhD in mathematics in 2025 and a B.S. in mathematics in 2019 from the <a href="https://math.unt.edu">University of North Texas</a>.
-                        </p>
-                        <p>
-                            My wife, Cassidy, and I live in Providence Village, TX with our five <a href="/p/fun/cats/">cats</a> Jinx, Beans, Zed, Ninja, and Pluto. (ordered from least to most rotten)                    
-                        </p>
-            </div>
-            <br>
-            <div class="box">
-                <h2>About this website</h2>
-                <p>
-                    I created this site in Jan. 2024 to share my professional work, to learn how to make a website, and for fun.
+    <div id="flex">
+        <main>
+            <h1>About</h1>
+            <!-- ABOUT ME -->
+            <div class="about-card">
+                <h2>About me</h2>
+                <p style="font-size:1.3rem; text-align:center;">
+                    I am a mathematician & cryptographer at <a href="https://www.endosec.com/">EndoSec</a>.<br>
+                    PhD in Mathematics (2025) + B.S. Mathematics (2019) + <a href="https://math.unt.edu">University of North Texas</a>
                 </p>
-                <strong>Credits</strong>
-                <p>
-                    I used these resources somewhere on the site:
-                    <ul>
-                        <li>Header Font - <a href="https://www.1001fonts.com/jmh-cthulhumbus-arcade-font.html">Cthulhumbus Arcade Font</a></li>
-                        <li>Body Font - <a href="">Perfect DOS VGA 437</a></li>
-                        <li>Gifs - <a href="https://gifcities.org/">gifcities.org</a></li>
-                        <li>Cool Text - <a href="https://www10.flamingtext.com/">Flaming Text</a></li>
-                        <li>Bakground Remover - <a href="https://www.remove.bg/">remove.bg</a></li>
-                        <li>Playlist images - <a href=" https://www.vectorportal.com" >Vectorportal.com</a>,  <a class="external text" href="https://creativecommons.org/licenses/by/4.0/" >CC BY</a></li>
-                        <li>LaTeX in HTML - <a href="https://www.mathjax.org/">MathJax</a></li>
-                        <li><a href="https://realfavicongenerator.net/favicon_checker">Favicon Generator</a></li>
-                    </ul>
+                <p style="font-size:1.3rem; text-align:center;">
+                    I live in Providence Village, TX with my wife Cassidy and our five perfect cats<br>
+                    (ordered from <strong>least</strong> to <strong>most</strong> rotten):
                 </p>
+
+                <div class="cat-family">
+                    <figure>
+                        <img src="/images/cats/zed/zedPlanet.png" width="100" height="100" style="object-fit: cover;" alt="Zed">
+                        <figcaption>Zed</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="/images/cats/ninja/ninjaPlanet.png" width="100" height="100" style="object-fit: cover;" alt="Ninja">
+                        <figcaption>Ninja</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="/images/cats/jinx/jinxPlanet.png" width="100" height="100" style="object-fit: cover;" alt="Jinx">
+                        <figcaption>Jinx</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="/images/cats/beans/beansPlanet.png" width="100" height="100" style="object-fit: cover;" alt="Beans">
+                        <figcaption>Beans</figcaption>
+                    </figure>
+                    <figure>
+                        <img src="/images/cats/pluto/plutoPlanet.png" width="100" height="100" style="object-fit: cover;" alt="Pluto">
+                        <figcaption>Pluto</figcaption>
+                    </figure>
+                </div>
             </div>
 
-            <br><br>
-            <div class="box">
-                <h2>Chat box </h2>
-                <iframe src="https://www3.cbox.ws/box/?boxid=3535429&boxtag=bnqpyK" width="100%" height="450" allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0" scrolling="auto"></iframe>	
+            <!-- ABOUT THIS SITE -->
+            <div class="about-card">
+                <h2>This website</h2>
+                <p style="text-align:center; font-size:1.2rem;">
+                    Launched January 2024 + Built from scratch + Powered by 2000s nostalgia
+                </p>
+                <p><strong>Credits & Thanks:</strong></p>
+                <ul style="columns:2; font-size:1.1rem;">
+                    <li>Header Font - <a href="https://www.1001fonts.com/jmh-cthulhumbus-arcade-font.html">Cthulhumbus Arcade</a></li>
+                    <li>Body Font - Perfect DOS VGA 437</li>
+                    <li>GIFs - <a href="https://gifcities.org/">GifCities</a></li>
+                    <li>Backgrounds - <a href="https://www10.flamingtext.com/">FlamingText</a> + remove.bg</li>
+                    <li>LaTeX - <a href="https://www.mathjax.org/">MathJax</a></li>
+                    <li>Pixel Cats - <a href="https://webneko.net/">Web Neko</a> + <a href="https://gifypet.neocities.org/">GifyPet</a></li>
+                    <li>88x31 buttons - various ancient archives</li>
+                </ul>
             </div>
 
-            <br><br>
+            <!-- CHAT BOX -->
+            <div class="about-card">
+                <h2>Leave a note</h2>
+                <iframe class="cbox-frame" src="https://www3.cbox.ws/box/?boxid=3535429&boxtag=bnqpyK" 
+                    width="100%" height="450" allowtransparency="yes" allow="autoplay" 
+                    frameborder="0" scrolling="auto"></iframe>
+            </div>
 
-            <div id="flex" style="align-items: center; justify-content: space-around; flex-wrap: wrap;flex-direction:row;">
-                <img class="zoom" src="/images/html_buttons/macmade-blkwtbrdrspin.gif">
-                <img class="zoom" src="/images/html_buttons/linux_powered.gif">
-                <img class="zoom" src="/images/html_buttons/BOOKMARKPAGENOW.GIF">
-                <img class="zoom" src="/images/html_buttons/ani-html.gif">
-                <img class="zoom" src="/images/html_buttons/catscape-loader.gif">
-                <img class="zoom" src="/images/html_buttons/Aniquake.gif">
-                <img class="zoom" src="/images/html_buttons/jesusNow.gif">
-                <img class="zoom" src="/images/html_buttons/notepad2.gif">
-                <img class="zoom" src="/images/html_buttons/emacs.gif">
-                <img class="zoom" src="/images/html_buttons/fspeech96.gif">
-                <img class="zoom" src="/images/html_buttons/randysavage.gif">
-                <img class="zoom" src="/images/html_buttons/nocookie.gif">
+            <!-- CLASSIC BUTTON PARADE -->
+            <div class="about-card">
+                <h2>Button Collection</h2>
+                <div class="button-parade">
+                    <img class="zoom" src="/images/html_buttons/macmade-blkwtbrdrspin.gif" alt="">
+                    <img class="zoom" src="/images/html_buttons/linux_powered.gif" alt="">
+                    <img class="zoom" src="/images/html_buttons/BOOKMARKPAGENOW.GIF" alt="">
+                    <img class="zoom" src="/images/html_buttons/ani-html.gif" alt="">
+                    <img class="zoom" src="/images/html_buttons/catscape-loader.gif" alt="">
+                    <img class="zoom" src="/images/html_buttons/Aniquake.gif" alt="">
+                    <img class="zoom" src="/images/html_buttons/jesusNow.gif" alt="">
+                    <img class="zoom" src="/images/html_buttons/notepad2.gif" alt="">
+                    <img class="zoom" src="/images/html_buttons/emacs.gif" alt="">
+                    <img class="zoom" src="/images/html_buttons/fspeech96.gif" alt="">
+                    <img class="zoom" src="/images/html_buttons/randysavage.gif" alt="">
+                    <img class="zoom" src="/images/html_buttons/nocookie.gif" alt="">
+                    <img class="zoom" src="/images/html_buttons/cdrom.gif" alt="">
+                    <img class="zoom" src="/images/html_buttons/top100.gif" alt="">
+                </div>
             </div>
-            <div id="flex" style="align-items: center; justify-content: space-around; flex-wrap: wrap;flex-direction:row;">
-                <img class="zoom" src="/images/html_buttons/cdrom.gif">
-                <img class="zoom" src="/images/html_buttons/top100.gif">
-            </div>
-    </main>
-<sideBar id="sideBarPlaceholder"></sideBar>
+
+        </main>
+
+        <sideBar id="sideBarPlaceholder"></sideBar>
+    </div>
+
+    <footer id="footerPlaceholder"></footer>
 </div>
-<footer id="footerPlaceholder" style="margin-top: 10px;"></footer>
-</div>
 
-<!-- JavaScript to load components -->
 <script>
-async function loadComponent(elementId, filePath) {
-  try {
-    const response = await fetch(filePath);
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const content = await response.text();
-    if (!content) {
-      console.warn(`File ${filePath} is empty or not loaded`);
-    }
-    document.getElementById(elementId).innerHTML = content;
-  } catch (error) {
-    console.error(`Error loading ${filePath}:`, error);
-  }
+async function loadComponent(id, file) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    try {
+        const res = await fetch(file);
+        if (res.ok) el.innerHTML = await res.text();
+    } catch (e) { console.error("Load failed:", file); }
 }
-
-// Load the components
 loadComponent("sideBarPlaceholder", "/components/sidebar.html");
 loadComponent("footerPlaceholder", "/components/footer.html");
-function isPrime(n) {
-    if (n < 2) return false;
-    for (let i = 2; i <= Math.sqrt(n); i++) {
-        if (n % i === 0) return false;
-    }
-    return true;
-}
 
+// Prime ticker
+function isPrime(n) { if (n < 2) return false; for (let i = 2; i <= Math.sqrt(n); i++) if (n % i === 0) return false; return true; }
 let currentNum = 2;
 function updatePrime() {
     while (!isPrime(currentNum)) currentNum++;
-    document.getElementById("prime-number").textContent = currentNum;
+    const el = document.getElementById("prime-number");
+    if (el) el.textContent = currentNum;
     currentNum++;
 }
-setInterval(updatePrime, 2000); // Updates every 2 seconds
+setInterval(updatePrime, 2000);
 updatePrime();
 </script>
-</div>
+
 </body>
 </html>
