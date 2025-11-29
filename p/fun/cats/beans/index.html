@@ -133,14 +133,20 @@
             padding: 20px;
             text-align: center;
             line-height: 1.8;
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             color: black;
         }
         aside { 
             max-width: 400px; 
         }
 
-        img { max-width: 100%; /* height: min-content; */ }
+        img, .zoom img, .card-img {
+            image-rendering: pixelated;
+            height: auto !important;
+            /* width: auto !important; */
+            max-width: 100%;
+            object-fit: contain;   /* extra safety */
+        }
         .zoom { transition: transform 0.4s; }
         .zoom:hover { transform: scale(2.3); z-index: 999; }
 
