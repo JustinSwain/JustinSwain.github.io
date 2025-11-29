@@ -74,7 +74,7 @@
         .trading-card {
             width: 350px;
             margin: 20px auto;
-            padding: 20px;
+            padding: 0px;
             background: linear-gradient(135deg, #fff8e1, #ffe0b2);
             border: 12px double var(--orange1);
             box-shadow: 0 0 30px rgba(255,136,0,0.9);
@@ -89,14 +89,15 @@
             background: var(--orange1);
             color: white;
             padding: 10px 25px;
-            font-size: 1.3rem;
+            font-size: 1rem;
             border: 5px solid black;
             border-radius: 20px;
             box-shadow: 0 0 20px orange;
         }
         .card-img {
             width: 100%;
-            border: 8px solid white;
+            padding: 5px auto;
+            /* border: 8px solid white; */
             box-shadow: 0 0 20px var(--orange2);
         }
         .card-stats {
@@ -128,16 +129,18 @@
         }
         main {
             flex: 1;
-            min-width: 320px;
+            /* min-width: 320px; */
             padding: 20px;
             text-align: center;
             line-height: 1.8;
             font-size: 1.25rem;
             color: black;
         }
-        aside { max-width: 400px; }
+        aside { 
+            max-width: 400px; 
+        }
 
-        img { max-width: 100%; height: auto; }
+        img { max-width: 100%; height: max-content; }
         .zoom { transition: transform 0.4s; }
         .zoom:hover { transform: scale(2.3); z-index: 999; }
 
@@ -165,8 +168,10 @@
 
         @media (max-width: 1000px) {
             #flex { flex-direction: column; align-items: center; }
-            h1 { font-size: 3.5rem; }
+            h1 { font-size: 1.5rem; }
             .trading-card { width: 92%; }
+            .rarity { font-size: 1rem}
+            .trading-card::before { font-size: 0.8rem;}
         }
     </style>
 </head>

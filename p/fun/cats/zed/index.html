@@ -39,7 +39,7 @@
         @keyframes rainbow { 0%{background-position:0% 50%} 100%{background-position:100% 50%} }
 
         #container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 20px auto;
             padding: 25px;
             background: rgba(255,255,255,0.95);
@@ -74,8 +74,9 @@
         /* TRADING CARD — Angelic Safety Edition */
         .trading-card {
             width: 360px;
+            max-width: 100%;
             margin: 20px auto;
-            padding: 25px;
+            padding: 0px;
             background: linear-gradient(135deg, #fff8ff, #f0f8ff);
             border: 14px ridge var(--mint);
             box-shadow: 0 0 40px rgba(0,255,0,0.5);
@@ -90,14 +91,14 @@
             background: pink;
             color: white;
             padding: 10px 30px;
-            font-size: 1.3rem;
+            font-size: 0.7rem;
             border: 6px solid white;
             border-radius: 50px;
             box-shadow: 0 0 20px deeppink;
         }
         .card-img {
             width: 100%;
-            border: 10px solid white;
+            /* border: 10px solid white; */
             border-radius: 20px;
             box-shadow: 0 0 30px skyblue;
         }
@@ -131,16 +132,21 @@
         }
         main {
             flex: 1;
-            min-width: 320px;
+            /* min-width: 320px; */
             padding: 20px;
             text-align: center;
             line-height: 1.9;
             font-size: 1.3rem;
             color: black;
         }
-        aside { max-width: 420px; }
+        aside { 
+            max-width: 320px; 
+        }
 
-        img { max-width: 100%; height: auto; }
+        img { 
+            max-width: 100%; 
+            height: max-content; 
+        }
         .zoom { transition: transform 0.4s; }
         .zoom:hover { transform: scale(2.2); z-index: 999; }
 
@@ -167,9 +173,18 @@
         }
 
         @media (max-width: 1000px) {
-            #flex { flex-direction: column; align-items: center; }
-            h1 { font-size: 3.8rem; }
-            .trading-card { width: 92%; }
+            #flex { 
+                flex-direction: column; 
+                align-items: center; 
+            }
+            h1 { font-size: 1.8rem; }
+            .trading-card { 
+                width: 92%; 
+            }
+            .card-stats table { font-size: 0.7rem;}
+            .trading-card::before { font-size: 0.6rem;}
+            .rarity {font-size: 0.8rem;}
+
         }
     </style>
 </head>
@@ -179,7 +194,7 @@
 
 <div id="container">
     <marquee scrolldelay="80">
-        ♡ ZED IS THE SWEETEST BOY ♡ SAFETY FIRST ♡ FLUFFY ANGEL ♡
+        ♡ ZED, THE SWEETEST BOY ♡ SAFETY FIRST ♡ FLUFFY ANGEL ♡
     </marquee>
 
     <h1>☁ ZED'S PLANET ☁</h1>

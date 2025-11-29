@@ -73,7 +73,7 @@
         .trading-card {
             width: 340px;
             margin: 20px auto;
-            padding: 18px;
+            /* padding: 10px; */
             background: linear-gradient(135deg, #111, #000);
             border: 10px double var(--hotpink);
             box-shadow: 
@@ -96,7 +96,7 @@
         }
         .card-img {
             width: 100%;
-            border: 6px solid var(--toxic);
+            /* border: 6px solid var(--toxic); */
             box-shadow: 0 0 20px var(--hotpink);
         }
         .card-stats {
@@ -128,7 +128,7 @@
         }
         main {
             flex: 1;
-            min-width: 320px;
+            /* min-width: 320px; */
             padding: 20px;
             text-align: center;
             line-height: 1.8;
@@ -136,7 +136,7 @@
         }
         aside { max-width: 380px; }
 
-        img { max-width: 100%; height: auto; }
+        img { max-width: 100%; height: max-content; }
         .zoom { transition: transform 0.4s; }
         .zoom:hover { transform: scale(2.5); z-index: 999; }
 
@@ -164,7 +164,7 @@
 
         @media (max-width: 1000px) {
             #flex { flex-direction: column; align-items: center; }
-            h1 { font-size: 3.2rem; }
+            h1 { font-size: 1.2rem; }
             .trading-card { width: 92%; }
         }
     </style>
