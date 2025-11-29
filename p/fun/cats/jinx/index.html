@@ -6,8 +6,7 @@
     <title>✦ JINX'S PLANET ✦ the best black cat ever!! ✦</title>
     <link rel="icon" href="/images/spacecat.png">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Creepster&family=Anime+Scribble&display=swap');
-        :root {
+        @import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');        :root {
             --red0: #ff8e8e;
             --red1: #ff1744;
             --red2: #c50000;
@@ -22,7 +21,7 @@
             margin: 0;
             background: var(--bg) url('/images/toys/example.jpg') fixed;
             color: white;
-            font-family: Arcade, Tahoma, Verdana, sans-serif;
+            font-family: 'Bangers', Tahoma, Verdana, sans-serif;
             image-rendering: pixelated;
         }
 
@@ -71,7 +70,7 @@
             border: 8px ridge gold;
             box-shadow: 0 0 20px rgba(255,0,0,0.8), inset 0 0 20px rgba(255,255,255,0.1);
             position: relative;
-            font-family: "Anime Scribble", "Comic Sans MS", cursive;
+            font-family: "Anime Scribble", "Comic Sans MS", 'Bangers';
         }
         .trading-card::before {
             content: "★ ULTRA RARE ★";
@@ -127,9 +126,12 @@
             max-width: 350px;
         }
 
-        img { 
-            max-width: 100%; 
-            /* height: min-content; */ 
+        img, .zoom img, .card-img {
+            image-rendering: pixelated;
+            height: auto !important;
+            /* width: auto !important; */
+            max-width: 100%;
+            object-fit: contain;   /* extra safety */
         }
         .zoom { transition: transform 0.3s; }
         .zoom:hover { transform: scale(2); }
@@ -222,13 +224,14 @@
 
             <div class="gallery">
                 <img src="/images/cats/jinx/PanthRoar.gif" width="20%">
-                <img src="/images/cats/jinx/jinxROAR.jpeg" width="40%">
                 <img src="/images/cats/jinx/PanthRoar.gif" width="20%">
             </div>
 
+            <img src="/images/cats/jinx/jinxROAR.jpeg" width="40%">
+
             <p>Jinx was adopted from the Dallas Humane Society on March 26, 2021. He looks kinda spooky but he is super friendly!</p>
 
-            <img src="/images/cats/jinx/dragon001.gif" width="100%">
+            <img src="/images/cats/jinx/dragon001.gif" width="50%">
 
             <p>He loves sunbathing until his fur turns brown!</p>
             <img src="/images/cats/jinx/sun.gif" width="30%"><br>
