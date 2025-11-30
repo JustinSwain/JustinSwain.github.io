@@ -170,11 +170,11 @@
   }
   .line.show { opacity: 0.7; }
 
-.line1 { clip-path: polygon(0 10%, 100% 10%, 100% 15%, 0 15%); transform: translateX(-50%);}     
-.line2 { clip-path: polygon(0 40%, 100% 40%, 100% 45%, 0 45%); transform: translateX(-50%);}  
-.line3 { clip-path: polygon(0 75%, 100% 75%, 100% 80%, 0 80%); transform: translateX(-50%);} 
-.line4 { clip-path: polygon(0 0%, 50% 85%, 100% 0%, 100% 5%, 50% 90%, 0 5%); transform: translateX(-50%);} 
-.line5 { clip-path: polygon(0 90%, 50% 5%, 100% 90%, 100% 85%, 50% 0%, 0 85%); transform: translateX(-50%);}
+.line1 { clip-path: polygon(0 10%, 100% 10%, 100% 15%, 0 15%); transform: translateX(-50%); background: red;}     
+.line2 { clip-path: polygon(0 40%, 100% 40%, 100% 45%, 0 45%); transform: translateX(-50%); background: teal;}  
+.line3 { clip-path: polygon(0 75%, 100% 75%, 100% 80%, 0 80%); transform: translateX(-50%); background: purple;} 
+.line4 { clip-path: polygon(0 0%, 50% 85%, 100% 0%, 100% 5%, 50% 90%, 0 5%); transform: translateX(-50%); background: green;} 
+.line5 { clip-path: polygon(0 90%, 50% 5%, 100% 90%, 100% 85%, 50% 0%, 0 85%); transform: translateX(-50%); background: gold;}
 
 /* PAYTABLE BUTTON */
 #paytableBtn {
@@ -468,7 +468,7 @@
   <div class="modal-content">
     <span class="close">X</span>
     <h2 style="font-family:'Arcade';color:var(--space0);text-align:center;margin:0 0 20px;">
-      PAYTABLE - 5 LINES
+      PAYTABLE
     </h2>
 
     <table class="paytable">
@@ -481,23 +481,23 @@
         </tr>
       </thead>
       <tbody>
-        <tr><td><img src="/images/toys/enemy1.png" alt="enemy1"> ENEMY1</td>   <td>1000</td><td>200</td><td>50</td></tr>
+        <tr><td><img src="/images/toys/enemy3.png" alt="Larry"> LARRY</td>   <td>1000</td><td>200</td><td>50</td></tr>
         <tr><td><img src="/images/toys/zed.png" alt="zed"> ZED</td>           <td>800</td> <td>150</td><td>40</td></tr>
         <tr><td><img src="/images/toys/pluto.png" alt="pluto"> PLUTO</td>     <td>600</td> <td>120</td><td>35</td></tr>
-        <tr><td><img src="/images/toys/bullet.png" alt="bullet"> BULLET</td> <td>500</td> <td>100</td><td>30</td></tr>
+        <tr><td><img src="/images/toys/enemy2.png" alt="Gary"> GARY</td> <td>500</td> <td>100</td><td>30</td></tr>
         <tr><td><img src="/images/toys/ninja.png" alt="ninja"> NINJA</td>     <td>400</td> <td>80</td> <td>25</td></tr>
-        <tr><td><img src="/images/toys/jinx2.png" alt="jinx2"> JINX2</td>     <td>300</td> <td>60</td> <td>20</td></tr>
-        <tr><td><img src="/images/toys/jinx.png" alt="jinx"> JINX</td>       <td>250</td> <td>50</td> <td>15</td></tr>
+        <tr><td><img src="/images/toys/jinx2.png" alt="jinx"> JINX</td>     <td>300</td> <td>60</td> <td>20</td></tr>
+        <tr><td><img src="/images/toys/enemy1.png" alt="Harry"> HARRY</td>       <td>250</td> <td>50</td> <td>15</td></tr>
         <tr><td><img src="/images/toys/beans.png" alt="beans"> BEANS</td>   <td>200</td> <td>40</td> <td>12</td></tr>
         <tr><td><img src="/images/toys/ball.png" alt="ball"> BALL (Free Spins)</td>
             <td colspan="3" style="color:gold;text-align:center;">3=20 + 10 FS <br> 4=50 + 15 FS <br> 5=100 + 25 FS</td></tr>
-        <tr><td><img src="/images/toys/goal.png" alt="goal"> GOAL (Wild)</td>
+        <tr><td><img src="/images/toys/goal.png" alt="Food"> FOOD! (Wild)</td>
             <td colspan="3" style="color:gold;text-align:center;">Substitutes for all symbols except BALL<br>5 Wilds = 1500 coins!</td></tr>
       </tbody>
     </table>
 
     <div style="margin-top:20px;text-align:center;color:var(--space1);font-size:0.9em;">
-      All wins x2 during Free Spins • 5 Paylines • Bet: 10 coins
+      All wins x2 during Free Spins <br> 5 Paylines <br> Bet = 10 coins
     </div>
   </div>
 </div>
@@ -521,13 +521,13 @@ const catImages = [
 // ──────── SYMBOL RARITY & PAYTABLE (5-of-a-kind → 3-of-a-kind) ────────
 const PAYTABLE = {
   // filename.png : [5x, 4x, 3x] payout in coins
-  "enemy1.png": [1000, 200, 50],   // SUPER RARE – the final boss cat
+  "enemy3.png": [1000, 200, 50],   // SUPER RARE – the final boss cat
   "zed.png":    [800,  150, 40],   // Very rare
   "pluto.png":  [600,  120, 35],
   "enemy2.png": [500,  100, 30],
   "ninja.png":  [400,   80, 25],
   "jinx2.png":  [300,   60, 20],
-  "enemy3.png": [250,   50, 15],   // still good but more common
+  "enemy1.png": [250,   50, 15],   // still good but more common
   "beans.png":  [200,   40, 12],
   "ball.png":   [150,   30, 10],   // scatter – but also pays on lines
   "goal.png":   [0,     0,   0]    // WILD – never pays by itself
