@@ -9,11 +9,11 @@ const MARGINS = 15;
 
 function drawBigTable(x,y) {
     ctx.reset();
-    ctx.fillStyle = "#303030";
+    ctx.fillStyle = "#00000f";
     ctx.fillRect(0, 0,canvas.width,canvas.height);
     ctx.font = "20px monospace";
 
-    ctx.strokeStyle = "aliceblue";
+    ctx.strokeStyle = "#00ffff";
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(MARGINS + GRID_SIZE, MARGINS);
@@ -34,7 +34,7 @@ function drawBigTable(x,y) {
 }
 
 function drawTables(x,y) {
-    ctx.strokeStyle = "aliceblue";
+    ctx.strokeStyle = "#00ffff";
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(
@@ -79,13 +79,14 @@ class Box {
 
     drawBox() {
         ctx.beginPath();
+        ctx.lineWidth = 0.25
         ctx.rect(this.x, this.y, 20, 20);
         ctx.stroke();
     }
 
     fillBox() {
         if (this.state === 10) {
-            ctx.strokeStyle = "#DD4124";
+            ctx.strokeStyle = "#000fff";
             ctx.lineWidth = 3;
             ctx.beginPath();
             ctx.moveTo(this.x+2, this.y+2);
@@ -96,7 +97,7 @@ class Box {
             ctx.lineTo(this.x+18, this.y+2);
             ctx.stroke();
         } else if (this.state === -10) {
-            ctx.strokeStyle = "#6B5B95";
+            ctx.strokeStyle = "#ff00ff";
             ctx.lineWidth = 3;
             ctx.beginPath();
             ctx.arc(this.x+10, this.y+10,10,0,2*Math.PI);
@@ -106,7 +107,7 @@ class Box {
 
     highlight() {
         ctx.beginPath();
-        ctx.fillStyle = "rgba(1,55,127,0.5)";
+        ctx.fillStyle = "#007777";
         ctx.fillRect(this.x,this.y,20,20);
     }
 }
@@ -345,8 +346,8 @@ function drawBigBoxes() {
         for(let j=0; j<3; j++) {
             let k = bigWinner.boxes[3*i + j].state;
             if (k === 10) {
-                ctx.strokeStyle = "#DD4124";
-                ctx.lineWidth = 3;
+                ctx.strokeStyle = "#000fff";
+                ctx.lineWidth = 5;
                 ctx.beginPath();
                 ctx.moveTo(
                     MARGINS + i*GRID_SIZE + 10, MARGINS + j*GRID_SIZE + 10);
@@ -360,8 +361,8 @@ function drawBigBoxes() {
                     MARGINS + i*GRID_SIZE + 100, MARGINS + j*GRID_SIZE + 10);
                 ctx.stroke();
             } else if (k === -10) {
-                ctx.strokeStyle = "#6B5B95";
-                ctx.lineWidth = 3;
+                ctx.strokeStyle = "#ff00ff";
+                ctx.lineWidth = 5;
                 ctx.beginPath();
                 ctx.arc(
                     MARGINS + i*GRID_SIZE + 55, 

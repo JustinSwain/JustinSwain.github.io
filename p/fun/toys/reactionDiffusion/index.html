@@ -7,26 +7,110 @@
     <link rel="stylesheet" href="/style/style.css">
     <link rel="icon" href="/images/spacecat.png">
     <style>
-        select {
-            background-color: #181818;
-            color: white;
-            border-color: var(--space3);
-        }
-        select:hover {
-            cursor: pointer;
-            border-color: var(--space0);
-        }
-        canvas {
-            width: 80%;
-            max-width: 360px;
-            display: block;
-            margin: auto;
-        }
-        .equation {
-            width: 100%;
-            overflow-x: auto;
-        }
-    </style>
+    :root {
+        --neon: #00ffff;
+        --magenta: #ff00ff;
+        --bg: #0a0e1a;
+        --card: rgba(15, 20, 40, 0.9);
+        --glow: 0 0 30px rgba(0, 255, 255, 0.6);
+        --glow2: 0 0 40px rgba(255, 0, 255, 0.4);
+    }
+
+    body {
+        font-family: 'Dos', monospace;
+        color: var(--space0);
+    }
+
+    canvas {
+        width: 90%;
+        max-width: 520px;
+        display: block;
+        margin: 20px auto;
+        border: 4px solid var(--space4);
+        border-radius: 16px;
+        box-shadow: var(--glow), var(--glow2);
+        image-rendering: pixelated;
+        background: black;
+        cursor: pointer;
+        transition: all 0.4s ease;
+    }
+
+    canvas:hover {
+        box-shadow: 0 0 50px cyan, 0 0 60px magenta;
+        transform: scale(1.02);
+    }
+
+    canvas.paused::after {
+        content: "PAUSED";
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 48px;
+        font-weight: bold;
+        background: linear-gradient(90deg, var(--neon), var(--magenta));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: var(--glow);
+        pointer-events: none;
+        opacity: 0.8;
+    }
+
+    select {
+        background: rgba(0, 20, 40, 0.9);
+        color: var(--neon);
+        border: 2px solid var(--space4);
+        border-radius: 10px;
+        padding: 12px 16px;
+        margin: 8px;
+        font-family: 'Dos', monospace;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: var(--glow);
+        transition: all 0.3s;
+    }
+
+    select:hover, select:focus {
+        outline: none;
+        border-color: var(--neon);
+        box-shadow: 0 0 30px cyan;
+        transform: translateY(-2px);
+    }
+
+    .controls {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        margin: 20px auto;
+        max-width: 90%;
+        padding: 20px;
+        background: var(--card);
+        border: 3px solid var(--space4);
+        border-radius: 16px;
+        box-shadow: var(--glow);
+    }
+
+    .equation {
+        background: var(--card);
+        padding: 20px;
+        border-radius: 12px;
+        border: 2px solid var(--space4);
+        margin: 20px auto;
+        max-width: 90%;
+        box-shadow: var(--glow);
+        overflow-x: auto;
+    }
+
+    #RXtitle {
+        text-align: center;
+        font-size: 3em;
+        background: linear-gradient(90deg, var(--neon), var(--magenta));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: var(--glow);
+        margin: 30px 0 10px;
+    }
+</style>
   </head>
   <body>
 
@@ -43,9 +127,9 @@
 <div id="flex">
 
     <main>
-        <h1>Toys</h1>
+    <h1>Toys</h1>
         <div class="box">
-            <div>
+            <div id="RXtitle">
                 <h1> Reaction Diffusion </h1>
             </div>
             <div>

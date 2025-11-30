@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/style/style.css">
+<title>Cat Casino</title>
+<style>
+  body {
+    margin: 0;
+    padding: 20px 0;
+    min-height: 100vh;
+    font-family: 'Dos', monospace;
+    background: var(--space7) var(--body-bg-image) repeat;
+    color: white;
+  }
+
+  .casino {
+    width: 90%;
+    max-width: 1000px;
+    margin: 0 auto;
+    background: var(--space6);
+    border: 3px solid var(--space1);
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 0 20px var(--space2), inset 0 0 30px rgba(1, 55, 217, 0.3);
+  }
+
+  h1 {
+    font-family: 'Arcade', sans-serif;
+    color: var(--space0);
+    text-align: center;
+    font-size: 3.5rem;
+    margin: 0 0 20px 0;
+    text-shadow: 0 0 15px var(--space2), 0 0 30px var(--space1);
+    letter-spacing: 4px;
+  }
+
+  .balance {
+    font-family: 'Dos', monospace;
+    font-size: 2rem;
+    color: var(--space0);
+    background: var(--space7);
+    border: 2px solid var(--space1);
+    padding: 10px 30px;
+    border-radius: 8px;
+    display:inline-block;
+    box-shadow: 0 0 15px var(--space3);
+    margin-bottom: 20px;
+  }
+
+  .slot-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    background: var(--space7);
+    padding: 30px 20px;
+    border: 4px solid var(--space1);
+    border-radius: 16px;
+    box-shadow: 
+      inset 0 0 40px var(--space2),
+      0 0 30px rgba(74, 112, 226, 0.6);
+  }
+
+  .reel {
+    width: 150px;
+    height: 450px;
+    overflow: hidden;
+    border: 6px solid var(--space1);
+    border-radius: 16px;
+    background: linear-gradient(to bottom, #000816, #001248);
+    box-shadow: 0 0 20px var(--space2), inset 0 0 20px #000;
+  }
+
+  .strip {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .symbol {
+    width: 150px;
+    height: 150px;
+    object-fit:contain;
+    image-rendering: pixelated; /* retro crispness */
+    border-bottom: 3px solid var(--space4);
+  }
+
+  #buttons {
+    align-items: center; margin: 475px 10px 10px;
+  }
+
+  button {
+    font-family: 'Arcade', sans-serif;
+    font-size: 1.8rem;
+    background: var(--space5);
+    color: var(--space0);
+    border: 3px solid var(--space1);
+    padding: 16px 50px;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 8px var(--space3);
+    transition: all 0.2s;
+    /* margin: 60px 10px 10px; */
+  }
+
+  button:hover {
+    background: var(--space3);
+    box-shadow: 0 0 20px var(--space1);
+    transform: translateY(-4px);
+  }
+
+  button:active {
+    transform: translateY(4px);
+    box-shadow: 0 4px var(--space3);
+  }
+
+  button:disabled {
+    background: #000816;
+    color: #444;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  .message {
+    font-family: 'Arcade', sans-serif;
+    font-size: 2.2rem;
+    text-align: center;
+    min-height: 80px;
+    margin: 20px 0;
+    text-shadow: 0 0 15px var(--space2);
+  }
+
+  .jackpot {
+    color: gold !important;
+    animation: jackpotPulse 0.8s infinite alternate;
+  }
+
+  @keyframes jackpotPulse {
+    from { text-shadow: 0 0 20px gold, 0 0 40px orange; }
+    to   { text-shadow: 0 0 40px gold, 0 0 80px red; }
+  }
+
+  /* ─────── PAYLINES OVERLAY ─────── */
+  #payLines {
+    position: relative; 
+    margin: -450px auto 0 50%; 
+    pointer-events: none; 
+  }
+  .lines-overlay {
+    position: absolute;
+    top: 30px;
+    left: 20px;
+    /* width: calc(100% - 40px); */
+    height: 450px;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .line {
+    position: absolute;
+    width: 800px;
+    max-width: 170%;
+    height: 450px;
+    opacity: 0;
+    transition: opacity 0.7s;
+    background: linear-gradient(90deg, gold 40%, gold 50%, gold 60%);
+    mix-blend-mode: screen;
+    box-shadow: 0 0 30px gold;
+  }
+  .line.show { opacity: 0.7; }
+
+.line1 { clip-path: polygon(0 10%, 100% 10%, 100% 15%, 0 15%); transform: translateX(-50%);}     
+.line2 { clip-path: polygon(0 40%, 100% 40%, 100% 45%, 0 45%); transform: translateX(-50%);}  
+.line3 { clip-path: polygon(0 75%, 100% 75%, 100% 80%, 0 80%); transform: translateX(-50%);} 
+.line4 { clip-path: polygon(0 0%, 50% 85%, 100% 0%, 100% 5%, 50% 90%, 0 5%); transform: translateX(-50%);} 
+.line5 { clip-path: polygon(0 90%, 50% 5%, 100% 90%, 100% 85%, 50% 0%, 0 85%); transform: translateX(-50%);}
+
+/* PAYTABLE BUTTON */
+#paytableBtn {
+  font-family: 'Arcade', sans-serif;
+  font-size: 1.4rem;
+  background: var(--space6);
+  color: var(--space0);
+  border: 2px solid var(--space1);
+  padding: 10px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 15px 10px;
+  box-shadow: 0 0 15px var(--space2);
+  transition: all 0.3s;
+}
+#paytableBtn:hover {
+  background: var(--space3);
+  transform: scale(1.05);
+  box-shadow: 0 0 25px gold;
+}
+
+/* MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,7,27,0.92);
+  backdrop-filter: blur(4px);
+}
+.modal-content {
+  background: var(--space7);
+  margin: 8% auto;
+  padding: 30px;
+  border: 4px solid var(--space1);
+  width: 90%;
+  max-width: 700px;
+  max-height: 80%;
+  overflow-y: auto;
+  border-radius: 16px;
+  box-shadow: 0 0 40px var(--space2);
+  position: relative;
+}
+.close {
+  color: var(--space0);
+  float: right;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 25px;
+}
+.close:hover { color: gold; }
+
+.jackpot-display {
+  font-family: 'Arcade', sans-serif;
+  font-size: 2.2rem;
+  color: gold;
+  background: linear-gradient(90deg, var(--space7), var(--space4));
+  border: 3px solid gold;
+  padding: 12px 35px;
+  border-radius: 12px;
+  display: inline-block;
+  margin: 15px 10px;
+  box-shadow: 
+    0 0 25px gold, 
+    inset 0 0 20px rgba(255,215,0,0.3);
+  animation: jackpotGlow 2s ease-in-out infinite alternate;
+  text-shadow: 0 0 15px gold;
+}
+
+@keyframes jackpotGlow {
+  from { box-shadow: 0 0 25px gold, inset 0 0 20px rgba(255,215,0,0.3); }
+  to   { box-shadow: 0 0 45px #ffd700, inset 0 0 40px rgba(255,215,0,0.6); }
+}
+
+.jackpot-win {
+  animation: jackpotExplode 1s ease-out;
+}
+@keyframes jackpotExplode {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+/* PAYTABLE TABLE */
+.paytable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 1.1rem;
+}
+.paytable th, .paytable td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid var(--space3);
+}
+.paytable th {
+  background: var(--space5);
+  color: var(--space0);
+  font-family: 'Arcade';
+}
+.paytable tr:nth-child(even) { background: rgba(255,255,255,0.03); }
+.paytable img {
+  width: 50px;
+  height: 50px;
+  image-rendering: pixelated;
+  vertical-align: middle;
+}
+.paytable td:first-child {
+  text-align: left;
+  font-weight: bold;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .paytable img { width: 40px; height: 40px; }
+  .paytable { font-size: 0.95rem; }
+  #paytableBtn { width: 90%; margin: 15px auto; display: block; }
+}
+
+/* ─────────────────────────────── MOBILE PERFECTION ─────────────────────────────── */
+@media (max-width: 920px) {
+  .casino {
+    width: 98%;
+    margin: 10px auto;
+    padding: 15px 8px;
+  }
+
+  h1 {
+    font-size: 2.6rem;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+
+  .balance {
+    font-size: 1.6rem;
+    padding: 8px 20px;
+  }
+
+  .slot-container {
+    gap: 10px;
+    padding: 20px 10px;
+  }
+
+  .reel {
+    width: 100px;
+    height: 300px;
+    border-width: 4px;
+  }
+
+  .symbol {
+    width: 100px;
+    height: 100px;
+  }
+  #buttons {
+    margin: 310px 10px 10px;
+  }
+  /* Paylines still cover perfectly */
+  #payLines {
+    position: relative; 
+    margin: -300px auto 0 50%; 
+    pointer-events: none; 
+    max-width: 100%;
+  }
+  .line {
+    width: 450px;
+    height: 300px;
+  }
+
+  button, #showLines {
+    font-size: 1.5rem;
+    padding: 14px 30px;
+    margin: 12px 6px;
+  }
+
+  .message {
+    font-size: 1.8rem;
+    min-height: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 { font-size: 2.2rem; }
+
+  .reel {
+    width: 84px;
+    height: 252px;
+  }
+
+  .symbol {
+    width: 84px;
+    height: 84px;
+  }
+  #buttons {
+    margin: 280px 10px 10px;
+  }
+  #payLines {
+    position: relative; 
+    margin: -260px auto 0 50%; 
+    pointer-events: none; 
+    max-width: 100%;
+  }
+  .line {
+    width: 400px;
+    height: 252px;
+  }
+  .lines-overlay {
+    top: 20px;
+    left: 10px;
+    width: calc(100% - 20px);
+    height: 180px;
+  }
+
+  /* .line1 { clip-path: polygon(0 36px, 100% 36px, 100% 48px, 0 48px); }
+  .line2 { clip-path: polygon(0 118px, 100% 118px, 100% 130px, 0 130px); }
+  .line3 { clip-path: polygon(0 200px, 100% 200px, 100% 212px, 0 212px); } */
+
+  button, #showLines {
+    font-size: 1.3rem;
+    padding: 12px 24px;
+    width: 90%;
+    margin: 10px auto;
+    display: block;
+  }
+
+  .balance {
+    font-size: 1.4rem;
+  }
+}
+
+/* Make touch way for mobile keyboards */
+@media (max-height: 600px) and (orientation: landscape) {
+  .casino { padding: 10px; }
+  h1 { font-size: 2rem; }
+}
+
+</style>
+</head>
+
+<!-- ADD THIS RIGHT BEFORE </body> (full-screen overlay canvas) -->
+<canvas id="coinRainCanvas" 
+        style="
+          position: fixed;
+          top: 0; left: 0; width: 100vw; height: 100vh;
+          pointer-events: none; z-index: 9999;
+          display: none;
+          background: radial-gradient(circle at 50% 20%, rgba(255,215,0,0.1) 0%, transparent 70%);
+        ">
+</canvas>
+<body>
+
+<div class="casino">
+  <h1>Cat Casino</h1>
+  <div class="balance">Coins: <span id="coins">1000</span></div>
+
+  <!-- ADD THIS INSIDE .casino, RIGHT AFTER .balance -->
+<div class="jackpot-display">
+  CATNIP JACKPOT: <span id="jackpot">1000</span> coins
+</div>
+
+    <div class="slot-container" id="slot"></div>
+
+  <!-- PAYLINES OVERLAY  -->
+  <div id="payLines">
+    <div class="line line1" id="line1"></div>
+    <div class="line line2" id="line2"></div>
+    <div class="line line3" id="line3"></div>
+    <div class="line line4" id="line4"></div>
+    <div class="line line5" id="line5"></div>
+  </div>
+
+    <!-- <div id="slot"></div> -->
+  <div id="buttons">
+    <button id="showLines" style="padding:10px 30px; font-size:18px;">
+        Show / Hide Paylines
+    </button>
+    <button id="spin">
+        SPIN - 10 coins
+    </button>
+  </div>
+  
+  <div class="message" id="message">Good luck!</div>
+
+  <!-- PAYTABLE BUTTON & MODAL -->
+<button id="paytableBtn" class="glow-btn">PAYTABLE</button>
+
+<div id="paytableModal" class="modal">
+  <div class="modal-content">
+    <span class="close">X</span>
+    <h2 style="font-family:'Arcade';color:var(--space0);text-align:center;margin:0 0 20px;">
+      PAYTABLE - 5 LINES
+    </h2>
+
+    <table class="paytable">
+      <thead>
+        <tr>
+          <th>SYMBOL</th>
+          <th>5x</th>
+          <th>4x</th>
+          <th>3x</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><img src="/images/toys/enemy1.png" alt="enemy1"> ENEMY1</td>   <td>1000</td><td>200</td><td>50</td></tr>
+        <tr><td><img src="/images/toys/zed.png" alt="zed"> ZED</td>           <td>800</td> <td>150</td><td>40</td></tr>
+        <tr><td><img src="/images/toys/pluto.png" alt="pluto"> PLUTO</td>     <td>600</td> <td>120</td><td>35</td></tr>
+        <tr><td><img src="/images/toys/bullet.png" alt="bullet"> BULLET</td> <td>500</td> <td>100</td><td>30</td></tr>
+        <tr><td><img src="/images/toys/ninja.png" alt="ninja"> NINJA</td>     <td>400</td> <td>80</td> <td>25</td></tr>
+        <tr><td><img src="/images/toys/jinx2.png" alt="jinx2"> JINX2</td>     <td>300</td> <td>60</td> <td>20</td></tr>
+        <tr><td><img src="/images/toys/jinx.png" alt="jinx"> JINX</td>       <td>250</td> <td>50</td> <td>15</td></tr>
+        <tr><td><img src="/images/toys/beans.png" alt="beans"> BEANS</td>   <td>200</td> <td>40</td> <td>12</td></tr>
+        <tr><td><img src="/images/toys/ball.png" alt="ball"> BALL (Free Spins)</td>
+            <td colspan="3" style="color:gold;text-align:center;">3=20 + 10 FS <br> 4=50 + 15 FS <br> 5=100 + 25 FS</td></tr>
+        <tr><td><img src="/images/toys/goal.png" alt="goal"> GOAL (Wild)</td>
+            <td colspan="3" style="color:gold;text-align:center;">Substitutes for all symbols except BALL<br>5 Wilds = 1500 coins!</td></tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:20px;text-align:center;color:var(--space1);font-size:0.9em;">
+      All wins x2 during Free Spins • 5 Paylines • Bet: 10 coins
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+// YOUR 9 CAT IMAGES
+const catImages = [
+  "/images/toys/goal.png", // WILD
+  "/images/toys/ball.png", // SCATTER
+  "/images/toys/enemy1.png",
+  "/images/toys/ninja.png",
+  "/images/toys/jinx2.png",
+  "/images/toys/beans.png",
+  "/images/toys/enemy2.png",
+  "/images/toys/pluto.png",
+  "/images/toys/zed.png",
+  "/images/toys/enemy3.png"
+];
+
+// ──────── SYMBOL RARITY & PAYTABLE (5-of-a-kind → 3-of-a-kind) ────────
+const PAYTABLE = {
+  // filename.png : [5x, 4x, 3x] payout in coins
+  "enemy1.png": [1000, 200, 50],   // SUPER RARE – the final boss cat
+  "zed.png":    [800,  150, 40],   // Very rare
+  "pluto.png":  [600,  120, 35],
+  "enemy2.png": [500,  100, 30],
+  "ninja.png":  [400,   80, 25],
+  "jinx2.png":  [300,   60, 20],
+  "enemy3.png": [250,   50, 15],   // still good but more common
+  "beans.png":  [200,   40, 12],
+  "ball.png":   [150,   30, 10],   // scatter – but also pays on lines
+  "goal.png":   [0,     0,   0]    // WILD – never pays by itself
+};
+
+// ──────── ADD THIS RIGHT AFTER YOUR PAYTABLE ────────
+const SYMBOL_WEIGHTS = {
+  "enemy1.png": 10000,   // Ultra rare = low weight
+  "zed.png":    2,
+  "pluto.png":  3,
+  "enemy2.png": 4,
+  "ninja.png":  5,
+  "jinx2.png":  6,
+  "enemy3.png": 8,
+  "beans.png":  9,
+  "ball.png":   2,   // Scatter – medium
+  "goal.png":   5    // Wild – most common!
+};
+
+// Weighted random symbol picker (rarity-aware!)
+function pickRandomSymbol() {
+  const filenames = Object.keys(SYMBOL_WEIGHTS);
+  const totalWeight = filenames.reduce((sum, name) => sum + SYMBOL_WEIGHTS[name], 0);
+  let rand = Math.random() * totalWeight;
+
+  for (const filename of filenames) {
+    rand -= SYMBOL_WEIGHTS[filename];
+    if (rand <= 0) {
+      // Find matching image path
+      return catImages.find(path => getFilename(path) === filename) || catImages[0];
+    }
+  }
+  return catImages[0]; // Failsafe
+}
+
+// Default for any symbol not listed above (safety net)
+const DEFAULT_PAYOUT = [100, 25, 8];
+
+const WILD_FILENAME     = "goal.png";     // ← your wild
+const SCATTER_FILENAME  = "jinx2.png";     // ← your scatter
+
+// Helper: extracts just the filename from any full URL
+// ──────── SUPER-ROBUST FILENAME HELPER ────────
+function getFilename(src) {
+  // Safety first – if anything weird happens, return empty string
+  if (!src || typeof src !== "string") return "";
+
+  // Extract just the filename (works with full URLs, relative paths, query strings, etc.)
+  const parts = src.split(/[\\/]/);           // split on / or \
+  let filename = parts[parts.length - 1];     // last part
+  filename = filename.split('?')[0];        // remove query string or hash
+  return filename;
+}
+
+function isWild(src)     { return getFilename(src) === "goal.png"; }
+function isScatter(src)  { return getFilename(src) === "ball.png"; }
+
+// ADD THIS GLOBAL VARIABLE right after `let coins = 1000;`
+let freeSpinsToPlay = 0;
+
+const REEL_LENGTH = 60;           // length of one reel strip
+// === DYNAMIC SYMBOL HEIGHT – ALWAYS CORRECT ===
+// This reads the actual rendered size of any symbol on the page
+function getSymbolHeight() {
+  const anySymbol = document.querySelector(".symbol");
+  if (anySymbol) {
+    return anySymbol.getBoundingClientRect().height;
+  }
+  // Fallback values in case DOM isn't ready yet
+  if (window.innerWidth <= 480) return 84;
+  if (window.innerWidth <= 920) return 100;
+  return 150;
+}
+
+// We'll store the current height here so the spin code always uses the correct value
+let SYMBOL_HEIGHT = getSymbolHeight();
+
+// Update it on every resize (mobile rotate, desktop resize, etc.)
+window.addEventListener("resize", () => {
+  SYMBOL_HEIGHT = getSymbolHeight();
+});
+
+const slot = document.getElementById("slot");
+const strips = [];                // current reel strips
+let coins = 1000;
+const bet = 10;
+
+document.getElementById("coins").textContent = coins;
+
+// ──────── PROGRESSIVE JACKPOT ────────
+let jackpot = parseInt(localStorage.getItem('catSlotJackpot')) || 1000;
+const jackpotSeed = 1000;
+const jackpotIncrement = 1; // +1 coin per spin
+
+function updateJackpotDisplay() {
+  document.getElementById('jackpot').textContent = jackpot.toLocaleString();
+  localStorage.setItem('catSlotJackpot', jackpot.toString());
+}
+
+// Load on page start
+updateJackpotDisplay();
+
+// Build 5 empty reels
+for (let i = 0; i < 5; i++) {
+  const reel = document.createElement("div");
+  reel.className = "reel";
+  const strip = document.createElement("div");
+  strip.className = "strip";
+  reel.appendChild(strip);
+  slot.appendChild(reel);
+  strips.push(strip);
+}
+
+// Generate a completely random reel strip of 60 symbols
+// Generate a rarity-weighted reel strip
+function generateRandomStrip() {
+  const strip = document.createElement("div");
+  strip.className = "strip";
+  for (let i = 0; i < REEL_LENGTH; i++) {
+    const img = document.createElement("img");
+    img.className = "symbol";
+    img.src = pickRandomSymbol();  // ← WEIGHTED!
+    strip.appendChild(img);
+  }
+  return strip;
+}
+
+// Start with fresh random strips
+strips.forEach((old, i) => {
+  const newStrip = generateRandomStrip();
+  old.parentNode.replaceChild(newStrip, old);
+  strips[i] = newStrip;
+});
+
+// === COIN RAIN ON BIG WINS ===
+const canvas = document.getElementById('coinRainCanvas');
+const ctx = canvas.getContext('2d');
+
+let animationId = null;
+let coinss = [];
+
+// Resize canvas to full screen
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+// Coin particle class
+class Coin {
+  constructor(x, winAmount) {
+    this.x = x;
+    this.y = -50 - Math.random() * 50;
+    this.vy = 2 + Math.random() * 4;
+    this.vx = (Math.random() - 0.5) * 2;
+    this.size = 12 + Math.random() * 8 + (Math.min(winAmount,1000) / 100);
+    this.rotation = Math.random() * Math.PI * 2;
+    this.rotSpeed = (Math.random() - 0.5) * 0.1;
+    this.life = 10;
+    this.decay = 0.98 + Math.random() * 0.01;
+    this.sparkle = Math.random() * Math.PI * 2;
+  }
+
+  update() {
+    this.y += this.vy;
+    this.x += this.vx;
+    this.rotation += this.rotSpeed;
+    this.sparkle += 0.3;
+    this.life *= this.decay;
+
+    // Bounce near bottom
+    if (this.y > canvas.height - 100) {
+      this.vy *= -0.7;
+      this.y = canvas.height - 100;
+      this.vx *= 0.95;
+    }
+
+    // Side bounce
+    if (this.x < 20 || this.x > canvas.width - 20) {
+      this.vx *= -0.8;
+      this.x = Math.max(20, Math.min(canvas.width - 20, this.x));
+    }
+  }
+
+  draw() {
+    ctx.save();
+    ctx.translate(this.x, this.y);
+    ctx.rotate(this.rotation);
+    ctx.globalAlpha = this.life;
+
+    // Shiny gold coin
+    const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, this.size);
+    grad.addColorStop(0, `rgba(255, 215, 0, ${this.life})`);
+    grad.addColorStop(0.6, `rgba(218, 165, 32, ${this.life * 0.8})`);
+    grad.addColorStop(1, `rgba(139, 69, 19, ${this.life * 0.4})`);
+
+    ctx.fillStyle = grad;
+    ctx.shadowColor = 'gold';
+    ctx.shadowBlur = 20 * this.life;
+    ctx.beginPath();
+    ctx.arc(0, 0, this.size, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Edge highlight
+    ctx.strokeStyle = `rgba(255, 255, 255, ${this.life * 0.6})`;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Sparkle
+    ctx.fillStyle = `hsla(${this.sparkle * 57}, 100%, 70%, ${this.life})`;
+    ctx.beginPath();
+    ctx.arc(this.size * 0.3, -this.size * 0.3, 3, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.restore();
+  }
+}
+
+// Start the magic coin rain!
+function startCoinRain(winAmount) {
+  coinss = [];
+  canvas.style.display = 'block';
+
+  // More coins = bigger win!
+  const numCoins = 50 + Math.floor(Math.min(winAmount,100) / 5);
+
+  for (let i = 0; i < numCoins; i++) {
+    coinss.push(new Coin(
+      Math.random() * canvas.width,
+      winAmount
+    ));
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    coinss.forEach(coin => {
+      coin.update();
+      coin.draw();
+    });
+
+    // Remove dead coins
+    coinss = coinss.filter(coin => coin.life > 0.01);
+
+    if (coinss.length > 0) {
+      animationId = requestAnimationFrame(animate);
+    } else {
+      canvas.style.display = 'none';
+    }
+  }
+
+  animate();
+
+  // Force stop after 5 seconds max
+  setTimeout(() => {
+    if (animationId) {
+      cancelAnimationFrame(animationId);
+      canvas.style.display = 'none';
+    }
+  }, 5000);
+}
+
+function getMiddleRowSymbols() {
+  return strips.map(strip => {
+    const symbols = strip.querySelectorAll(".symbol");
+    const offset = Math.abs(parseFloat(strip.dataset.offset || 0));
+    const idx = Math.floor(offset / SYMBOL_HEIGHT) % REEL_LENGTH;
+    return symbols[idx].src;
+  });
+}
+
+// ──────────────────────────────
+// 5 CLASSIC PAYLINES
+// ──────────────────────────────
+const paylines = [
+  [0, 0, 0, 0, 0], // Line 1 – top row
+  [1, 1, 1, 1, 1], // Line 2 – middle row
+  [2, 2, 2, 2, 2], // Line 3 – bottom row
+  [0, 1, 2, 1, 0], // Line 4 – V shape
+  [2, 1, 0, 1, 2]  // Line 5 – ^ shape
+];
+
+// Returns a 3×5 grid [row][column] of image URLs
+function getGrid() {
+  const grid = [[], [], []]; // 3 rows
+
+  strips.forEach((strip, col) => {
+    const symbols = strip.querySelectorAll(".symbol");
+    const offset = Math.abs(parseFloat(strip.dataset.offset || 0));
+    const startIdx = Math.floor(offset / SYMBOL_HEIGHT) % REEL_LENGTH;
+
+    grid[0].push(symbols[(startIdx + 0) % REEL_LENGTH].src); // top row
+    grid[1].push(symbols[(startIdx + 1) % REEL_LENGTH].src); // middle
+    grid[2].push(symbols[(startIdx + 2) % REEL_LENGTH].src); // bottom
+  });
+
+  return grid;
+}
+
+// ADD THESE HELPER FUNCTIONS anywhere before `calculateWin()`:
+function isMatchingSequence(lineSymbols, start, length) {
+  let baseSymbol = null;
+  for (let i = 0; i < length; i++) {
+    const sym = lineSymbols[start + i];
+    if (sym !== WILD_SRC) {
+      if (baseSymbol === null) {
+        baseSymbol = sym;
+      } else if (sym !== baseSymbol) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+// ──────── FIXED: PROPER LEFT-TO-RIGHT WILD LOGIC ────────
+function getLineWin(lineSymbols) {
+  let matchLength = 0;
+  let targetSymbol = null;   // full URL of the symbol we're matching
+
+  for (let i = 0; i < 5; i++) {
+    const current = lineSymbols[i];
+
+    if (isWild(current)) {
+      matchLength++;
+      continue;
+    }
+
+    if (targetSymbol === null) {
+      targetSymbol = current;
+      matchLength++;
+      continue;
+    }
+
+    if (current === targetSymbol) {
+      matchLength++;
+      continue;
+    }
+
+    break; // non-matching non-wild → end streak
+  }
+
+  if (matchLength < 3) return 0;
+
+  // Get payout for the actual symbol (not wild)
+  const filename = getFilename(targetSymbol || "");
+  const payoutArray = PAYTABLE[filename] || DEFAULT_PAYOUT;
+
+  // Special case: 3+ WILDS on a line = big bonus (even if no targetSymbol)
+  if (matchLength >= 3 && targetSymbol === null) {
+    return matchLength === 5 ? 1500 : matchLength === 4 ? 400 : 100;
+  }
+
+  // Return correct payout based on match length
+  return payoutArray[5 - matchLength]; // index 0 = 5x, 1 = 4x, 2 = 3x
+}
+
+// Calculates total win and which lines won
+// REPLACE your ENTIRE `calculateWin()` function with this upgraded version:
+// ──────── FULLY INTEGRATED CALCULATEWIN() WITH JACKPOT ────────
+function calculateWin() {
+  const grid = getGrid(); // 3x5 grid [row][col]
+  let lineWin = 0;
+  const winningLines = [];
+
+  // Line wins (unchanged)
+  paylines.forEach((pattern, lineIdx) => {
+    const lineSymbols = [];
+    for (let col = 0; col < 5; col++) {
+      lineSymbols[col] = grid[pattern[col]][col];
+    }
+    const thisWin = getLineWin(lineSymbols);
+    if (thisWin > 0) {
+      lineWin += thisWin;
+      winningLines.push(lineIdx + 1);
+    }
+  });
+
+  // Scatter wins (unchanged)
+  let scatterCount = 0;
+  for (let row = 0; row < 3; row++) {
+    for (let col = 0; col < 5; col++) {
+      if (isScatter(grid[row][col])) scatterCount++;
+    }
+  }
+  let scatterWin = 0;
+  let freeSpinsAwarded = 0;
+  switch (scatterCount) {
+    case 3: scatterWin = 20; freeSpinsAwarded = 10; break;
+    case 4: scatterWin = 50; freeSpinsAwarded = 15; break;
+    case 5: scatterWin = 100; freeSpinsAwarded = 25; break;
+  }
+
+  // ──────── JACKPOT TRIGGER (NOW INSIDE calculateWin()!) ────────
+  let jackpotWin = 0;
+  // Triggers on 5 "enemy1.png" EXACTLY on MIDDLE LINE (line 2)
+  const middlePattern = paylines[1]; // [1,1,1,1,1]
+  const middleSymbols = middlePattern.map((row, col) => grid[row][col]);
+  const allEnemy1 = middleSymbols.every(sym => getFilename(sym) === 'enemy1.png');
+  if (allEnemy1) {
+    jackpotWin = jackpot; // FULL JACKPOT!
+  }
+
+  return { 
+    lineWin, 
+    scatterWin, 
+    freeSpinsAwarded, 
+    jackpotWin,  // ← NEW!
+    winningLines 
+  };
+}
+
+// REPLACE your ENTIRE spin button event listener with this:
+document.getElementById("spin").addEventListener("click", () => {
+  if (freeSpinsToPlay > 0 || document.getElementById("spin").disabled) {
+    return; // Ignore clicks during free spins or spinning
+  }
+  if (coins < bet) {
+    document.getElementById("message").textContent = "No coins? The cats are disappointed.";
+    return;
+  }
+  coins -= bet;
+  document.getElementById("coins").textContent = coins;
+  spinReels(false);
+});
+
+// ADD THIS NEW `spinReels()` FUNCTION anywhere in your <script> (e.g., after the click listener):
+function spinReels(isFreeSpin) {
+  const spinButton = document.getElementById("spin");
+  const messageEl = document.getElementById("message");
+  jackpot += jackpotIncrement;
+  updateJackpotDisplay();
+
+  spinButton.disabled = true;
+  messageEl.textContent = isFreeSpin ? "FREE SPIN!" : "SPINNING...";
+
+  jackpot += jackpotIncrement;
+    updateJackpotDisplay();
+
+  // 1. RNG stop positions (unchanged)
+  const stopPositions = strips.map(() => (REEL_LENGTH / 2) - 3 + Math.floor(Math.random() * REEL_LENGTH / 2));
+
+  // 2. Animate spin (unchanged)
+  strips.forEach((strip, i) => {
+    const fullSpins = 0 + Math.floor(Math.random() * 0);
+    const finalOffset = (fullSpins * REEL_LENGTH + stopPositions[i]) * SYMBOL_HEIGHT;
+    strip.style.transition = "none";
+    strip.style.transform = "translateY(0px)";
+    void strip.offsetHeight;
+    strip.style.transition = `transform ${3.2 + i * 0.35}s cubic-bezier(0.18, 0.38, 0.32, 1)`;
+    strip.style.transform = `translateY(-${finalOffset}px)`;
+    strip.dataset.offset = finalOffset.toString();
+  });
+
+  // 3. After animation: replace strips (unchanged)
+  setTimeout(() => {
+    strips.forEach((oldStrip, i) => {
+      const stopIdx = stopPositions[i];
+      const oldSymbols = oldStrip.querySelectorAll(".symbol");
+      const visible = [
+        oldSymbols[stopIdx % REEL_LENGTH].src,
+        oldSymbols[(stopIdx + 1) % REEL_LENGTH].src,
+        oldSymbols[(stopIdx + 2) % REEL_LENGTH].src
+      ];
+      const newStrip = document.createElement("div");
+      newStrip.className = "strip";
+      for (let j = 0; j < 3; j++) {
+        const img = document.createElement("img");
+        img.className = "symbol";
+        img.src = visible[j];
+        newStrip.appendChild(img);
+      }
+     for (let j = 3; j < REEL_LENGTH; j++) {
+        const img = document.createElement("img");
+        img.className = "symbol";
+        img.src = pickRandomSymbol();  // ← WEIGHTED!
+        newStrip.appendChild(img);
+      }
+      oldStrip.parentNode.replaceChild(newStrip, oldStrip);
+      strips[i] = newStrip;
+      newStrip.dataset.offset = "0";
+    });
+
+    // 4. EVALUATE WINS (UPGRADED!)
+    const multiplier = isFreeSpin ? 2 : 1;
+    const { lineWin, scatterWin, freeSpinsAwarded, jackpotWin, winningLines } = calculateWin();
+    const totalWin = (lineWin + scatterWin) * multiplier + jackpotWin;  // ← ADDS JACKPOT!
+
+    // Hide lines
+    document.querySelectorAll(".line").forEach((el) => el.classList.remove("show"));
+
+    let msg = "";
+    if (totalWin > 0) {
+      coins += totalWin;
+      document.getElementById("coins").textContent = coins;
+
+    // JACKPOT SPECIAL EFFECTS
+    if (jackpotWin > 0) {
+        jackpot = jackpotSeed; // RESET TO 1000!
+        updateJackpotDisplay();
+        document.querySelector('.jackpot-display').classList.add('jackpot-win');
+        setTimeout(() => document.querySelector('.jackpot-display').classList.remove('jackpot-win'), 2000);
+    }
+
+      msg = `YOU WON ${totalWin} COINS`;
+      if (winningLines.length > 0) {
+        msg += ` on line${winningLines.length > 1 ? "s" : ""} ${winningLines.join(", ")}`;
+      }
+      if (scatterWin > 0) msg += ` + ${scatterWin} SCATTER`;
+      messageEl.innerHTML = msg;
+      messageEl.classList.add("jackpot");
+      startCoinRain(totalWin); // Your coin rain!
+      // Flash winning lines
+      winningLines.forEach((n) => {
+        const lineEl = document.getElementById(`line${n}`);
+        if (lineEl) {
+          lineEl.classList.add("show");
+          setTimeout(() => lineEl.classList.remove("show"), 4000);
+        }
+      });
+    } else {
+      messageEl.textContent = isFreeSpin ? "FREE SPIN!" : "The cats kept your coins…";
+      messageEl.classList.remove("jackpot");
+    }
+
+    // FREE SPINS TRIGGER & CHAIN!
+    if (freeSpinsAwarded > 0) {
+      freeSpinsToPlay += freeSpinsAwarded;
+      const bonusMsg = messageEl.innerHTML;
+      messageEl.innerHTML = bonusMsg + `<br><span style="color:gold;font-size:1.4em;">+${freeSpinsAwarded} FREE SPINS!</span>`;
+    }
+
+    // Auto-chain free spins (button stays disabled until ALL done)
+    if (freeSpinsToPlay > 0) {
+      freeSpinsToPlay--;
+      setTimeout(() => spinReels(true), 3500);
+    } else {
+      spinButton.disabled = false;
+    }
+  }, 4500);
+}
+
+// Show/Hide paylines button
+document.getElementById("showLines").addEventListener("click", () => {
+  document.querySelectorAll('.line').forEach((el, i) => {
+    el.classList.toggle('show');
+  });
+});
+
+// PAYTABLE MODAL
+const modal = document.getElementById("paytableModal");
+const btn = document.getElementById("paytableBtn");
+const span = document.getElementsByClassName("close")[0];
+
+btn.onclick = () => modal.style.display = "block";
+span.onclick = () => modal.style.display = "none";
+window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
+</script>
+</body>
+</html>
