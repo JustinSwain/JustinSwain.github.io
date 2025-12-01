@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/style/style.css">
-<title>Cat Casino</title>
+<link rel="icon" href="/images/spacecat.png">
+<title>Justin Swain - Cat Casino</title>
 <style>
   body {
     margin: 0;
@@ -13,7 +14,7 @@
     background: var(--space7) var(--body-bg-image) repeat;
     color: white;
   }
-
+  /* CASINO CONTAINER */
   .casino {
     width: 90%;
     max-width: 1000px;
@@ -35,7 +36,7 @@
     text-shadow: 0 0 15px var(--space2), 0 0 30px var(--space1);
     letter-spacing: 4px;
   }
-
+  /* BALANCE DISPLAY */
   .balance {
     font-family: 'Dos', monospace;
     font-size: 2rem;
@@ -72,7 +73,7 @@
     background: linear-gradient(to bottom, #000816, #001248);
     box-shadow: 0 0 20px var(--space2), inset 0 0 20px #000;
   }
-
+  /* SYMBOLS */
   .strip {
     display: flex;
     flex-direction: column;
@@ -85,7 +86,7 @@
     image-rendering: pixelated; /* retro crispness */
     border-bottom: 3px solid var(--space4);
   }
-
+  /* BUTTONS */
   #buttons {
     align-items: center; margin: 475px 10px 10px;
   }
@@ -121,7 +122,7 @@
     cursor: not-allowed;
     box-shadow: none;
   }
-
+    /* MESSAGE DISPLAY */
   .message {
     font-family: 'Arcade', sans-serif;
     font-size: 2.2rem;
@@ -141,7 +142,7 @@
     to   { text-shadow: 0 0 40px gold, 0 0 80px red; }
   }
 
-  /* ─────── PAYLINES OVERLAY ─────── */
+  /* ------- PAYLINES OVERLAY ------- */
   #payLines {
     position: relative; 
     margin: -450px auto 0 50%; 
@@ -163,18 +164,48 @@
     max-width: 170%;
     height: 450px;
     opacity: 0;
-    transition: opacity 0.7s;
+    transition: opacity 0.9s;
     background: linear-gradient(90deg, gold 40%, gold 50%, gold 60%);
     mix-blend-mode: screen;
     box-shadow: 0 0 30px gold;
   }
   .line.show { opacity: 0.7; }
-
-.line1 { clip-path: polygon(0 10%, 100% 10%, 100% 15%, 0 15%); transform: translateX(-50%); background: red;}     
-.line2 { clip-path: polygon(0 40%, 100% 40%, 100% 45%, 0 45%); transform: translateX(-50%); background: teal;}  
-.line3 { clip-path: polygon(0 75%, 100% 75%, 100% 80%, 0 80%); transform: translateX(-50%); background: purple;} 
-.line4 { clip-path: polygon(0 0%, 50% 85%, 100% 0%, 100% 5%, 50% 90%, 0 5%); transform: translateX(-50%); background: green;} 
-.line5 { clip-path: polygon(0 90%, 50% 5%, 100% 90%, 100% 85%, 50% 0%, 0 85%); transform: translateX(-50%); background: gold;}
+  /* PAYLINE SHAPES */
+    .line1 { 
+        clip-path: polygon(0 10%, 100% 10%, 100% 15%, 0 15%); 
+        transform: translateX(-50%); 
+        background: red;
+    }     
+    .line2 { 
+        clip-path: polygon(0 42%, 100% 42%, 100% 47%, 0 47%); 
+        transform: translateX(-50%); 
+        background: teal;
+    }  
+    .line3 { 
+        clip-path: polygon(0 75%, 100% 75%, 100% 80%, 0 80%); 
+        transform: translateX(-50%); 
+        background: purple;
+    } 
+    .line4 { 
+        clip-path: polygon(0 0%, 50% 85%, 100% 0%, 100% 5%, 50% 90%, 0 5%); 
+        transform: translateX(-50%); 
+        background: green;
+    } 
+    .line5 { 
+        clip-path: polygon(0 90%, 50% 5%, 100% 90%, 100% 85%, 50% 0%, 0 85%); 
+        transform: translateX(-50%); 
+        background: gold;
+    }
+    .line6 { 
+        clip-path: polygon(0 10%, 25% 10%, 75% 75%, 100% 75%, 100% 78%, 75% 78%, 25% 13%, 0% 13%); 
+        transform: translateX(-50%); 
+        background: orange;
+    }
+    .line7 { 
+        clip-path: polygon(0 77%, 25% 77%, 75% 12%, 100% 12%, 100% 15%, 75% 15%, 25% 80%, 0% 80%); 
+        transform: translateX(-50%); 
+        background: cyan;
+    }
 
 /* PAYTABLE BUTTON */
 #paytableBtn {
@@ -230,7 +261,7 @@
   right: 25px;
 }
 .close:hover { color: gold; }
-
+/* JACKPOT DISPLAY */
 .jackpot-display {
   font-family: 'Arcade', sans-serif;
   font-size: 2.2rem;
@@ -261,8 +292,170 @@
   50%  { transform: scale(1.3); }
   100% { transform: scale(1); }
 }
+/* PRNG SELECTOR */
+.prng-selector {
+  margin: 15px;
+  font-family: 'Dos', monospace;
+  color: var(--space0);
+  font-size: 1.1rem;
+}
+.prng-selector select {
+  background: var(--space7);
+  color: var(--space0);
+  border: 2px solid var(--space1);
+  padding: 8px;
+  border-radius: 6px;
+  font-family: 'Dos', monospace;
+}
+.prng-selector select option {
+  background: var(--space6);
+}
+/* RNG STATS PANEL */
+.rng-stats-panel {
+  margin: 25px auto;
+  padding: 20px;
+  background: #000816;
+  border: 3px solid var(--space1);
+  border-radius: 14px;
+  max-width: 700px;
+  font-family: 'Dos', monospace;
+  color: var(--space0);
+  box-shadow: 0 0 30px var(--space2), inset 0 0 20px #001;
+}
 
-/* PAYTABLE TABLE */
+.stats-title {
+  font-family: 'Arcade', sans-serif;
+  font-size: 1.8rem;
+  color: gold;
+  text-align: center;
+  margin-bottom: 15px;
+  text-shadow: 0 0 15px gold;
+  letter-spacing: 3px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  font-size: 1.1rem;
+}
+
+.stats-grid > div {
+  background: rgba(255,255,255,0.05);
+  padding: 10px;
+  border-radius: 8px;
+  border-left: 4px solid var(--space3);
+}
+
+.label {
+  color: var(--space1);
+  font-weight: bold;
+}
+
+#bias, #runs, #serial {
+  /* color: #0f0; */
+  font-weight: bold;
+}
+
+/* Color code statistical health */
+.good   { color: #0f0; }
+.warn   { color: #ff0; }
+.bad    { color: #f66; }
+
+/* TOOLTIPS  */
+.stat-item {
+  position: relative;
+  cursor: help;
+  padding: 10px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  border-left: 4px solid var(--space3);
+  transition: all 0.3s;
+}
+
+.stat-item:hover {
+  background: rgba(255,255,255,0.12);
+  border-left-color: var(--space1);
+  transform: translateY(-2px);
+}
+
+/* Tooltip bubble */
+.stat-item::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: translateY(10px);
+  background: var(--space7);
+  color: var(--space0);
+  padding: 12px 16px;
+  border: 2px solid var(--space1);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-family: 'Dos', monospace;
+  white-space: wrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.4s ease;
+  z-index: 100;
+  box-shadow: 0 0 20px var(--space2);
+  text-align: center;
+  max-width: 300px;
+  line-height: 1.4;
+}
+
+.stat-item:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Little arrow under tooltip */
+.stat-item::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 8px solid transparent;
+  border-top-color: var(--space1);
+  opacity: 0;
+  transition: all 0.4s;
+  overflow-wrap: normal;
+}
+
+.stat-item:hover::before {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-8px);
+}
+
+.stat-item:hover::before {
+  opacity: 1;
+}
+
+#resetStatsBtn {
+  font-family: 'Arcade', sans-serif;
+  font-size: 1.3rem;
+  background: #300;
+  border: 2px solid #f00;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 0 20px #800, inset 0 0 15px #500;
+  transition: all 0.3s;
+}
+
+#resetStatsBtn:hover {
+  background: #500;
+  color: #fff;
+  box-shadow: 0 0 35px #f00, inset 0 0 20px #900;
+  transform: scale(1.05);
+}
+
+#resetStatsBtn:active {
+  transform: scale(0.95);
+}
+
+/* PAYTABLE TABLE TABLE TABLE*/
 .paytable {
   width: 100%;
   border-collapse: collapse;
@@ -291,14 +484,7 @@
   font-weight: bold;
 }
 
-/* Mobile */
-@media (max-width: 600px) {
-  .paytable img { width: 40px; height: 40px; }
-  .paytable { font-size: 0.95rem; }
-  #paytableBtn { width: 90%; margin: 15px auto; display: block; }
-}
-
-/* ─────────────────────────────── MOBILE PERFECTION ─────────────────────────────── */
+/* ------------------------------- MOBILE ------------------------------- */
 @media (max-width: 920px) {
   .casino {
     width: 98%;
@@ -335,7 +521,7 @@
   #buttons {
     margin: 310px 10px 10px;
   }
-  /* Paylines still cover perfectly */
+
   #payLines {
     position: relative; 
     margin: -300px auto 0 50%; 
@@ -357,6 +543,13 @@
     font-size: 1.8rem;
     min-height: 60px;
   }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .paytable img { width: 40px; height: 40px; }
+  .paytable { font-size: 0.95rem; }
+  #paytableBtn { width: 90%; margin: 15px auto; display: block; }
 }
 
 @media (max-width: 480px) {
@@ -391,10 +584,6 @@
     height: 180px;
   }
 
-  /* .line1 { clip-path: polygon(0 36px, 100% 36px, 100% 48px, 0 48px); }
-  .line2 { clip-path: polygon(0 118px, 100% 118px, 100% 130px, 0 130px); }
-  .line3 { clip-path: polygon(0 200px, 100% 200px, 100% 212px, 0 212px); } */
-
   button, #showLines {
     font-size: 1.3rem;
     padding: 12px 24px;
@@ -408,16 +597,14 @@
   }
 }
 
-/* Make touch way for mobile keyboards */
 @media (max-height: 600px) and (orientation: landscape) {
   .casino { padding: 10px; }
   h1 { font-size: 2rem; }
 }
-
 </style>
 </head>
 
-<!-- ADD THIS RIGHT BEFORE </body> (full-screen overlay canvas) -->
+<!-- Coin Rain -->
 <canvas id="coinRainCanvas" 
         style="
           position: fixed;
@@ -433,43 +620,46 @@
   <h1>Cat Casino</h1>
   <div class="balance">Coins: <span id="coins">1000</span></div>
 
-  <!-- ADD THIS INSIDE .casino, RIGHT AFTER .balance -->
-<div class="jackpot-display">
-  CATNIP JACKPOT: <span id="jackpot">1000</span> coins
-</div>
+    <!-- Jackpot Display -->
+    <div class="jackpot-display">
+        CATNIP JACKPOT: <span id="jackpot">1000</span> coins
+    </div>
 
     <div class="slot-container" id="slot"></div>
 
-  <!-- PAYLINES OVERLAY  -->
-  <div id="payLines">
-    <div class="line line1" id="line1"></div>
-    <div class="line line2" id="line2"></div>
-    <div class="line line3" id="line3"></div>
-    <div class="line line4" id="line4"></div>
-    <div class="line line5" id="line5"></div>
-  </div>
+    <!-- PAYLINES  -->
+    <div id="payLines">
+        <div class="line line1" id="line1"></div>
+        <div class="line line2" id="line2"></div>
+        <div class="line line3" id="line3"></div>
+        <div class="line line4" id="line4"></div>
+        <div class="line line5" id="line5"></div>
+        <div class="line line6" id="line6"></div>
+        <div class="line line7" id="line7"></div>
+    </div>
 
-    <!-- <div id="slot"></div> -->
-  <div id="buttons">
-    <button id="showLines" style="padding:10px 30px; font-size:18px;">
-        Show / Hide Paylines
-    </button>
-    <button id="spin">
-        SPIN - 10 coins
-    </button>
-  </div>
+    <!-- Game Buttons -->
+    <div id="buttons">
+        <button id="showLines" style="padding:10px 30px; font-size:18px;">
+            Show / Hide Paylines
+        </button>
+        <button id="spin">
+            SPIN - 10 coins
+        </button>
+    </div>
   
-  <div class="message" id="message">Good luck!</div>
+    <div class="message" id="message">Good luck!</div>
 
-  <!-- PAYTABLE BUTTON & MODAL -->
-<button id="paytableBtn" class="glow-btn">PAYTABLE</button>
+    <!-- PAYTABLE BUTTON -->
+    <button id="paytableBtn" class="glow-btn">PAYTABLE</button>
 
+    <!-- PAYTABLE TABLE TABLE TABLE -->
 <div id="paytableModal" class="modal">
-  <div class="modal-content">
-    <span class="close">X</span>
-    <h2 style="font-family:'Arcade';color:var(--space0);text-align:center;margin:0 0 20px;">
-      PAYTABLE
-    </h2>
+    <div class="modal-content">
+        <span class="close">X</span>
+        <h2 style="font-family:'Arcade';color:var(--space0);text-align:center;margin:0 0 20px;">
+            PAYTABLE
+        </h2>
 
     <table class="paytable">
       <thead>
@@ -497,17 +687,67 @@
     </table>
 
     <div style="margin-top:20px;text-align:center;color:var(--space1);font-size:0.9em;">
-      All wins x2 during Free Spins <br> 5 Paylines <br> Bet = 10 coins
+        All wins x2 during Free Spins <br> 5 Paylines <br> Bet = 10 coins
     </div>
+  </div>
+</div>
+
+<!-- PRNG SELECTION MENU -->
+<div class="prng-selector">
+  <label for="prng">Pseudo Random Number Generator</label>
+  <br>
+  <select id="prng">
+    <option value="math">Math.random() (Default)</option>
+    <option value="lfsr">LFSR (32-bit)</option>
+    <option value="xorshift32">XorShift32</option>
+    <option value="chacha8">ChaCha8</option>
+  </select>
+</div>
+
+<!-- RNG STATS PANEL -->
+<div class="rng-stats-panel">
+  <div class="stats-title">REAL-TIME PRNG ANALYSIS</div>
+  <div class="stats-grid">
+    <div class="stat-item" data-tip="Total number of random bits used by the slot machine.">
+      <span class="label">Bits Generated:</span> <span id="bitsCount">0</span>
+    </div>
+
+    <div class="stat-item" data-tip="The number of 1-bits divided by total bits. Close to 0.5 is good.">
+      <span class="label">Bias (p=1):</span> <span id="bias">0.50000</span>
+    </div>
+
+    <div class="stat-item" data-tip="Longest streak of 1-bits seen so far. Should be about log2(total bits).">
+      <span class="label">Longest run of 1s:</span> <span id="runs">0</span>
+    </div>
+
+    <div class="stat-item" data-tip="Serial Correlation: the correlation between successive 32-bit outputs. Close to 0 is good.">
+      <span class="label">Serial Corr.:</span> <span id="serial">—</span>
+    </div>
+
+    <div class="stat-item" data-tip="The symbol that appears most often.">
+      <span class="label">Most Common:</span> <span id="hotSymbol">—</span>
+    </div>
+
+    <div class="stat-item" data-tip="The symbol that appears least often.">
+      <span class="label">Least Common:</span> <span id="coldSymbol">—</span>
+    </div>
+
+    <div class="stat-item" data-tip="Current pseudorandom number generator being used by the slot machine. Switch in the dropdown above to test different algorithms.">
+      <span class="label">Current RNG:</span> <span id="currentRng">—</span>
+    </div>
+    <div class="stat-tem">
+        <button id="resetStatsBtn" style="padding:8px 20px; font-size:0.75rem; margin:0;">
+            RESET STATISTICS
+        </button>
   </div>
 </div>
 </div>
 
+<!-- SCRIPTS -->
 <script>
-// YOUR 9 CAT IMAGES
 const catImages = [
   "/images/toys/goal.png", // WILD
-  "/images/toys/ball.png", // SCATTER
+  "/images/toys/ball.png", // FREE SPINS
   "/images/toys/enemy1.png",
   "/images/toys/ninja.png",
   "/images/toys/jinx2.png",
@@ -518,40 +758,501 @@ const catImages = [
   "/images/toys/enemy3.png"
 ];
 
-// ──────── SYMBOL RARITY & PAYTABLE (5-of-a-kind → 3-of-a-kind) ────────
+// -------- SYMBOL PAYTABLE 5/4/3x --------
 const PAYTABLE = {
   // filename.png : [5x, 4x, 3x] payout in coins
-  "enemy3.png": [1000, 200, 50],   // SUPER RARE – the final boss cat
+  "enemy3.png": [1000, 200, 50],   // SUPER RARE
   "zed.png":    [800,  150, 40],   // Very rare
   "pluto.png":  [600,  120, 35],
   "enemy2.png": [500,  100, 30],
   "ninja.png":  [400,   80, 25],
   "jinx2.png":  [300,   60, 20],
-  "enemy1.png": [250,   50, 15],   // still good but more common
+  "enemy1.png": [250,   50, 15],   // common
   "beans.png":  [200,   40, 12],
   "ball.png":   [150,   30, 10],   // scatter – but also pays on lines
-  "goal.png":   [0,     0,   0]    // WILD – never pays by itself
+  "goal.png":   [0,     0,   0]    // WILD - never pays on its own
 };
 
-// ──────── ADD THIS RIGHT AFTER YOUR PAYTABLE ────────
+// -------- Random Weights --------
 const SYMBOL_WEIGHTS = {
-  "enemy1.png": 1,   // Ultra rare = low weight
-  "zed.png":    2,
-  "pluto.png":  3,
-  "enemy2.png": 4,
-  "ninja.png":  5,
-  "jinx2.png":  6,
-  "enemy3.png": 8,
-  "beans.png":  9,
-  "ball.png":   2,   // Scatter – medium
-  "goal.png":   5    // Wild – most common!
+  "enemy3.png": 3,   // Ultra rare = low weight
+  "zed.png":    4,
+  "pluto.png":  5,
+  "enemy2.png": 7,
+  "ninja.png":  10,
+  "jinx2.png":  13,
+  "enemy1.png": 16,
+  "beans.png":  20,
+  "ball.png":   3,   // Scatter – medium
+  "goal.png":   5    // Wild
 };
 
-// Weighted random symbol picker (rarity-aware!)
+// -------- PRNG MENU --------
+class RNG {
+  static instance = null;
+
+  constructor() {
+    // pick last-used PRNG or default
+    this.type = localStorage.getItem('selectedPRNG') || 'xorshift32';
+
+    // ChaCha internal buffer
+    this._chachaState = null;
+    this._chachaBlock = null;
+    this._chachaIndex = 16; // force initial refill
+
+    // seed based on time; you can pass an explicit seed later
+    const seed = (Date.now() ^ (performance.now() * 1000)) >>> 0;
+    this.init(this.type, seed);
+
+    if (typeof this.applySelector === 'function') {
+      this.applySelector();
+    }
+  }
+
+  /**
+   * Initialize / reinitialize the PRNG.
+   * @param {string} type - 'lfsr' | 'xorshift32' | 'chacha8' | 'math'
+   * @param {number} [seed] - 32-bit seed
+   */
+  init(type, seed) {
+    this.type = type;
+    const s = (seed >>> 0) || ((Date.now() ^ (Math.random() * 0xffffffff)) >>> 0) || 1;
+
+    switch (type) {
+      case 'lfsr':
+        // avoid all-zero lockup
+        this.state = s || 1;
+        break;
+
+      case 'xorshift32':
+        // xorshift32 cycles through all non-zero 32-bit states
+        this.state = s || 1;
+        break;
+
+      case 'chacha8':
+        this._initChaCha(s);
+        break;
+
+      default: // 'math' or unknown
+        this.state = null;
+        break;
+    }
+
+    // remember choice
+    localStorage.setItem('selectedPRNG', this.type);
+  }
+
+  /**
+   * Return a random float in (0,1).
+   */
+  random() {
+    switch (this.type) {
+      case 'lfsr':
+        return this._randLFSR();
+      case 'xorshift32':
+        return this._randXorshift32();
+      case 'chacha8':
+        return this._randChaCha8();
+      default:
+        // pure Math.random fallback 
+        const x = Math.random();
+        // push it away from 0 and 1
+        return (x * (1 - 2 ** -53)) + 2 ** -54;
+    }
+  }
+
+  // --------------------
+  // LFSR (32-bit Fibonacci)
+  // taps: [32, 30, 26, 25] -> bit offsets [0, 2, 6, 7]
+  // --------------------
+  _randLFSR() {
+    let x = this.state >>> 0;
+    const bit = (x ^ (x >>> 2) ^ (x >>> 6) ^ (x >>> 7)) & 1;
+    x = (x >>> 1) | (bit << 31);
+    this.state = x >>> 0;
+    // state never hits 0 if we seeded non-zero, so result is strictly in (0,1)
+    return this.state / 0x100000000;
+  }
+
+  // --------------------
+  // Xorshift32
+  // Classic Marsaglia xorshift with period 2^32-1
+  // --------------------
+  _randXorshift32() {
+    let x = this.state >>> 0;
+    if (x === 0) x = 1; // just in case
+
+    x ^= x << 13;
+    x >>>= 0;
+    x ^= x >>> 17;
+    x >>>= 0;
+    x ^= x << 5;
+    x >>>= 0;
+
+    this.state = x;
+
+    // x is non-zero 32-bit; map to (0,1)
+    return this._u32ToUnitOpen(x);
+  }
+
+  // Map a 32-bit unsigned int to (0,1)
+  _u32ToUnitOpen(u) {
+    // u is 1..2^32-1 ideally
+    // add 1 and divide by 2^32+1 to avoid 0 and 1 exactly
+    const num = (u + 1) >>> 0;
+    return num / 4294967297; // 2^32 + 1
+  }
+
+  // --------------------
+  // ChaCha8 PRNG
+  // --------------------
+
+  _initChaCha(seed) {
+    // ChaCha constants
+    const constWords = [
+      0x61707865, // "expa"
+      0x3320646e, // "nd 3"
+      0x79622d32, // "2-by"
+      0x6b206574  // "te k"
+    ];
+
+    this._chachaState = new Uint32Array(16);
+    this._chachaBlock = new Uint32Array(16);
+    this._chachaIndex = 16; // empty
+
+    // simple key/nonce derivation from seed
+    const k0 = seed >>> 0;
+    let k1 = seed ^ 0x9e3779b9;
+    k1 = (k1 ^ (k1 << 13)) >>> 0;
+    k1 = (k1 ^ (k1 >>> 17)) >>> 0;
+    k1 = (k1 ^ (k1 << 5)) >>> 0;
+
+    // Fill 8 key words with simple expansions
+    const key = new Uint32Array(8);
+    for (let i = 0; i < 8; i++) {
+      key[i] = (k0 + i * 0x9e3779b9) ^ (k1 >>> i);
+    }
+
+    const nonce0 = (seed ^ 0x12345678) >>> 0;
+    const nonce1 = (seed ^ 0xdeadbeef) >>> 0;
+    const nonce2 = (seed ^ 0x0badc0de) >>> 0;
+
+    // state layout: 4 const, 8 key, 1 counter, 3 nonce
+    const s = this._chachaState;
+    s[0] = constWords[0];
+    s[1] = constWords[1];
+    s[2] = constWords[2];
+    s[3] = constWords[3];
+
+    for (let i = 0; i < 8; i++) {
+      s[4 + i] = key[i];
+    }
+
+    s[12] = 0;          // counter
+    s[13] = nonce0;
+    s[14] = nonce1;
+    s[15] = nonce2;
+  }
+
+  _rotl32(x, n) {
+    x >>>= 0;
+    return ((x << n) | (x >>> (32 - n))) >>> 0;
+  }
+
+  _chachaQuarterRound(x, a, b, c, d) {
+    x[a] = (x[a] + x[b]) >>> 0;
+    x[d] ^= x[a]; x[d] = this._rotl32(x[d], 16);
+
+    x[c] = (x[c] + x[d]) >>> 0;
+    x[b] ^= x[c]; x[b] = this._rotl32(x[b], 12);
+
+    x[a] = (x[a] + x[b]) >>> 0;
+    x[d] ^= x[a]; x[d] = this._rotl32(x[d], 8);
+
+    x[c] = (x[c] + x[d]) >>> 0;
+    x[b] ^= x[c]; x[b] = this._rotl32(x[b], 7);
+  }
+
+  _chachaBlock8Rounds() {
+    const s = this._chachaState;
+    const x = this._chachaBlock;
+
+    // copy state
+    for (let i = 0; i < 16; i++) x[i] = s[i];
+
+    // 8 rounds = 4 column rounds + 4 diagonal rounds
+    for (let i = 0; i < 4; i++) {
+      // column rounds
+      this._chachaQuarterRound(x, 0, 4, 8, 12);
+      this._chachaQuarterRound(x, 1, 5, 9, 13);
+      this._chachaQuarterRound(x, 2, 6, 10, 14);
+      this._chachaQuarterRound(x, 3, 7, 11, 15);
+
+      // diagonal rounds
+      this._chachaQuarterRound(x, 0, 5, 10, 15);
+      this._chachaQuarterRound(x, 1, 6, 11, 12);
+      this._chachaQuarterRound(x, 2, 7, 8, 13);
+      this._chachaQuarterRound(x, 3, 4, 9, 14);
+    }
+
+    // add original state
+    for (let i = 0; i < 16; i++) {
+      x[i] = (x[i] + s[i]) >>> 0;
+    }
+
+    // increment counter
+    s[12] = (s[12] + 1) >>> 0;
+  }
+
+  _randChaCha8() {
+    if (this._chachaIndex >= 16) {
+      this._chachaBlock8Rounds();
+      this._chachaIndex = 0;
+    }
+    const word = this._chachaBlock[this._chachaIndex++];
+    return this._u32ToUnitOpen(word);
+  }
+
+  applySelector() {
+    const select = document.getElementById('prng');
+    select.value = this.type;
+    select.onchange = (e) => {
+      this.type = e.target.value;
+      localStorage.setItem('selectedPRNG', this.type);
+      this.init(this.type);
+      console.log(`Switched to ${this.type.toUpperCase()} RNG`);
+    };
+  }
+}
+
+// Global RNG instance 
+const rng = new RNG();
+
+const RNGStats = {
+  calls: 0,
+  bitCount: 0,
+  oneCount: 0,
+  currentRun: 0,
+  longestRunOnes: 0,
+  symbolCounts: {},
+
+  // serial correlation accumulators
+  prevWord: null,
+  pairCount: 0,
+  sumX: 0,
+  sumY: 0,
+  sumXX: 0,
+  sumYY: 0,
+  sumXY: 0,
+
+  init() {
+    const el = document.getElementById('currentRng');
+    if (el) {
+      el.textContent = rng.type.toUpperCase();
+    }
+    setInterval(() => this.updateDisplay(), 1500);
+  },
+
+  recordCall() {
+    this.calls++;
+    this.bitCount += 32; // each rng.random() treated as 32-bit word
+  },
+
+  recordSymbol(filename) {
+    this.symbolCounts[filename] = (this.symbolCounts[filename] || 0) + 1;
+  },
+
+  // Assumes rng.random() did u32 / 2^32 (or (u32+0.5)/2^32)
+  recordFloat(value) {
+    let u = Math.floor(value * 0x100000000);
+
+    if (u >= 0x100000000) {
+      u = 0xFFFFFFFF; // clamp if extremely close to 1.0
+    }
+    u >>>= 0;
+
+    // ---- bit statistics (bias + longest 1-run) ----
+    for (let i = 0; i < 32; i++) {
+      const bit = (u >>> (31 - i)) & 1;
+      if (bit === 1) {
+        this.oneCount++;
+        this.currentRun++;
+        if (this.currentRun > this.longestRunOnes) {
+          this.longestRunOnes = this.currentRun;
+        }
+      } else {
+        this.currentRun = 0;
+      }
+    }
+
+    // ---- serial correlation stats on word level ----
+    // normalize to [0,1] to keep sums numerically nice
+    const x = u / 0xFFFFFFFF;
+
+    if (this.prevWord !== null) {
+      const px = this.prevWord / 0xFFFFFFFF;
+      const py = x;
+
+      this.pairCount++;
+      this.sumX  += px;
+      this.sumY  += py;
+      this.sumXX += px * px;
+      this.sumYY += py * py;
+      this.sumXY += px * py;
+    }
+
+    this.prevWord = u;
+  },
+
+  updateDisplay() {
+    // Current RNG type
+    const rngEl = document.getElementById('currentRng');
+    if (rngEl) {
+      rngEl.textContent = rng.type.toUpperCase();
+    }
+
+    // Total bits (approx, in kbits)
+    const bitsEl = document.getElementById('bitsCount');
+    if (bitsEl) {
+      bitsEl.textContent = Math.floor(this.bitCount / 1000) + 'k';
+    }
+
+    // Bias toward 1s
+    const bias = this.bitCount > 0 ? this.oneCount / this.bitCount : 0.5;
+    const biasEl = document.getElementById('bias'); 
+    if (biasEl) {
+      biasEl.textContent = bias.toFixed(5);
+      biasEl.className =
+        Math.abs(bias - 0.5) < 0.005 ? 'good' :
+        Math.abs(bias - 0.5) < 0.02  ? 'warn' :
+                                       'bad';
+    }
+
+    // Longest run of 1s
+    const runsEl = document.getElementById('runs');
+    if (runsEl) {
+      runsEl.textContent = this.longestRunOnes;
+      runsEl.className =
+        this.longestRunOnes <= 12 ? 'good' :
+        this.longestRunOnes <= 20 ? 'warn' :
+                                    'bad';
+    }
+
+    // ---- Serial correlation between successive 32-bit outputs ----
+    let rho = 0;
+    if (this.pairCount > 1) {
+      const n = this.pairCount;
+      const num   = n * this.sumXY - this.sumX * this.sumY;
+      const denomX = n * this.sumXX - this.sumX * this.sumX;
+      const denomY = n * this.sumYY - this.sumY * this.sumY;
+      const denom = Math.sqrt(denomX * denomY);
+
+      if (denom > 0) {
+        rho = num / denom;
+      } else {
+        rho = 0;
+      }
+    }
+
+    const serialEl = document.getElementById('serial'); 
+    if (serialEl) {
+      serialEl.textContent = rho.toFixed(4);
+      const a = Math.abs(rho);
+      serialEl.className =
+        a < 0.01 ? 'good' :
+        a < 0.05 ? 'warn' :
+                   'bad';
+    }
+
+    // Hot / cold symbols
+    const entries = Object.entries(this.symbolCounts);
+    if (entries.length > 0) {
+      const sorted = entries.sort((a, b) => b[1] - a[1]);
+      const hotEl  = document.getElementById('hotSymbol');
+      const coldEl = document.getElementById('coldSymbol');
+        let characters = {
+            "enemy3.png": "Larry",
+            "zed.png": "Zed",
+            "pluto.png": "Pluto",
+            "enemy2.png": "Gary",
+            "ninja.png": "Ninja",
+            "jinx2.png": "Jinx",
+            "enemy1.png": "Harry",
+            "beans.png": "Beans",
+            "ball.png": "Ball",
+            "goal.png": "Food"
+        }
+      if (hotEl) {
+        hotEl.textContent = `${characters[sorted[0][0]]} (${sorted[0][1]})`;
+      }
+      if (coldEl) {
+        const last = sorted[sorted.length - 1];
+        coldEl.textContent = `${characters[last[0]]} (${last[1]})`;
+      }
+    }
+  }
+};
+
+
+// -------- SAFE HOOK --------
+(function hookSafely() {
+  if (window._rngStatsHooked) return;
+  window._rngStatsHooked = true;
+
+  const realRandom = rng.random.bind(rng);
+
+  rng.random = function(...args) {
+    const value = realRandom(...args);
+    RNGStats.recordCall();
+    RNGStats.recordFloat(value);
+    return value;
+  };
+
+  if (typeof window.pickRandomSymbol === 'function') {
+    const realPick = window.pickRandomSymbol;
+    window.pickRandomSymbol = function(...args) {
+      const sym = realPick.apply(this, args);
+      RNGStats.recordSymbol(getFilename(sym));
+      return sym;
+    };
+  }
+
+  RNGStats.init();
+})();
+
+// -------- RESET STATS BUTTON --------
+document.getElementById('resetStatsBtn').addEventListener('click', () => {
+  // Reset all counters
+  RNGStats.calls = 0;
+  RNGStats.bitCount = 0;
+  RNGStats.oneCount = 0;
+  RNGStats.currentRun = 0;
+  RNGStats.longestRunOnes = 0;
+  RNGStats.pairCount = 0;
+  RNGStats.symbolCounts = {};
+
+  // Force immediate display update
+  RNGStats.updateDisplay();
+
+  // flashy feedback
+  const btn = document.getElementById('resetStatsBtn');
+  btn.textContent = 'CLEARED!';
+  btn.style.background = '#060';
+  btn.style.color = '#0f0';
+ 0;
+  setTimeout(() => {
+    btn.textContent = 'RESET STATISTICS';
+    btn.style.background = '#300';
+    btn.style.color = '#f66';
+  }, 800);
+});
+
+
+// Weighted random symbol picker
 function pickRandomSymbol() {
   const filenames = Object.keys(SYMBOL_WEIGHTS);
   const totalWeight = filenames.reduce((sum, name) => sum + SYMBOL_WEIGHTS[name], 0);
-  let rand = Math.random() * totalWeight;
+  let rand = rng.random() * totalWeight;
 
   for (const filename of filenames) {
     rand -= SYMBOL_WEIGHTS[filename];
@@ -566,28 +1267,32 @@ function pickRandomSymbol() {
 // Default for any symbol not listed above (safety net)
 const DEFAULT_PAYOUT = [100, 25, 8];
 
-const WILD_FILENAME     = "goal.png";     // ← your wild
-const SCATTER_FILENAME  = "jinx2.png";     // ← your scatter
+const WILD_FILENAME     = "goal.png";     //  wild
+const SCATTER_FILENAME  = "jinx2.png";     //  scatter
 
-// Helper: extracts just the filename from any full URL
-// ──────── SUPER-ROBUST FILENAME HELPER ────────
+// -------- ROBUST FILENAME HELPER --------
 function getFilename(src) {
   // Safety first – if anything weird happens, return empty string
   if (!src || typeof src !== "string") return "";
-
   // Extract just the filename (works with full URLs, relative paths, query strings, etc.)
   const parts = src.split(/[\\/]/);           // split on / or \
   let filename = parts[parts.length - 1];     // last part
   filename = filename.split('?')[0];        // remove query string or hash
   return filename;
 }
-
 function isWild(src)     { return getFilename(src) === "goal.png"; }
 function isScatter(src)  { return getFilename(src) === "ball.png"; }
 
-// ADD THIS GLOBAL VARIABLE right after `let coins = 1000;`
+// -------- FREE SPINS TRACKING --------
 let freeSpinsToPlay = 0;
 
+// Track how many were originally awarded (for display)
+function startFreeSpins(count) {
+  freeSpinsToPlay = count;
+  localStorage.setItem('lastFreeSpinsAwarded', count);
+}
+
+// -------- SLOT MACHINE SETUP --------
 const REEL_LENGTH = 60;           // length of one reel strip
 // === DYNAMIC SYMBOL HEIGHT – ALWAYS CORRECT ===
 // This reads the actual rendered size of any symbol on the page
@@ -602,7 +1307,7 @@ function getSymbolHeight() {
   return 150;
 }
 
-// We'll store the current height here so the spin code always uses the correct value
+// Symbol position
 let SYMBOL_HEIGHT = getSymbolHeight();
 
 // Update it on every resize (mobile rotate, desktop resize, etc.)
@@ -612,12 +1317,17 @@ window.addEventListener("resize", () => {
 
 const slot = document.getElementById("slot");
 const strips = [];                // current reel strips
-let coins = 1000;
+let coins = parseInt(localStorage.getItem('coins')) || 1000;
 const bet = 10;
+
+// Function to save coins
+function saveCoins() {
+  localStorage.setItem('coins', coins.toString());
+}
 
 document.getElementById("coins").textContent = coins;
 
-// ──────── PROGRESSIVE JACKPOT ────────
+// -------- PROGRESSIVE JACKPOT --------
 let jackpot = parseInt(localStorage.getItem('catSlotJackpot')) || 1000;
 const jackpotSeed = 1000;
 const jackpotIncrement = 1; // +1 coin per spin
@@ -642,14 +1352,14 @@ for (let i = 0; i < 5; i++) {
 }
 
 // Generate a completely random reel strip of 60 symbols
-// Generate a rarity-weighted reel strip
+// with rarity-weighting
 function generateRandomStrip() {
   const strip = document.createElement("div");
   strip.className = "strip";
   for (let i = 0; i < REEL_LENGTH; i++) {
     const img = document.createElement("img");
     img.className = "symbol";
-    img.src = pickRandomSymbol();  // ← WEIGHTED!
+    img.src = pickRandomSymbol();  // WEIGHTED!
     strip.appendChild(img);
   }
   return strip;
@@ -681,15 +1391,15 @@ resizeCanvas();
 class Coin {
   constructor(x, winAmount) {
     this.x = x;
-    this.y = -50 - Math.random() * 50;
-    this.vy = 2 + Math.random() * 4;
-    this.vx = (Math.random() - 0.5) * 2;
-    this.size = 12 + Math.random() * 8 + (Math.min(winAmount,1000) / 100);
-    this.rotation = Math.random() * Math.PI * 2;
-    this.rotSpeed = (Math.random() - 0.5) * 0.1;
+    this.y = -50 - rng.random() * 50;
+    this.vy = 2 + rng.random() * 4;
+    this.vx = (rng.random() - 0.5) * 2;
+    this.size = 12 + rng.random() * 8 + (Math.min(winAmount,1000) / 100);
+    this.rotation = rng.random() * Math.PI * 2;
+    this.rotSpeed = (rng.random() - 0.5) * 0.1;
     this.life = 10;
-    this.decay = 0.98 + Math.random() * 0.01;
-    this.sparkle = Math.random() * Math.PI * 2;
+    this.decay = 0.98 + rng.random() * 0.01;
+    this.sparkle = rng.random() * Math.PI * 2;
   }
 
   update() {
@@ -747,7 +1457,7 @@ class Coin {
   }
 }
 
-// Start the magic coin rain!
+// Start the coin rain animation
 function startCoinRain(winAmount) {
   coinss = [];
   canvas.style.display = 'block';
@@ -757,7 +1467,7 @@ function startCoinRain(winAmount) {
 
   for (let i = 0; i < numCoins; i++) {
     coinss.push(new Coin(
-      Math.random() * canvas.width,
+      rng.random() * canvas.width,
       winAmount
     ));
   }
@@ -800,15 +1510,17 @@ function getMiddleRowSymbols() {
   });
 }
 
-// ──────────────────────────────
+// ------------------------------
 // 5 CLASSIC PAYLINES
-// ──────────────────────────────
+// ------------------------------
 const paylines = [
   [0, 0, 0, 0, 0], // Line 1 – top row
   [1, 1, 1, 1, 1], // Line 2 – middle row
   [2, 2, 2, 2, 2], // Line 3 – bottom row
   [0, 1, 2, 1, 0], // Line 4 – V shape
-  [2, 1, 0, 1, 2]  // Line 5 – ^ shape
+  [2, 1, 0, 1, 2], // Line 5 – ^ shape
+  [0, 0, 1, 2, 2], // Line 6 – zigzag down
+  [2, 2, 1, 0, 0], // Line 7 – zigzag up
 ];
 
 // Returns a 3×5 grid [row][column] of image URLs
@@ -828,7 +1540,7 @@ function getGrid() {
   return grid;
 }
 
-// ADD THESE HELPER FUNCTIONS anywhere before `calculateWin()`:
+// Checks if a sequence of symbols matches (considering wilds)
 function isMatchingSequence(lineSymbols, start, length) {
   let baseSymbol = null;
   for (let i = 0; i < length; i++) {
@@ -844,10 +1556,10 @@ function isMatchingSequence(lineSymbols, start, length) {
   return true;
 }
 
-// ──────── FIXED: PROPER LEFT-TO-RIGHT WILD LOGIC ────────
+// Calculate win for a single payline
 function getLineWin(lineSymbols) {
   let matchLength = 0;
-  let targetSymbol = null;   // full URL of the symbol we're matching
+  let targetSymbol = null;   
 
   for (let i = 0; i < 5; i++) {
     const current = lineSymbols[i];
@@ -868,7 +1580,7 @@ function getLineWin(lineSymbols) {
       continue;
     }
 
-    break; // non-matching non-wild → end streak
+    break; 
   }
 
   if (matchLength < 3) return 0;
@@ -886,9 +1598,7 @@ function getLineWin(lineSymbols) {
   return payoutArray[5 - matchLength]; // index 0 = 5x, 1 = 4x, 2 = 3x
 }
 
-// Calculates total win and which lines won
-// REPLACE your ENTIRE `calculateWin()` function with this upgraded version:
-// ──────── FULLY INTEGRATED CALCULATEWIN() WITH JACKPOT ────────
+// Calculate total win from all paylines and scatters
 function calculateWin() {
   const grid = getGrid(); // 3x5 grid [row][col]
   let lineWin = 0;
@@ -917,12 +1627,20 @@ function calculateWin() {
   let scatterWin = 0;
   let freeSpinsAwarded = 0;
   switch (scatterCount) {
-    case 3: scatterWin = 20; freeSpinsAwarded = 10; break;
-    case 4: scatterWin = 50; freeSpinsAwarded = 15; break;
-    case 5: scatterWin = 100; freeSpinsAwarded = 25; break;
+    case 3: scatterWin = 20; freeSpinsAwarded = 3; break;
+    case 4: scatterWin = 50; freeSpinsAwarded = 6; break;
+    case 5: scatterWin = 100; freeSpinsAwarded = 10; break;
   }
+  if (scatterCount > 5) {
+    scatterWin = 100; // extra for >5
+    freeSpinsAwarded = 10;
+  } 
+    if (scatterCount >= 3) {
+    freeSpinsAwarded = scatterCount === 3 ? 3 : scatterCount === 4 ? 6 : 10;
+    startFreeSpins(freeSpinsToPlay + freeSpinsAwarded); // proper chaining
+    }
 
-  // ──────── JACKPOT TRIGGER (NOW INSIDE calculateWin()!) ────────
+  // JACKPOT CHECK
   let jackpotWin = 0;
   // Triggers on 5 "enemy1.png" EXACTLY on MIDDLE LINE (line 2)
   const middlePattern = paylines[1]; // [1,1,1,1,1]
@@ -936,7 +1654,7 @@ function calculateWin() {
     lineWin, 
     scatterWin, 
     freeSpinsAwarded, 
-    jackpotWin,  // ← NEW!
+    jackpotWin,  
     winningLines 
   };
 }
@@ -952,28 +1670,34 @@ document.getElementById("spin").addEventListener("click", () => {
   }
   coins -= bet;
   document.getElementById("coins").textContent = coins;
+  saveCoins();
   spinReels(false);
 });
 
-// ADD THIS NEW `spinReels()` FUNCTION anywhere in your <script> (e.g., after the click listener):
 function spinReels(isFreeSpin) {
   const spinButton = document.getElementById("spin");
   const messageEl = document.getElementById("message");
+
   jackpot += jackpotIncrement;
   updateJackpotDisplay();
 
   spinButton.disabled = true;
-  messageEl.textContent = isFreeSpin ? "FREE SPIN!" : "SPINNING...";
 
-  jackpot += jackpotIncrement;
-    updateJackpotDisplay();
+  // FREE SPINS COUNTER
+  if (isFreeSpin) {
+    const remaining = freeSpinsToPlay; // this is the number of spins LEFT (including current one)
+    const totalAwarded = localStorage.getItem('lastFreeSpinsAwarded') || 10; // fallback
+    messageEl.textContent = `${remaining} FREE SPINS!`;
+  } else {
+    messageEl.textContent = "SPINNING...";
+  }
 
-  // 1. RNG stop positions (unchanged)
-  const stopPositions = strips.map(() => (REEL_LENGTH / 2) - 3 + Math.floor(Math.random() * REEL_LENGTH / 2));
+  // 1. RNG stop positions 
+  const stopPositions = strips.map(() => (REEL_LENGTH / 2) - 3 + Math.floor(rng.random() * REEL_LENGTH / 2));
 
-  // 2. Animate spin (unchanged)
+  // 2. Animate spin
   strips.forEach((strip, i) => {
-    const fullSpins = 0 + Math.floor(Math.random() * 0);
+    const fullSpins = 0 + Math.floor(rng.random() * 0);
     const finalOffset = (fullSpins * REEL_LENGTH + stopPositions[i]) * SYMBOL_HEIGHT;
     strip.style.transition = "none";
     strip.style.transform = "translateY(0px)";
@@ -983,7 +1707,7 @@ function spinReels(isFreeSpin) {
     strip.dataset.offset = finalOffset.toString();
   });
 
-  // 3. After animation: replace strips (unchanged)
+  // 3. After animation: replace strips
   setTimeout(() => {
     strips.forEach((oldStrip, i) => {
       const stopIdx = stopPositions[i];
@@ -1004,7 +1728,7 @@ function spinReels(isFreeSpin) {
      for (let j = 3; j < REEL_LENGTH; j++) {
         const img = document.createElement("img");
         img.className = "symbol";
-        img.src = pickRandomSymbol();  // ← WEIGHTED!
+        img.src = pickRandomSymbol();  // WEIGHTED
         newStrip.appendChild(img);
       }
       oldStrip.parentNode.replaceChild(newStrip, oldStrip);
@@ -1012,10 +1736,10 @@ function spinReels(isFreeSpin) {
       newStrip.dataset.offset = "0";
     });
 
-    // 4. EVALUATE WINS (UPGRADED!)
+    // 4. EVALUATE WINS  
     const multiplier = isFreeSpin ? 2 : 1;
     const { lineWin, scatterWin, freeSpinsAwarded, jackpotWin, winningLines } = calculateWin();
-    const totalWin = (lineWin + scatterWin) * multiplier + jackpotWin;  // ← ADDS JACKPOT!
+    const totalWin = (lineWin + scatterWin) * multiplier + jackpotWin;  // ADDS JACKPOT!
 
     // Hide lines
     document.querySelectorAll(".line").forEach((el) => el.classList.remove("show"));
@@ -1024,25 +1748,25 @@ function spinReels(isFreeSpin) {
     if (totalWin > 0) {
       coins += totalWin;
       document.getElementById("coins").textContent = coins;
+      saveCoins();
 
-    // JACKPOT SPECIAL EFFECTS
-    if (jackpotWin > 0) {
-        jackpot = jackpotSeed; // RESET TO 1000!
+      if (jackpotWin > 0) {
+        jackpot = jackpotSeed;
         updateJackpotDisplay();
         document.querySelector('.jackpot-display').classList.add('jackpot-win');
         setTimeout(() => document.querySelector('.jackpot-display').classList.remove('jackpot-win'), 2000);
-    }
+      }
 
       msg = `YOU WON ${totalWin} COINS`;
       if (winningLines.length > 0) {
         msg += ` on line${winningLines.length > 1 ? "s" : ""} ${winningLines.join(", ")}`;
       }
-      if (scatterWin > 0) msg += ` + ${scatterWin} SCATTER`;
+    //   if (scatterWin > 0) msg += ` + ${freeSpinsAwarded} FREE SPINS`;
       messageEl.innerHTML = msg;
       messageEl.classList.add("jackpot");
-      startCoinRain(totalWin); // Your coin rain!
-      // Flash winning lines
-      winningLines.forEach((n) => {
+      startCoinRain(totalWin);
+
+      winningLines.forEach(n => {
         const lineEl = document.getElementById(`line${n}`);
         if (lineEl) {
           lineEl.classList.add("show");
@@ -1050,23 +1774,47 @@ function spinReels(isFreeSpin) {
         }
       });
     } else {
-      messageEl.textContent = isFreeSpin ? "FREE SPIN!" : "The cats kept your coins…";
+      // Still show free spin counter even on no-win
+      if (isFreeSpin) {
+        const remaining = freeSpinsToPlay;
+        const total = localStorage.getItem('lastFreeSpinsAwarded') || 10;
+        messageEl.textContent = `FREE SPINS! ${remaining}/${total}`;
+      } else {
+        let messages = [
+          "No win this time, try again!",
+          "The cats are fickle today.",
+          "So close, yet so far!",
+          "Jinx is going to buy chicken with your money.",
+          "Pluto is laughing at you.",
+          "Your coins will fund Ninja's extravagant lifestyle.",
+          "Better luck next spin!",
+          "The cats kept your coins..."
+        ];
+        messageEl.textContent = messages[Math.floor(rng.random() * messages.length)];
+        // messageEl.textContent = "The cats kept your coins…";
+      }
       messageEl.classList.remove("jackpot");
     }
 
-    // FREE SPINS TRIGGER & CHAIN!
+    // FREE SPINS TRIGGER
     if (freeSpinsAwarded > 0) {
-      freeSpinsToPlay += freeSpinsAwarded;
-      const bonusMsg = messageEl.innerHTML;
-      messageEl.innerHTML = bonusMsg + `<br><span style="color:gold;font-size:1.4em;">+${freeSpinsAwarded} FREE SPINS!</span>`;
+    //   freeSpinsToPlay += freeSpinsAwarded;
+      localStorage.setItem('lastFreeSpinsAwarded', freeSpinsToPlay); // remember total
+
+      const bonusMsg = messageEl.innerHTML || messageEl.textContent;
+      messageEl.innerHTML = bonusMsg + 
+        `<br><span style="color:gold;font-size:1.6em;font-weight:bold;">
+          +${freeSpinsAwarded} FREE SPINS!
+        </span>`;
     }
 
-    // Auto-chain free spins (button stays disabled until ALL done)
+    // AUTO-CHAIN FREE SPINS
     if (freeSpinsToPlay > 0) {
       freeSpinsToPlay--;
       setTimeout(() => spinReels(true), 3500);
     } else {
       spinButton.disabled = false;
+      localStorage.removeItem('lastFreeSpinsAwarded'); // cleanup
     }
   }, 4500);
 }
