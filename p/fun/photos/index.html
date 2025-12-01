@@ -22,6 +22,14 @@
     margin: 0 auto;
   }
 
+  .gallery h2 {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin: 20px 0 10px;
+    font-size: 1.5em;
+    color: #777;
+  }
+
   .gallery-item {
     position: relative;
     overflow: hidden;
@@ -106,6 +114,37 @@
   @media (max-width: 600px) {
     .gallery { gap: 12px; }
   }
+
+  /* Styles for jump-to menu */
+  #jump-menu {
+    text-align: center;
+    margin-bottom: 20px;
+    height: 128px;
+    overflow-y:scroll;
+    scrollbar-color: var(--space1) transparent;
+  }
+
+  #jump-menu ul {
+    list-style:lower-roman;
+    padding: 0;
+    display:list-item;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  #jump-menu li {
+    margin: 0 15px;
+  }
+
+  #jump-menu a {
+    text-decoration: none;
+    color: #777;
+    font-weight: bold;
+  }
+
+  #jump-menu a:hover {
+    text-decoration: underline;
+  }
 </style>
   </head>
   <body>
@@ -156,18 +195,28 @@
 
 <!-- JavaScript -->
 <script>
-  // === EDIT THIS ARRAY ONLY TO ADD/REMOVE/REORDER PHOTOS ===
-  const photos = [
-    "20251125_jinx.jpg",
-    "20251125_zed.jpg",
-    "20251126_ninja.webp",
-    "20251126_pluto.webp",
-    "Nov25Arboretum/DSC_0018.webp",
-    "Nov25Arboretum/DSC_0033.webp",
-    "Nov25Arboretum/DSC_0072.webp",
-    "Nov25Arboretum/DSC_0082.webp",
-    "Nov25Arboretum/DSC_0101.webp",
-    "Nov25Arboretum/DSC_0070.webp"
+  // === EDIT THIS ARRAY ONLY TO ADD/REMOVE/REORDER PHOTO GROUPS ===
+  const photoGroups = [
+  {
+      title: "Trip to the Arboretum Nov 2025",
+      photos: [
+        "Nov25Arboretum/DSC_0018.webp",
+        "Nov25Arboretum/DSC_0033.webp",
+        "Nov25Arboretum/DSC_0072.webp",
+        "Nov25Arboretum/DSC_0082.webp",
+        "Nov25Arboretum/DSC_0101.webp",
+        "Nov25Arboretum/DSC_0070.webp"
+      ]
+    },  
+  {
+      title: "Cat room photoshoot Nov 2025",
+      photos: [
+        "20251125_jinx.jpg",
+        "20251125_zed.jpg",
+        "20251126_ninja.webp",
+        "20251126_pluto.webp"
+      ]
+    },
   ];
   // =========================================================
 
@@ -175,23 +224,57 @@
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightboxImage");
 
-  // Generate gallery thumbnails
-  photos.forEach(filename => {
-    const item = document.createElement("div");
-    item.className = "gallery-item";
+  // Create jump-to menu
+  const jumpMenu = document.createElement("nav");
+  jumpMenu.id = "jump-menu";
+  const ul = document.createElement("ul");
+  const li = document.createElement("li");
+  li.textContent = "Jump to: ";
+  ul.appendChild(li);
 
-    const img = document.createElement("img");
-    img.src = `/images/photos/${filename}`;
-    img.alt = filename.split('.')[0].replace(/_/g, ' ');
-    img.loading = "lazy"; // improves performance
+  photoGroups.forEach((group) => {
+    const slug = group.title.toLowerCase().replace(/\s+/g, "-").replace(/[^\w-]/g, "");
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+    a.href = `#${slug}`;
+    a.textContent = group.title;
+    li.appendChild(a);
+    ul.appendChild(li);
+  });
 
-    item.appendChild(img);
-    gallery.appendChild(item);
+  jumpMenu.appendChild(ul);
 
-    // Click to open lightbox
-    item.addEventListener("click", () => {
-      lightboxImg.src = `/images/photos/${filename}`;
-      lightbox.classList.add("active");
+  // Insert jump menu before the gallery
+  const box = gallery.parentElement;
+  box.insertBefore(jumpMenu, gallery);
+
+  // Generate gallery thumbnails with group dividers
+  photoGroups.forEach(group => {
+    // Create and append the group title
+    const titleElement = document.createElement("h2");
+    titleElement.textContent = group.title;
+    const slug = group.title.toLowerCase().replace(/\s+/g, "-").replace(/[^\w-]/g, "");
+    titleElement.id = slug;
+    gallery.appendChild(titleElement);
+
+    // Append photos for this group
+    group.photos.forEach(filename => {
+      const item = document.createElement("div");
+      item.className = "gallery-item";
+
+      const img = document.createElement("img");
+      img.src = `/images/photos/${filename}`;
+      img.alt = filename.split('.')[0].replace(/_/g, ' ');
+      img.loading = "lazy"; // improves performance
+
+      item.appendChild(img);
+      gallery.appendChild(item);
+
+      // Click to open lightbox
+      item.addEventListener("click", () => {
+        lightboxImg.src = `/images/photos/${filename}`;
+        lightbox.classList.add("active");
+      });
     });
   });
 
