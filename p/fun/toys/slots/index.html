@@ -484,6 +484,12 @@
   font-weight: bold;
 }
 
+
+#showLines {
+    padding:10px 30px;
+    margin-top: 20px; 
+    font-size:0.8rem;
+  }
 /* ------------------------------- MOBILE ------------------------------- */
 @media (max-width: 920px) {
   .casino {
@@ -533,7 +539,7 @@
     height: 300px;
   }
 
-  button, #showLines {
+  button {
     font-size: 1.5rem;
     padding: 14px 30px;
     margin: 12px 6px;
@@ -584,7 +590,7 @@
     height: 180px;
   }
 
-  button, #showLines {
+  button {
     font-size: 1.3rem;
     padding: 12px 24px;
     width: 90%;
@@ -640,11 +646,12 @@
 
     <!-- Game Buttons -->
     <div id="buttons">
-        <button id="showLines" style="padding:10px 30px; font-size:18px;">
-            Show / Hide Paylines
-        </button>
         <button id="spin">
             SPIN - 10 coins
+        </button>
+        <br>
+        <button id="showLines">
+            Show / Hide Paylines
         </button>
     </div>
   
@@ -687,7 +694,7 @@
     </table>
 
     <div style="margin-top:20px;text-align:center;color:var(--space1);font-size:0.9em;">
-        All wins x2 during Free Spins <br> 5 Paylines <br> Bet = 10 coins
+        All wins x2 during Free Spins <br> 7 Paylines <br> Bet = 10 coins
     </div>
   </div>
 </div>
@@ -696,7 +703,7 @@
 <div class="prng-selector">
   <label for="prng">Pseudo Random Number Generator</label>
   <br>
-  <select id="prng">
+  <select id="prng" style="font-size: 1rem;">
     <option value="math">Math.random() (Default)</option>
     <option value="lfsr">LFSR (32-bit)</option>
     <option value="xorshift32">XorShift32</option>
@@ -721,19 +728,19 @@
     </div>
 
     <div class="stat-item" data-tip="Serial Correlation: the correlation between successive 32-bit outputs. Close to 0 is good.">
-      <span class="label">Serial Corr.:</span> <span id="serial">—</span>
+      <span class="label">Serial Corr.:</span> <span id="serial">0</span>
     </div>
 
     <div class="stat-item" data-tip="The symbol that appears most often.">
-      <span class="label">Most Common:</span> <span id="hotSymbol">—</span>
+      <span class="label">Most Common:</span> <span id="hotSymbol">0</span>
     </div>
 
     <div class="stat-item" data-tip="The symbol that appears least often.">
-      <span class="label">Least Common:</span> <span id="coldSymbol">—</span>
+      <span class="label">Least Common:</span> <span id="coldSymbol">0</span>
     </div>
 
     <div class="stat-item" data-tip="Current pseudorandom number generator being used by the slot machine. Switch in the dropdown above to test different algorithms.">
-      <span class="label">Current RNG:</span> <span id="currentRng">—</span>
+      <span class="label">Current RNG:</span> <span id="currentRng">0</span>
     </div>
     <div class="stat-tem">
         <button id="resetStatsBtn" style="padding:8px 20px; font-size:0.75rem; margin:0;">
@@ -1228,8 +1235,14 @@ document.getElementById('resetStatsBtn').addEventListener('click', () => {
   RNGStats.oneCount = 0;
   RNGStats.currentRun = 0;
   RNGStats.longestRunOnes = 0;
-  RNGStats.pairCount = 0;
   RNGStats.symbolCounts = {};
+  RNGStats.prevWord = null,
+  RNGStats.pairCount = 0,
+  RNGStats.sumX = 0,
+  RNGStats.sumY = 0,
+  RNGStats.sumXX = 0,
+  RNGStats.sumYY = 0,
+  RNGStats.sumXY = 0,
 
   // Force immediate display update
   RNGStats.updateDisplay();

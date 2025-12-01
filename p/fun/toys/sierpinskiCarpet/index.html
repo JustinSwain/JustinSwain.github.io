@@ -8,10 +8,14 @@
     <link rel="icon" href="/images/spacecat.png">
     <style>
         canvas {
-            width: 100%;
-            max-width: 360px;
             display: block;
-            margin: auto;
+            margin: 20px auto;
+            border: 3px solid #00ffff;
+            border-radius: 12px;
+            box-shadow: 0 0 40px #00ffff, 0 0 80px #ff00ff;
+            image-rendering: pixelated; /* retro feel */
+            max-width: 90%;
+            height: auto;
         }
     </style>
   </head>
@@ -33,29 +37,18 @@
         <h1>Toys</h1>
         <div class="box">
             <h3>Sierpinski Carpet Fractal</h3>
-            <canvas id="canvas" height="300" width="300"></canvas>
-            <br>
-            <strong>Controls</strong>
-            <ul>
-                <li>
-                    Click to iterate the fractal (Limited to 6)
-                </li>
-                <li>
-                    Arrow up/down = Zoom in/out
-                </li>
-                <li>
-                    WASD = Move camera
-                </li>
-                <li>
-                    f = toggle fractal to Vicsek Cross Fractal
-                </li>
-                <li>
-                    c = toggle color
-                </li>
-                <li>
-                    r = RESET
-                </li>
-            </ul>
+            <canvas id="canvas" width="1200" height="1200"></canvas>
+<br>
+        <strong>Controls (Cosmic Mode Activated)</strong>
+        <ul>
+        <li>Click = next iteration (up to 7)</li>
+        <li>Right Mouse drag = pan</li>
+        <li>Scroll = zoom</li>
+        <li>WASD = move/zoom</li>
+        <li>f = toggle Carpet or Vicsek Cross</li>
+        <li>c = shift colors</li>
+        <li>r = reset</li>
+        </ul>
         <script src="sierpinskiCarpet.js"></script>
         </div>
     </main>
