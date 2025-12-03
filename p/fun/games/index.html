@@ -79,9 +79,9 @@ async function loadSteamData() {
   const loading = document.getElementById('steam-loading');
   const card = document.getElementById('steam-card');
 
-  // Cache for 24 hours
+  // Cache data for 4 hours
   const cache = localStorage.getItem('steamFullCache');
-  if (cache && Date.now() - JSON.parse(cache).ts < 86400000) {
+  if (cache && Date.now() - JSON.parse(cache).ts < 144000000) { // 4 hours
     render(JSON.parse(cache).data);
     loading.style.display = 'none';
     return;
@@ -108,6 +108,8 @@ async function loadSteamData() {
 
     if (!player || !gamesData) throw new Error("Missing data");
 
+    const totalHoursPlayed = Math.round(gamesData.games.reduce((sum, g) => sum + g.playtime_forever, 0) / 60);
+
     const totalGames = gamesData.game_count || 0;
     const top5 = gamesData.games
     .filter(g => g.playtime_forever > 60 && g.appid)
@@ -131,7 +133,7 @@ async function loadSteamData() {
     appid: g.appid,
   }));
 
-    const data = { player, level, totalGames, top5, recent3};
+    const data = { player, level, totalGames, totalHoursPlayed, top5, recent3};
     localStorage.setItem('steamFullCache', JSON.stringify({ data, ts: Date.now() }));
     render(data);
 
@@ -149,6 +151,7 @@ async function loadSteamData() {
       <div class="stats">
         <div class="level">Level ${d.level}</div>
         <div>${d.totalGames} games owned</div>
+        <div>${d.totalHoursPlayed} hours played</div>
       </div>
 
       <div class="top-games">
