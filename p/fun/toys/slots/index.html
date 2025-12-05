@@ -1476,7 +1476,7 @@ function startCoinRain(winAmount) {
   canvas.style.display = 'block';
 
   // More coins = bigger win!
-  const numCoins = 50 + Math.floor(Math.min(winAmount,100) / 5);
+  const numCoins = Math.ceil(Math.min(winAmount,500) / 10);
 
   for (let i = 0; i < numCoins; i++) {
     coinss.push(new Coin(
