@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justin Swain - Christmas 2025</title>
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="icon" href="/images/spacecat.png">
+    <style>
+      /* Page-specific Christmas theme overrides and additions */
+      
+      /* Festive color palette */
+      :root {
+        --christmas-red: #e74c3c;
+        --christmas-green: #27ae60;
+        --christmas-gold: #f1c40f;
+        --snow-white: #ffffff;
+      }
+      
+      /* Override header and main backgrounds for holiday vibe */
+      #headerArea {
+        background: linear-gradient(to bottom, var(--space6), var(--christmas-red));
+        position: relative; /* For positioning lights */
+      }
+      #container {
+        max-width: 720px;
+      }
+      #christmas-header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      main {
+        background: var(--space5) url('/images/bluespace.gif') repeat; /* Keep space bg */
+        position: relative; /* For snow overlay */
+        overflow: hidden; /* Contain snow */
+        border: 2px solid var(--christmas-green);
+        text-align: center;
+        flex: 1;
+        max-width: 100%;
+      }
+      
+      /* Festive headings */
+      h1 {
+        color: white;
+        text-shadow: 0 0 10px var(--christmas-gold), 0 0 20px var(--christmas-red);
+        animation: glow 2s ease-in-out infinite alternate;
+      }
+      
+      h2 {
+        color: white;
+        text-shadow: 0 0 10px var(--christmas-gold), 0 0 20px var(--christmas-green);
+      }
+      
+      /* Glow animation for headings */
+      @keyframes glow {
+        from { text-shadow: 0 0 5px var(--christmas-gold), 0 0 10px var(--christmas-red); }
+        to { text-shadow: 0 0 15px var(--christmas-gold), 0 0 25px var(--christmas-red); }
+      }
+      
+      /* Christmas links */
+      main a {
+        color: var(--christmas-gold);
+      }
+      
+      main a:hover {
+        color: var(--christmas-green);
+      }
+      
+      /* Box with festive border */
+      .box {
+        border: 5px dashed var(--christmas-red);
+        background: rgba(255, 255, 255, 0.05); /* Slight overlay for readability */
+        text-align: left;
+        border-radius: 10px;
+      }
+
+      img {
+       transition: 0.4s ease;
+      }
+      img:hover {
+        box-shadow: 0 0 15px var(--christmas-gold), 0 0 25px var(--christmas-red), 0 0 35px var(--christmas-green);
+        transform: scale(1.3) translateY(-15px);
+        z-index: 1000;
+      }
+      
+/* Falling snow effect - improved with more flakes and variation */
+      .snowflake {
+        position: absolute;
+        top: -10px;
+        color: var(--snow-white);
+        font-size: 1.5em;
+        animation: fall linear infinite;
+        pointer-events: none;
+      }
+      
+      @keyframes fall {
+        to {
+          transform: translateY(100vh) rotate(360deg);
+        }
+      }
+      
+      /* More snowflakes with variations */
+      .snowflake:nth-child(1) { left: 5%; animation-duration: 10s; animation-delay: 0s; font-size: 1em; }
+      .snowflake:nth-child(2) { left: 15%; animation-duration: 12s; animation-delay: 1s; font-size: 2em; }
+      .snowflake:nth-child(3) { left: 25%; animation-duration: 8s; animation-delay: 2s; }
+      .snowflake:nth-child(4) { left: 35%; animation-duration: 15s; animation-delay: 3s; font-size: 1.5em; }
+      .snowflake:nth-child(5) { left: 45%; animation-duration: 9s; animation-delay: 4s; }
+      .snowflake:nth-child(6) { left: 55%; animation-duration: 11s; animation-delay: 5s; font-size: 1.2em; }
+      .snowflake:nth-child(7) { left: 65%; animation-duration: 13s; animation-delay: 0s; }
+      .snowflake:nth-child(8) { left: 75%; animation-duration: 7s; animation-delay: 1s; font-size: 1.8em; }
+      .snowflake:nth-child(9) { left: 85%; animation-duration: 14s; animation-delay: 2s; }
+      .snowflake:nth-child(10) { left: 95%; animation-duration: 10s; animation-delay: 3s; font-size: 0.8em; }
+      .snowflake:nth-child(11) { left: 10%; animation-duration: 16s; animation-delay: 4s; }
+      .snowflake:nth-child(12) { left: 20%; animation-duration: 9s; animation-delay: 5s; font-size: 1.3em; }
+      .snowflake:nth-child(13) { left: 30%; animation-duration: 11s; animation-delay: 0s; }
+      .snowflake:nth-child(14) { left: 40%; animation-duration: 13s; animation-delay: 1s; font-size: 1.7em; }
+      .snowflake:nth-child(15) { left: 50%; animation-duration: 8s; animation-delay: 2s; }
+      .snowflake:nth-child(16) { left: 60%; animation-duration: 14s; animation-delay: 3s; font-size: 1em; }
+      .snowflake:nth-child(17) { left: 70%; animation-duration: 10s; animation-delay: 4s; }
+      .snowflake:nth-child(18) { left: 80%; animation-duration: 12s; animation-delay: 5s; font-size: 2em; }
+      .snowflake:nth-child(19) { left: 90%; animation-duration: 15s; animation-delay: 0s; }
+      .snowflake:nth-child(20) { left: 0%; animation-duration: 11s; animation-delay: 1s; font-size: 1.4em; }
+      
+      /* Prime ticker festive */
+      #prime-number {
+        color: var(--christmas-red);
+      }
+
+      /* Christmas light animations */
+      .christmas-lights {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        padding: 5px 0;
+        z-index: 1;
+      }
+
+      .light {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        animation: blink 1.5s infinite alternate;
+        box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+      }
+
+      .light.red {
+        background-color: var(--christmas-red);
+        animation-delay: 0s;
+      }
+
+      .light.green {
+        background-color: var(--christmas-green);
+        animation-delay: 0.3s;
+      }
+
+      .light.gold {
+        background-color: var(--christmas-gold);
+        animation-delay: 0.6s;
+      }
+
+      .light.blue {
+        background-color: var(--space1);
+        animation-delay: 0.9s;
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 0.4;
+          transform: scale(0.8);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.2);
+        }
+        100% {
+          opacity: 0.4;
+          transform: scale(0.8);
+        }
+      }
+    </style>
+  </head>
+  <body>
+<div id="container">
+<div id="headerArea">
+    <marquee style="color: var(--christmas-red);">🌟 Merry Christmas!🎄</marquee>
+    <div class="christmas-lights">
+      <div class="light red"></div>
+      <div class="light green"></div>
+      <div class="light gold"></div>
+      <div class="light blue"></div>
+      <div class="light red"></div>
+      <div class="light green"></div>
+      <div class="light gold"></div>
+      <div class="light blue"></div>
+      <div class="light red"></div>
+      <div class="light green"></div>
+      <div class="light gold"></div>
+      <div class="light blue"></div>
+      <div class="light red"></div>
+      <div class="light green"></div>
+      <div class="light gold"></div>
+      <div class="light blue"></div>
+    </div>
+    <div id="christmas-header" style="height: auto; padding: 20px;">
+        <!-- <a href="/"><img src="/images/spacecat.png" height="120px"></a> -->
+            <strong style="color: white; font-size: 3rem;">
+                Christmas 2025
+            </strong>
+            <br>
+            <img src="/images/invitations/christmas2025/wreath.gif" alt="Christmas 2025 Banner" style="width:fit-content; max-width:400px; margin-top:30px;">
+    </div>
+</div>
+
+<div id="flex">
+    <main>
+        <h1>Christmas Day 2025</h1>
+      
+        <p>Friends and Family, <br> 
+            You are invited to our annual Christmas Day lunch party!
+        </p>
+      
+        <div class="box">
+            <h2>Event Details</h2>
+            <ul>
+            <li>
+                <strong>Date:</strong> 
+                Thursday, December 25, 2025
+            </li>
+            <li>
+                <strong>Time:</strong> 
+                1:00 PM - 3:00 PM (2 hrs)
+            </li>
+            <li>
+                <strong>Location:</strong> 
+                <a href="https://maps.app.goo.gl/DdrphAhS3gH7Ky1w8">13145 Sanctuary Dr, Providence Village, TX 76227</a>
+            </li>
+            <li>
+                <strong>Activities:</strong> 
+                Lunch, and gift exchange.</li>
+            <li>
+                <strong>Food & Drinks:</strong> 
+                Potluck - please bring a dish or drink to share (if you can!). See the menu sign-up below.
+            </li>
+            <li>
+                <strong>RSVP:</strong> 
+                Please let us know if you are coming! 972-822-3412 (Justin) or 214-500-7770 (Cassidy).
+            </li>
+            </ul>
+        </div>
+
+        <img src="/images/invitations/christmas2025/nativity.JPG" alt="Christmas 2025 Banner" style="width:50%; max-width:700px; margin-top:20px; border: 3px solid var(--christmas-red); border-radius: 10px; box-shadow: 0 0 15px var(--christmas-green);">
+
+            <!-- Potluck Sign-Up -->
+<div class="box" style="margin-top: 30px;">
+        <h2 style="text-align:center; color: white;">
+            🍲 Potluck Sign-Up 🎄
+        </h2>
+        <p style="text-align:center;">
+            Scroll the list below to check claimed dishes (updates live!), then sign up using the form above to bring something delicious to share!
+        </p>
+  
+        <!-- Embedded Google Sheet (Public Live View) -->
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfWZ-u_llGfP9YRbTBdHk8Y0WyPIuNXA_SjGD-5Rfuh5QZrIg/viewform?usp=header" 
+                width="100%" 
+                height="400" 
+                frameborder="0" 
+                style="border: 2px dashed var(--christmas-red); border-radius: 8px; box-shadow: 0 0 10px var(--christmas-gold);">
+        </iframe>
+  
+        <!-- Embedded Google Form (For Submissions) -->
+        <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vT9oQo_KKeCI99uRoG58wxqbqiS3yyKM5lpY_Go6gF0Ra8rD--FmkP-piNzJMBS8QTDR7O5jaypBLAW/pubhtml?widget=true&amp;headers=false" 
+                width="100%" 
+                height="600" 
+                frameborder="0" 
+                marginheight="0" 
+                marginwidth="0"
+                style="border: 2px solid var(--christmas-green); border-radius: 8px; margin-top: 20px; box-shadow: 0 0 10px var(--christmas-gold);">Loading…</iframe>
+        </div>
+
+        <img src="/images/invitations/christmas2025/jinx_hat.JPEG" alt="Christmas 2025" style="width:40%; max-width:600px; margin-top:30px; border: 3px solid var(--christmas-green); border-radius: 10px; box-shadow: 0 0 15px var(--christmas-red);">
+      
+      <!-- Snowflakes for falling snow effect - more added -->
+      <div class="snowflake">❄</div>
+      <div class="snowflake">❄</div>
+      <div class="snowflake">❄</div>
+      <div class="snowflake">❄</div>
+      <div class="snowflake">❄</div>
+      <div class="snowflake">❄</div>
+      <div class="snowflake">❄</div>
+      <div class="snowflake">❄</div>
+      <div class="snowflake">❄</div>
+      <div class="snowflake">❄</div>
+      <div class="snowflake">❄</div>
+      <div class="snowflake">❄</div>
+      <div class="snowflake">❄</div>
+      <div class="snowflake">❄</div>
+      <div class="snowflake">❄</div>
+      <div class="snowflake">❄</div>
+      <div class="snowflake">❄</div>
+      <div class="snowflake">❄</div>
+      <div class="snowflake">❄</div>
+      <div class="snowflake">❄</div>
+    </main>
+  </div>
+  <footer id="footerPlaceholder">
+    <p style="text-align: center; font-size: 1.4rem; color: #777; font-style: italic;">
+        Merry Christmas from Justin and Cassidy!
+    </p>
+    <p style="font-size: 0.7rem;">
+        Back to main site: <a href="/">justinswain.dev</a>
+    </p>
+  </footer>
+</div>
+</body>
+</html>
