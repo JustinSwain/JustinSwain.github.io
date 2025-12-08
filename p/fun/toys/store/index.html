@@ -24,17 +24,28 @@
       text-align: center;
     }
 
-    .back-link {
-      width: 100%;
-      text-align: center;
-      color: var(--space0);
-      text-decoration: none;
-    }
-    .back-link a {
-      color: var(--space0);
-      text-decoration: none;
-      font-size: 1.2rem;
-    }
+    .slot-link {
+  font-family: 'Arcade', sans-serif;
+  font-size: 1rem;
+  background: var(--space3);
+  color: white;
+  border: 3px solid var(--space1);
+  padding: 15px 40px;
+  border-radius: 12px;
+  text-decoration: none;
+  display: block;
+  margin: 20px auto;
+  box-shadow: 0 0 25px var(--space2);
+  transition: all 0.3s;
+  text-align: center;
+  max-width: 320px;
+}
+
+.slot-link:hover {
+  background: var(--space1);
+  transform: scale(1.05);
+  box-shadow: 0 0 40px var(--space1);
+}
 
     .coins {
       font-size: 1.8rem;
@@ -302,7 +313,7 @@
   <div class="store">
     <h1>Cat Card Store <br> Mystery Packs!</h1>
     <div class="coins">Your Coins: <span id="coins">0</span></div>
-    <div class="back-link"><a href="/p/fun/toys/slots/">&larr; Earn more coins</a></div>
+    <a href="/p/fun/toys/slots/" class="slot-link">🎰 BACK TO SLOT MACHINE</a>    
     <button id="buyPack">Buy a pack of 3 mystery cards! <br>(100 coins)</button>
     <div id="noCoins" style="display: none;">Not enough coins! Play more slots!</div>
     <div class="mystery-pack" id="mysteryPack" style="display: none;"></div>

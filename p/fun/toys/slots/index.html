@@ -36,17 +36,27 @@
     text-shadow: 0 0 15px var(--space2), 0 0 30px var(--space1);
     letter-spacing: 4px;
   }
-  .back-link {
-      width: 100%;
-      text-align: center;
-      color: var(--space0);
-      text-decoration: none;
-    }
-    .back-link a {
-      color: var(--space0);
-      text-decoration: none;
-      font-size: 1.2rem;
-    }
+  .store-link {
+  font-family: 'Arcade', sans-serif;
+  font-size: 1rem;
+  background: var(--space4);
+  color: gold;
+  border: 3px solid gold;
+  padding: 15px 35px;
+  border-radius: 12px;
+  text-decoration: none;
+  display: inline-block;
+  margin: 15px;
+  box-shadow: 0 0 25px rgba(255,215,0,0.6);
+  transition: all 0.3s;
+}
+
+.store-link:hover {
+  background: gold;
+  color: var(--space7);
+  transform: scale(1.05);
+  box-shadow: 0 0 40px gold;
+}
   /* BALANCE DISPLAY */
   .balance {
     font-family: 'Dos', monospace;
@@ -133,6 +143,64 @@
     cursor: not-allowed;
     box-shadow: none;
   }
+  .auto-spin-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0;
+  justify-content: center;
+}
+
+#autoSpins {
+  background: var(--space7);
+  color: var(--space0);
+  border: 2px solid var(--space1);
+  padding: 10px;
+  border-radius: 8px;
+  font-family: 'Dos', monospace;
+  font-size: 1.1rem;
+  min-width: 100px;
+}
+
+#toggleAuto {
+  font-family: 'Arcade', sans-serif;
+  font-size: 1.3rem;
+  background: var(--space4);
+  color: gold;
+  border: 2px solid gold;
+  padding: 12px 25px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(255,215,0,0.5);
+  transition: all 0.3s;
+}
+
+#toggleAuto:hover:not(:disabled) {
+  background: gold;
+  color: var(--space7);
+  transform: scale(1.05);
+  box-shadow: 0 0 30px gold;
+}
+
+#toggleAuto:disabled {
+  background: #444;
+  color: #777;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+#toggleAuto.auto-running {
+  background: #f00;
+  color: white;
+  border-color: #f66;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
     /* MESSAGE DISPLAY */
   .message {
     font-family: 'Arcade', sans-serif;
@@ -152,7 +220,23 @@
     from { text-shadow: 0 0 20px gold, 0 0 40px orange; }
     to   { text-shadow: 0 0 40px gold, 0 0 80px red; }
   }
+.red-btn {
+  background: #500;
+  color: #f88;
+  border-color: #f00;
+  box-shadow: 0 0 25px #800;
+}
 
+.red-btn:hover {
+  background: #f00;
+  color: white;
+  box-shadow: 0 0 40px #f00;
+}
+
+#begMessage {
+  margin-top: 15px;
+  font-weight: bold;
+}
   /* ------- PAYLINES OVERLAY ------- */
   #payLines {
     position: relative; 
@@ -635,8 +719,6 @@
 <div class="casino">
   <h1>Cat Casino</h1>
   <div class="balance">Coins: <span id="coins">1000</span></div>
-  <div class="back-link"><a href="/p/fun/toys/store/">&larr; Spend your coins</a></div>
-
     <!-- Jackpot Display -->
     <div class="jackpot-display">
         CATNIP JACKPOT: <span id="jackpot">1000</span> coins
@@ -660,6 +742,20 @@
         <button id="spin">
             SPIN - 10 coins
         </button>
+        <!-- ADD THIS INSIDE .controls div (next to your SPIN button) -->
+<div class="auto-spin-controls">
+  <label for="autoSpins">Auto-Spin:</label>
+  <select id="autoSpins">
+    <option value="0">Off</option>
+    <option value="10">10 spins</option>
+    <option value="25">25 spins</option>
+    <option value="50">50 spins</option>
+    <option value="100">100 spins</option>
+    <option value="-1">Unlimited</option>
+  </select>
+  <button id="toggleAuto">START AUTO</button>
+</div>
+
         <br>
         <button id="showLines">
             Show / Hide Paylines
@@ -668,6 +764,8 @@
   
     <div class="message" id="message">Good luck!</div>
 
+    <a href="/p/fun/toys/store/" class="store-link">🛒 CAT CARD STORE</a>
+    <br>
     <!-- PAYTABLE BUTTON -->
     <button id="paytableBtn" class="glow-btn">PAYTABLE</button>
 
@@ -707,6 +805,18 @@
     <div style="margin-top:20px;text-align:center;color:var(--space1);font-size:0.9em;">
         All wins x2 during Free Spins <br> 7 Paylines <br> Bet = 10 coins
     </div>
+  </div>
+</div>
+
+<!-- BANKRUPT MODAL -->
+<div id="bankruptModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close" onclick="closeBankruptModal()">x</span>
+    <h2 style="font-family:'Arcade'; color:#f66; text-shadow:0 0 15px #f00;">BANKRUPT!</h2>
+    <p>The cats have claimed all your coins! What now?</p>
+    <button id="resetCoins" class="glow-btn red-btn">RESET GAME (1000 free coins)</button>
+    <button id="begCats" class="glow-btn">BEG THE CATS (200 daily coins)</button>
+    <p id="begMessage" style="color:#f66; display:none;">The cats are unimpressed - come back tomorrow!</p>
   </div>
 </div>
 
@@ -1341,12 +1451,13 @@ window.addEventListener("resize", () => {
 
 const slot = document.getElementById("slot");
 const strips = [];                // current reel strips
-let coins = parseInt(localStorage.getItem('coins')) || 1000;
-const bet = 10;
+let coins = 1000;//parseInt(localStorage.getItem('coins')) || 1000;
+const bet = 990;
 
 // Function to save coins
 function saveCoins() {
   localStorage.setItem('coins', coins.toString());
+  document.getElementById('coins').textContent = coins;
 }
 
 document.getElementById("coins").textContent = coins;
@@ -1698,7 +1809,138 @@ document.getElementById("spin").addEventListener("click", () => {
   spinReels(false);
 });
 
+// ──────── AUTO-SPIN + SPACEBAR ────────
+let autoSpinsLeft = 0;
+let autoRunning = false;
+const spinBtn = document.getElementById('spin');
+const autoSelect = document.getElementById('autoSpins');
+const toggleAutoBtn = document.getElementById('toggleAuto');
+
+// Load saved auto-spin preference
+autoSelect.value = localStorage.getItem('autoSpinsPref') || '0';
+autoSelect.addEventListener('change', () => {
+  localStorage.setItem('autoSpinsPref', autoSelect.value);
+});
+
+// Toggle auto-spin
+toggleAutoBtn.addEventListener('click', () => {
+  if (autoRunning) {
+    stopAutoSpin();
+  } else {
+    startAutoSpin();
+  }
+});
+
+function startAutoSpin() {
+  const num = parseInt(autoSelect.value);
+  if (num === 0) return;
+
+  autoSpinsLeft = num === -1 ? Infinity : num;
+  autoRunning = true;
+  toggleAutoBtn.textContent = 'STOP AUTO';
+  toggleAutoBtn.classList.add('auto-running');
+  spinBtn.disabled = true; // Prevent manual spins during auto
+
+  // Start first spin
+  performSpin();
+}
+
+function stopAutoSpin() {
+  autoSpinsLeft = 0;
+  autoRunning = false;
+  toggleAutoBtn.textContent = 'START AUTO';
+  toggleAutoBtn.classList.remove('auto-running');
+  spinBtn.disabled = false; // Re-enable manual
+}
+
+function performSpin() {
+  if (!autoRunning || autoSpinsLeft === 0 || freeSpinsToPlay > 0 || coins < bet) {
+    stopAutoSpin();
+    return;
+  }
+
+  // Trigger spin
+  spinReels(false); // Normal spin (not free)
+
+  // Decrement and schedule next
+  if (autoSpinsLeft !== Infinity) autoSpinsLeft--;
+  const nextDelay = 5000; // Wait for current spin to finish
+  setTimeout(() => {
+    if (autoRunning) performSpin();
+  }, nextDelay);
+}
+
+// SPACEBAR SPIN
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Space' && !spinBtn.disabled && !autoRunning && freeSpinsToPlay === 0 && coins >= bet) {
+    e.preventDefault();
+    document.getElementById('spin').click();
+  }
+});
+
+// Update spin button text for auto-countdown
+const observer = new MutationObserver(() => {
+  if (autoRunning && autoSpinsLeft !== Infinity && autoSpinsLeft > 0) {
+    spinBtn.textContent = `AUTO: ${autoSpinsLeft}`;
+  }
+});
+observer.observe(spinBtn, { childList: true, subtree: true });
+
+// ──────── BANKRUPT HANDLING (FIXED VERSION) ────────
+function showBankruptModal() {
+  document.getElementById('bankruptModal').style.display = 'block';
+}
+
+function closeBankruptModal() {
+  document.getElementById('bankruptModal').style.display = 'none';
+}
+
+// Attach listeners safely (after DOM ready)
+window.addEventListener('load', () => {
+  const resetBtn = document.getElementById('resetCoins');
+  const begBtn = document.getElementById('begCats');
+  const begMsg = document.getElementById('begMessage');
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      console.log('Reset clicked – resetting coins');
+      coins = 1000;
+      saveCoins();
+      closeBankruptModal();
+      document.getElementById('message').textContent = "Game reset! The cats give you mercy.";
+    });
+  } else {
+    console.error('resetCoins button not found – check HTML ID');
+  }
+
+  if (begBtn) {
+    begBtn.addEventListener('click', () => {
+      console.log('Beg clicked – checking daily limit');
+      const lastBeg = localStorage.getItem('lastBegTime');
+      const now = Date.now();
+      if (lastBeg && now - lastBeg < 86400000) {  // 24 hours
+        begMsg.style.display = 'block';
+        setTimeout(() => begMsg.style.display = 'none', 3000);
+        return;
+      }
+
+      coins += 200;
+      saveCoins();
+      localStorage.setItem('lastBegTime', now);
+      closeBankruptModal();
+      document.getElementById('message').textContent = "The cats purr... 200 coins granted!";
+    });
+  } else {
+    console.error('begCats button not found – check HTML ID');
+  }
+});
+
+// Check on every spin attempt
 function spinReels(isFreeSpin) {
+  if (!isFreeSpin && coins < bet) {
+    showBankruptModal();
+    return;
+  }
   const spinButton = document.getElementById("spin");
   const messageEl = document.getElementById("message");
 
