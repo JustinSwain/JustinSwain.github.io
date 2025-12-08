@@ -24,6 +24,18 @@
       text-align: center;
     }
 
+    .back-link {
+      width: 100%;
+      text-align: center;
+      color: var(--space0);
+      text-decoration: none;
+    }
+    .back-link a {
+      color: var(--space0);
+      text-decoration: none;
+      font-size: 1.2rem;
+    }
+
     .coins {
       font-size: 1.8rem;
       color: var(--space0);
@@ -286,12 +298,11 @@
   </style>
 </head>
 <body>
-
 <div class="container">
-  <a href="/p/fun/toys/slots/" class="back-link">&larr; Earn more coins</a>
   <div class="store">
     <h1>Cat Card Store <br> Mystery Packs!</h1>
     <div class="coins">Your Coins: <span id="coins">0</span></div>
+    <div class="back-link"><a href="/p/fun/toys/slots/">&larr; Earn more coins</a></div>
     <button id="buyPack">Buy a pack of 3 mystery cards! <br>(100 coins)</button>
     <div id="noCoins" style="display: none;">Not enough coins! Play more slots!</div>
     <div class="mystery-pack" id="mysteryPack" style="display: none;"></div>
