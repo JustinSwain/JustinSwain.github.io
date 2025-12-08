@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Card Template</title>
+    <style>
+        :root {
+            /* Space color palette (light → dark) */
+            --space0: #bfc9e7;  /* lightest */
+            --space1: #4a70e2;
+            --space2: #0137d9;
+            --space3: #1b388f;
+            --space4: #042178;
+            --space5: #001248;
+            --space6: #010a28;
+            --space7: #00071b;  /* darkest */
+
+            --border-color: #fff;
+            --background-color: linear-gradient(180deg, #fffffd, red);
+            --title-line-color: #5b3d14;    
+            --rarity-color: rgb(251, 175, 175);
+            --image-border-color: #fff;
+            --description-shadow-color: var(--space0);
+            --title-color: var(--space7);
+            --rarity-text-color: var(--space7);
+            --background-image: url('/images/bluespace.gif');
+            --description-bg-color: rgb(251, 175, 175);
+            --description-text-color: var(--space7);
+        }
+
+        body {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #222;
+            font-family: Arial, sans-serif;
+        }
+
+        .card {
+            width: 250px;
+            height: 350px;
+            background: var(--background-color);
+            border: 5px solid var(--border-color);
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--background-image) repeat;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 10px 0;
+            color: var(--title-color);
+            border-bottom: 2px solid var(--title-line-color);
+            padding-bottom: 5px;
+        }
+
+        .rarity {
+            text-align: center;
+            font-size: 1.2em;
+            color: var(--rarity-text-color);
+            background: var(--rarity-color);
+            margin: 0 10px 10px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .image {
+            display: block;
+            width: 210px;
+            height: 150px;
+            margin: 0 auto 10px;
+            border: 3px solid var(--image-border-color);
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .description {
+            margin: 0 auto;
+            width: 190px;
+            height: 50px;
+            font-size: 1em;
+            color: var(--description-text-color);
+            text-align: center;
+            padding: 10px;
+            border: 3px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: 0 0 5px var(--description-shadow-color);
+            background-color: var(--description-bg-color);
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+
+<div class="card">
+    <div class="title">Cuddle Puddle</div>
+    <div class="rarity">Rarity: Epic</div>
+    <img class="image" src="/images/catcards/IMG_0506.JPEG" alt="Card Image">
+    <div class="description">
+        A full-house - all five cats in one puddle.
+    </div>
+</div>
+<br>
+<button id="saveCard" class="download" style="width: 200px; height: 50px; background-color: #333333; color: white;">Save as PNG</button>
+
+<script>
+    document.getElementById('saveCard').addEventListener('click', () => {
+  html2canvas(document.querySelector('.card')).then(canvas => {
+    const link = document.createElement('a');
+    link.download = 'cat_trading_card.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+});
+</script>
+</body>
+</html>

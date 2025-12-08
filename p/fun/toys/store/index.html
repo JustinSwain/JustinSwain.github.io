@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cat Card Store – Mystery Packs!</title>
+  <link rel="stylesheet" href="/style/style.css"> <!-- Your global style -->
+  <style>
+    /* Store styles (your original + mystery box animation) */
+    .store {
+      background: var(--space6);
+      padding: 30px;
+      border: 4px solid var(--space1);
+      border-radius: 16px;
+      max-width: 800px;
+      margin: 30px auto;
+      box-shadow: 0 0 40px var(--space2);
+    }
+
+    h1 {
+      font-family: 'Arcade', sans-serif;
+      color: var(--space0);
+      text-shadow: 0 0 15px var(--space2);
+      text-align: center;
+    }
+
+    .coins {
+      font-size: 1.8rem;
+      color: var(--space0);
+      text-align: center;
+      margin: 20px 0;
+      background: var(--space7);
+      padding: 15px;
+      border-radius: 10px;
+      border: 2px solid var(--space1);
+    }
+
+    #buyPack {
+      display: block;
+      margin: 20px auto;
+      font-family: 'Arcade', sans-serif;
+      font-size: 1.8rem;
+      background: var(--space3);
+      color: white;
+      border: 3px solid gold;
+      padding: 20px 50px;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 0 25px gold;
+      transition: all 0.3s;
+    }
+
+    #buyPack:hover:not(:disabled) {
+      background: gold;
+      color: var(--space7);
+      transform: scale(1.05);
+      box-shadow: 0 0 40px gold;
+    }
+
+    #buyPack:disabled {
+      background: #444;
+      color: #777;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    #noCoins {
+      color: #f66;
+      text-align: center;
+      font-size: 1.4rem;
+      margin: 20px 0;
+      display: none;
+    }
+
+    /* MYSTERY BOX ANIMATION */
+    .mystery-pack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 30px;
+      opacity: 0;
+      transform: translateY(50px);
+      animation: slideIn 0.8s ease forwards;
+    }
+
+    @keyframes slideIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .mystery-box {
+      width: 180px;
+      height: 250px;
+      background: linear-gradient(145deg, #444, #222);
+      border: 4px solid #ffd700;
+      border-radius: 16px;
+      position: relative;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(255,215,0,0.5);
+      transition: all 0.3s;
+      overflow: hidden;
+    }
+
+    .mystery-box::before {
+      content: '???';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Arcade', sans-serif;
+      font-size: 3rem;
+      color: gold;
+      text-shadow: 0 0 20px gold;
+      z-index: 2;
+    }
+
+    .mystery-box.glow {
+      animation: mysteryGlow 1s ease-in-out infinite alternate;
+      box-shadow: 0 0 40px gold, 0 20px 50px rgba(255,215,0,0.7);
+    }
+
+    @keyframes mysteryGlow {
+      from { box-shadow: 0 0 40px gold, 0 20px 50px rgba(255,215,0,0.7); }
+      to { box-shadow: 0 0 60px gold, 0 30px 70px rgba(255,215,0,1); }
+    }
+
+    .mystery-box.shake {
+      animation: shake 0.5s ease-in-out;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+
+    .revealed {
+      animation: flipReveal 0.6s ease-out forwards;
+    }
+
+    @keyframes flipReveal {
+      0% { transform: perspective(1000px) rotateY(0deg); }
+      50% { transform: perspective(1000px) rotateY(90deg); }
+      100% { transform: perspective(1000px) rotateY(0deg); }
+    }
+
+    .card-revealed {
+      background: linear-gradient(to bottom, var(--space0), var(--space2));
+      border: 2px solid #000000;
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+      /* height: 100%; */
+    }
+
+    .card-revealed img {
+      width: 140px;
+      /* height: auto; */
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      /* border: 2px solid var(--space1); */
+    }
+
+    .card-title {
+      font-family: 'Arcade', sans-serif;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #000;
+      margin-bottom: 5px;
+    }
+
+    .card-rarity {
+      font-size: 0.9rem;
+      color: gold;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .download {
+      display: block;
+      background: var(--space3);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.9rem;
+      transition: background 0.3s;
+    }
+
+    .download:hover {
+      background: gold;
+      color: var(--space7);
+    }
+
+    .collection-section {
+    margin: 50px auto;
+    padding: 30px;
+    background: var(--space6);
+    border: 4px solid var(--space1);
+    border-radius: 16px;
+    max-width: 900px;
+    box-shadow: 0 0 40px var(--space2);
+    }
+
+    .collection-stats {
+    text-align: center;
+    font-size: 1.6rem;
+    color: var(--space0);
+    margin-bottom: 20px;
+    font-weight: bold;
+    }
+
+    .collection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+    padding: 10px;
+    }
+
+    .collection-card {
+    background: var(--space7);
+    border: 2px solid var(--space3);
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    }
+
+    .collection-card:hover {
+    border-color: gold;
+    box-shadow: 0 0 25px gold;
+    transform: translateY(-5px);
+    }
+
+    .collection-card.locked {
+    filter: brightness(0.3);
+    }
+
+    .collection-card.locked::after {
+    content: "???";
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Arcade', sans-serif;
+    font-size: 3rem;
+    color: #555;
+    pointer-events: none;
+    }
+
+    .collection-card img {
+    width: 140px;
+    /* height: 140px; */
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid var(--space1);
+    }
+
+    .collection-card .count {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(0,0,0,0.7);
+    color: gold;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    ;
+    }
+
+    @media (max-width: 600px) {
+      .mystery-box { 
+        width: 150px; 
+        /* height: 210px;  */
+    }
+      .card-revealed img { 
+        width: 120px; 
+        /* height: 120px;  */
+    }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <a href="/p/fun/toys/slots/" class="back-link">&larr; Earn more coins</a>
+  <div class="store">
+    <h1>Cat Card Store <br> Mystery Packs!</h1>
+    <div class="coins">Your Coins: <span id="coins">0</span></div>
+    <button id="buyPack">Buy a pack of 3 mystery cards! <br>(100 coins)</button>
+    <div id="noCoins" style="display: none;">Not enough coins! Play more slots!</div>
+    <div class="mystery-pack" id="mysteryPack" style="display: none;"></div>
+    <!-- COLLECTION SECTION -->
+<div class="collection-section">
+  <h2 style="font-family:'Arcade'; color:gold; text-align:center; margin-bottom:20px;">
+    MY CAT CARD COLLECTION
+  </h2>
+  <div class="collection-stats">
+    Discovered <strong id="discovered">0</strong> unique cats
+  </div>
+  <div class="collection-grid" id="collectionGrid"></div>
+</div>
+  </div>
+</div>
+
+<script>
+  // Your cat images array (update with your actual card PNGs or toy images)
+  const catImages = [
+    "/images/catcards/space_cat.png", //Common
+    "/images/catcards/trumpet_cat.png",
+    "/images/catcards/hikers.png", // Uncommon
+    "/images/catcards/bbq_dinner.png",
+    "/images/catcards/bread_cat.png", // Epic
+    "/images/catcards/super_cat.png",
+    "/images/catcards/cuddle_puddle.png",
+    "/images/catcards/christmas_jinx.png", // Legendary
+    "/images/catcards/larry.png",
+  ];
+  const characters = {
+            "christmas_jinx.png": "Christmas Jinx",
+            "larry.png": "Larry",
+            "space_cat.png": "Space Cat",  
+            "trumpet_cat.png": "Trumpet Cat",
+            "super_cat.png": "Super Cat",
+            "hikers.png": "Hikers",
+            "bbq_dinner.png": "Korean BBQ Dinner",
+            "bread_cat.png": "Bread Cat",
+            "cuddle_puddle.png": "Cuddle Puddle"
+        }
+  // -------- Random Weights --------
+const SYMBOL_WEIGHTS = {
+  "space_cat.png": 10, // Common
+  "trumpet_cat.png": 10,
+  "hikers.png": 8, // Uncommon
+  "bbq_dinner.png": 8,
+  "bread_cat.png": 8,
+  "super_cat.png": 4, // Epic
+  "cuddle_puddle.png": 4,
+  "larry.png": 1, // Super Rare
+  "christmas_jinx.png": 1,
+};
+
+  const coinsEl = document.getElementById('coins');
+  const buyBtn = document.getElementById('buyPack');
+  const noCoinsEl = document.getElementById('noCoins');
+  const mysteryPack = document.getElementById('mysteryPack');
+
+  function updateCoins() {
+    const coins = parseInt(localStorage.getItem('coins') || '0');
+    coinsEl.textContent = coins.toLocaleString();
+    buyBtn.disabled = coins < 100;
+  }
+
+  buyBtn.addEventListener('click', () => {
+    let coins = parseInt(localStorage.getItem('coins') || '0');
+    if (coins < 100) {
+      noCoinsEl.style.display = 'block';
+      setTimeout(() => noCoinsEl.style.display = 'none', 3000);
+      return;
+    }
+
+    coins -= 100;
+    localStorage.setItem('coins', coins.toString());
+    updateCoins();
+
+    // Start mystery box animation
+    mysteryPack.innerHTML = '';
+    mysteryPack.style.display = 'flex';
+
+    // Create 3 mystery boxes
+    const boxes = [];
+    for (let i = 0; i < 3; i++) {
+      const box = document.createElement('div');
+      box.className = 'mystery-box glow';
+      mysteryPack.appendChild(box);
+      boxes.push(box);
+    }
+
+    // Staggered shake and reveal
+    let delay = 0;
+    boxes.forEach((box, index) => {
+      setTimeout(() => {
+        box.classList.remove('glow');
+        box.classList.add('shake');
+        setTimeout(() => {
+          revealCard(box, index);
+        }, 500);
+      }, delay);
+      delay += 600;
+    });
+  });
+
+  // -------- ROBUST FILENAME HELPER --------
+    function getFilename(src) {
+    // Safety first – if anything weird happens, return empty string
+    if (!src || typeof src !== "string") return "";
+    // Extract just the filename (works with full URLs, relative paths, query strings, etc.)
+    const parts = src.split(/[\\/]/);           // split on / or \
+    let filename = parts[parts.length - 1];     // last part
+    filename = filename.split('?')[0];        // remove query string or hash
+    return filename;
+    }
+  function pickRandomCard() {
+  const filenames = Object.keys(SYMBOL_WEIGHTS);
+  const totalWeight = filenames.reduce((sum, name) => sum + SYMBOL_WEIGHTS[name], 0);
+  let rand = Math.random() * totalWeight;
+
+  for (const filename of filenames) {
+    rand -= SYMBOL_WEIGHTS[filename];
+    if (rand <= 0) {
+      // Find matching image path
+      return catImages.find(path => getFilename(path) === filename) || catImages[0];
+    }
+  }
+  return catImages[0]; // Failsafe
+}
+
+// ──────── CARD COLLECTION SYSTEM ────────
+const COLLECTION_KEY = 'catCardCollection';
+
+function getCollection() {
+  const saved = localStorage.getItem(COLLECTION_KEY);
+  return saved ? JSON.parse(saved) : {};
+}
+
+function saveCollection(collection) {
+  localStorage.setItem(COLLECTION_KEY, JSON.stringify(collection));
+}
+
+function updateCollectionDisplay() {
+  const collection = getCollection();
+  const grid = document.getElementById('collectionGrid');
+  grid.innerHTML = '';
+
+  let discovered = 0;
+
+  catImages.forEach(imgPath => {
+    const filename = imgPath.split('/').pop();
+    const count = collection[filename] || 0;
+
+    const card = document.createElement('div');
+    card.className = 'collection-card' + (count > 0 ? '' : ' locked');
+    if (count > 0) {
+      discovered++;
+      card.innerHTML = `
+        <img src="${imgPath}" alt="${filename}">
+        <div class="count">x${count}</div>
+        <div style="margin-top:8px; color:gold; font-weight:bold;">
+            ${characters[filename] || filename}
+        </div>
+      `;
+    } else {
+      // Hidden card
+      card.innerHTML = `
+        <div style="height:140px; background:#111; border-radius:8px; border:2px dashed #444;"></div>
+        <div style="margin-top:8px; color:#666;">UNDISCOVERED</div>
+      `;
+    }
+
+    grid.appendChild(card);
+  });
+
+  document.getElementById('discovered').textContent = discovered;
+}
+
+function addCardsToCollection(cardPaths) {
+  const collection = getCollection();
+  cardPaths.forEach(path => {
+    const filename = path.split('/').pop();
+    collection[filename] = (collection[filename] || 0) + 1;
+  });
+  saveCollection(collection);
+  updateCollectionDisplay();
+}
+
+  function revealCard(box, index) {
+  const img = pickRandomCard();
+  const filename = img.split('/').pop();
+
+  const card = document.createElement('div');
+  card.className = 'card-revealed revealed';
+  card.innerHTML = `
+    <img src="${img}" alt="${filename}">
+    <a href="${img}" download="${filename}" class="download">DOWNLOAD CARD</a>
+  `;
+
+  box.parentNode.replaceChild(card, box);
+
+  // Save to collection
+  addCardsToCollection([img]);
+}
+// Call once on load
+updateCollectionDisplay();
+  updateCoins(); // Initial load
+</script>
