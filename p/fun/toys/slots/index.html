@@ -1261,8 +1261,8 @@ const RNGStats = {
     if (runsEl) {
       runsEl.textContent = this.longestRunOnes;
       runsEl.className =
-        this.longestRunOnes <= 12 ? 'good' :
-        this.longestRunOnes <= 20 ? 'warn' :
+        Math.abs(this.longestRunOnes - Math.log2(this.bitCount)) <= 2 ? 'good' :
+        Math.abs(this.longestRunOnes - Math.log2(this.bitCount)) <= 4 ? 'warn' :
                                     'bad';
     }
 
