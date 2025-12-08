@@ -1451,8 +1451,8 @@ window.addEventListener("resize", () => {
 
 const slot = document.getElementById("slot");
 const strips = [];                // current reel strips
-let coins = 1000;//parseInt(localStorage.getItem('coins')) || 1000;
-const bet = 990;
+let coins = parseInt(localStorage.getItem('coins')) || 1000;
+const bet = 10;
 
 // Function to save coins
 function saveCoins() {
