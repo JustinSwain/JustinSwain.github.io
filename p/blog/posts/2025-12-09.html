@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justin Swain - Humanity</title> 
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="icon" href="/images/spacecat.png">
+  </head>
+  <body>
+<div id="container"><div id="topBar">
+    <!--<marquee>Welcome!</marquee>-->
+</div>
+<div id="headerArea">
+    <div id="header">
+        <a href="/"><img src="/images/spacecat.png" height="120px"></a>
+            <a href="/" style="text-decoration: none;"><strong>justinswain.dev</strong></a>
+    </div>
+</div>
+
+<div id="flex">
+
+    <main>
+        <h1>Proof of Humanity in the McDonald's Drive-Thru</h1>  <!-- Your title -->
+        <p>2025-12-09</p>  <!-- Optional date -->
+        <div class="box" style="margin-bottom: 20px;">
+        <p>
+          While researching Zero-Knowledge Proofs (ZKPs) I learned about the <a href="https://proofofhumanity.id/">proof of humanity</a>. A ZKP that proves you are a real flesh-and-blood human and not an AI replicant by assigning a unique personal identifier that is verified through a zero-knowledge ceremony on the public blockchain.
+        </p>
+        <p>
+          I imagined a future where instead of door-to-door salesmen, we get armed Ethereum guards knocking on our doors so our unique human characteristics can be scanned by the privately-funded government oracle for upload and hash into the local Merkle tree.
+        </p>
+        <p>
+          This kind of dystopian absurdity is the kind of thing you'd see in a Neal Stephenson novel - so I asked Chat-GPT to write a short story. The result is too good not to share.
+        </p>
+        <hr>
+        <h3>The Day the Drive-Thru Went Offline</h3>
+        <em style="font-size: 0.8rem">In the style of Neal Stephenson's Snow Crash</em>
+        <p>
+          At first, Proof of Humanity was supposed to dignify the species. But once it reached critical mass, the real test of civilization came when the McDonald's app refused service.
+        </p>
+        <p>
+          Some guy -- mid-commute, mid-existential crisis -- tries to redeem his McRib points and gets hit with a red pop-up:
+        </p>
+
+        <em style="color: #ff8391">
+          ERROR: Unverified consciousness. Please register your iris on the World ID blockchain.
+        </em>
+
+        <p>
+          He blinks at it like it's a joke. It isn't. The drive-thru scanner blinks back -- a small, chrome hemisphere mounted beside the card reader, humming with moral authority. The teenager at the window shrugs; her training module didn't cover ontological verification.
+        </p>
+
+        <p>
+          "You can't prove you're a person, sir," she says, in the bored tone of someone quoting company policy.
+        </p>
+
+        <p>
+          He looks around at the other cars -- a line of commuters, all holding up their phones like penitents before a digital relic. The Orbs whirr, confirm, and the golden arches bestow their blessings: "Transaction verified: Human. Fries added to cart."
+        </p>
+
+        <p>
+          That's how the singularity actually arrived -- not with AI overthrowing mankind, but with mankind begging an algorithm to recognize its soul before breakfast.
+        </p>
+        </div>
+        <a href="/p/blog/">Back to Blog</a>  <!-- Link back to landing page -->
+    </main>
+    <sideBar id="sideBarPlaceholder"></sideBar>
+  </div>
+  <footer id="footerPlaceholder"></footer>
+</div>
+
+<script>
+async function loadComponent(id, path) {
+  try { document.getElementById(id).innerHTML = await (await fetch(path)).text(); } catch(e) {}
+}
+loadComponent("sideBarPlaceholder", "/components/sidebar.html");
+loadComponent("footerPlaceholder", "/components/footer.html");
+
+function isPrime(n) { if(n<2)return false; for(let i=2;i*i<=n;i++)if(n%i===0)return false; return true; }
+let n = 2;
+setInterval(() => { while(!isPrime(n))n++; const el=document.getElementById("prime-number"); if(el)el.textContent=n++; }, 2000);
+</script>
+
+</body>
+</html>

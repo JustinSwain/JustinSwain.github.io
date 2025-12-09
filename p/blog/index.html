@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justin Swain - Blog</title>
+    <link rel="stylesheet" href="/style/style.css">
+    <link rel="icon" href="/images/spacecat.png">
+    <style>
+        .blog-links {
+    list-style-type: none;  /* Optional: Remove bullets for a cleaner 90s list vibe */
+    padding: 0;
+}
+
+.blog-links li {
+    margin: 10px 0;
+}
+
+.blog-links a {
+    color: var(--space1);  /* Brighter for visibility */
+    text-decoration: underline wavy;  /* Fun, nostalgic underline style */
+}
+
+.blog-links a:hover {
+    color: var(--space0);
+}
+    </style>
+  </head>
+  <body>
+<div id="container"><div id="topBar">
+    <!--<marquee>Welcome!</marquee>-->
+</div>
+<div id="headerArea">
+    <div id="header">
+        <a href="/"><img src="/images/spacecat.png" height="120px"></a>
+            <a href="/" style="text-decoration: none;"><strong>justinswain.dev</strong></a>
+    </div>
+</div>
+
+<div id="flex">
+
+    <main>
+        
+        <h1>Blog</h1>
+        <div class="box">
+        <ul class="blog-links"> 
+            <li><a href="/p/blog/posts/2025-12-09.html">December 9, 2025: Proof of Humanity in the McDonald's Drive-Thru</a></li>
+            
+            <!-- More links -->
+        </ul>
+        </div>
+    </main>
+    <sideBar id="sideBarPlaceholder"></sideBar>
+  </div>
+  <footer id="footerPlaceholder"></footer>
+</div>
+
+<script>
+async function loadComponent(id, path) {
+  try { document.getElementById(id).innerHTML = await (await fetch(path)).text(); } catch(e) {}
+}
+loadComponent("sideBarPlaceholder", "/components/sidebar.html");
+loadComponent("footerPlaceholder", "/components/footer.html");
+
+function isPrime(n) { if(n<2)return false; for(let i=2;i*i<=n;i++)if(n%i===0)return false; return true; }
+let n = 2;
+setInterval(() => { while(!isPrime(n))n++; const el=document.getElementById("prime-number"); if(el)el.textContent=n++; }, 2000);
+</script>
+
+</body>
+</html>
