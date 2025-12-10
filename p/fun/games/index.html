@@ -17,7 +17,7 @@
       border: 1px solid #333;
       transition: 0.4s ease;
     }
-    .steam-card:hover {
+    .game-card:hover {
       transform: translateY(-12px);
       box-shadow: 0 20px 40px rgba(0,212,255,0.4);
       border-color: var(--space1);
@@ -164,7 +164,7 @@ async function loadSteamData() {
         <h3>Most Played</h3>
         <div style="margin:20px;">
             ${d.top5.map(g => `
-            <div style="text-align:center;background-image:url(https://steamcdn-a.akamaihd.net/steam/apps/${g.appid}/library_hero.jpg);background-size:cover;padding:20px;border-radius:14px;border:1px solid #333;">
+            <div class="game-card" style="text-align:center;background-image:url(https://steamcdn-a.akamaihd.net/steam/apps/${g.appid}/library_hero.jpg);background-size:cover;padding:20px;border-radius:14px;border:1px solid #333;">
                 <a href="https://store.steampowered.com/agecheck/app/${g.appid}"><img src="https://steamcdn-a.akamaihd.net/steam/apps/${g.appid}/capsule_616x353.jpg" 
                     alt="${cleanGameName(g.name)}"
                     style="height: auto;border-radius:8px;box-shadow:0 4px 15px rgba(0,212,255,0.4);"></a>
@@ -181,7 +181,7 @@ async function loadSteamData() {
         <h3>Recent Played</h3>
         <div style="margin:20px;">
             ${d.recent3.map(g => `
-            <div style="text-align:center;background-image:url(https://steamcdn-a.akamaihd.net/steam/apps/${g.appid}/library_hero.jpg);background-size:cover;padding:20px;border-radius:14px;border:1px solid #333;">
+            <div class="game-card" style="text-align:center;background-image:url(https://steamcdn-a.akamaihd.net/steam/apps/${g.appid}/library_hero.jpg);background-size:cover;padding:20px;border-radius:14px;border:1px solid #333;">
                 <a href="https://store.steampowered.com/agecheck/app/${g.appid}"><img src="https://steamcdn-a.akamaihd.net/steam/apps/${g.appid}/capsule_616x353.jpg" 
                     alt="${cleanGameName(g.name)}"
                     style="height: auto;border-radius:8px;box-shadow:0 4px 15px rgba(0,212,255,0.4);"></a>
