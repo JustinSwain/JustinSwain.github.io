@@ -293,16 +293,119 @@
     border-radius: 20px;
     font-weight: bold;
     font-size: 0.9rem;
-    ;
     }
+
+    .prestige-section {
+  margin: 20px 0;
+  padding: 20px;
+  background: linear-gradient(145deg, var(--space7), var(--space5));
+  border: 3px solid gold;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 0 30px gold;
+}
+
+.prestige-badge {
+  font-family: 'Arcade';
+  font-size: 2rem;
+  color: gold;
+  text-shadow: 0 0 20px gold;
+  margin: 10px 0;
+  animation: prestigeGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes prestigeGlow {
+  from { text-shadow: 0 0 20px gold; }
+  to { text-shadow: 0 0 40px gold, 0 0 60px orange; }
+}
+
+.prestige-btn {
+  background: linear-gradient(145deg, #800, #500);
+  color: gold;
+  border-color: gold;
+  font-size: 1.4rem;
+  padding: 15px 40px;
+  box-shadow: 0 0 25px #a00;
+}
+
+.prestige-btn:not(:disabled):hover {
+  background: linear-gradient(145deg, gold, orange);
+  color: var(--space7);
+  box-shadow: 0 0 50px gold;
+  transform: scale(1.08);
+}
+
+.prestige-btn:disabled {
+  background: #333;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.prestige-badges-row {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 15px 0;
+}
+
+.prestige-badge-icon {
+  width: 50px;
+  height: 50px;
+  background: var(--space7);
+  border: 2px solid #666;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  color: #666;
+  font-family: 'Arcade';
+  position: relative;
+  transition: all 0.3s;
+}
+
+.prestige-badge-icon.unlocked {
+  border-color: gold;
+  box-shadow: 0 0 20px gold;
+}
+
+.prestige-badge-icon.unlocked img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+  animation: badgeReveal 0.5s ease-out;
+  transition: 0.4s ease;
+}
+.prestige-badge-icon.unlocked:hover {
+  transform: scale(1.5) translateY(-10px);
+}
+
+@keyframes badgeReveal {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.prestige-badge-icon.locked {
+  color: #aaa;
+  border-color: #444;
+  background: #111;
+  content: '??';
+}
+
+.prestige-badge-icon.locked:after {
+  content: '??';
+  font-size: 1.5rem;
+  color: #666;
+}
 
     @media (max-width: 600px) {
       .mystery-box { 
-        width: 150px; 
+        width: 70%; 
         /* height: 210px;  */
     }
       .card-revealed img { 
-        width: 120px; 
+        width: 70%; 
         /* height: 120px;  */
     }
     }
@@ -327,7 +430,23 @@
   </div>
   <div class="collection-grid" id="collectionGrid"></div>
 </div>
+<!-- PRESTIGE SECTION (UPDATED WITH BADGE ROW) -->
+<div class="prestige-section">
+  <h3 style="font-family:'Arcade'; color:gold; text-align:center;">PRESTIGE MASTER</h3>
+  <div class="prestige-badges-row" id="prestigeBadges">
+    <!-- JS will generate 5 slots: ?? or badge icons -->
   </div>
+  <div id="prestigeBadge" class="prestige-badge" style="display:none;">
+    Level <span id="prestigeLevel">1</span> ⭐
+  </div>
+  <button id="prestigeBtn" class="glow-btn prestige-btn" disabled>
+    PRESTIGE (3x All Cards Required)
+  </button>
+  <div id="prestigeProgress" style="font-size:0.9rem; color:var(--space1); text-align:center;">
+    Collection: <span id="prestigeCardsNeeded">0</span>/21 cards at 3+
+  </div>
+</div>
+</div>
 </div>
 
 <script>
@@ -551,8 +670,96 @@ function addCardsToCollection(cardPaths) {
 
   // Save to collection
   addCardsToCollection([img]);
+
+  // Check prestige unlock (cross-page sync)
+  updatePrestigeProgress(); // This now works via postMessage or reload
+  updateCoins();
+  updateCollectionDisplay();
+  // window.location.reload(); // Simple reload to update slot prestige (or use postMessage for fancy)
 }
 // Call once on load
 updateCollectionDisplay();
-  updateCoins(); // Initial load
+updateCoins(); // Initial load
+
+// ──────── PRESTIGE SYSTEM (UPDATED WITH BADGE ROW) ────────
+const PRESTIGE_KEY = 'catPrestigeLevel';
+const MAX_PRESTIGE = 5; // Show 5 levels max – expand as needed
+
+let prestigeLevel = parseInt(localStorage.getItem(PRESTIGE_KEY)) || 0;
+
+function loadPrestige() {
+  if (prestigeLevel > 0) {
+    document.getElementById('prestigeBadge').style.display = 'block';
+    document.getElementById('prestigeLevel').textContent = prestigeLevel;
+  }
+  updatePrestigeBadges();
+  updatePrestigeProgress();
+}
+
+function updatePrestigeBadges() {
+  const row = document.getElementById('prestigeBadges');
+  row.innerHTML = '';
+
+  for (let i = 1; i <= MAX_PRESTIGE; i++) {
+    const badge = document.createElement('div');
+    badge.className = 'prestige-badge-icon' + (i <= prestigeLevel ? ' unlocked' : ' locked');
+
+    if (i <= prestigeLevel) {
+      const img = document.createElement('img');
+      img.src = `/images/catcards/prestige_lvl_${i}.jpg`; // Your icons
+      img.alt = `Prestige Level ${i}`;
+      img.onerror = () => { img.src = 'https://via.placeholder.com/50?text=Lvl' + i; }; // Fallback if not found
+      badge.appendChild(img);
+    }
+
+    row.appendChild(badge);
+  }
+}
+
+function updatePrestigeProgress() {
+  const collection = getCollection();
+  let completed = 0;
+  catImages.forEach(imgPath => {
+    const filename = imgPath.split('/').pop();
+    if (collection[filename] >= 3) completed++;
+  });
+
+  document.getElementById('prestigeCardsNeeded').textContent = completed;
+  const prestigeBtn = document.getElementById('prestigeBtn');
+  prestigeBtn.disabled = completed < 1;//catImages.length;
+  if (completed === catImages.length) {
+    prestigeBtn.textContent = 'PRESTIGE NOW!';
+    prestigeBtn.style.background = 'linear-gradient(145deg, gold, orange)';
+  } else {
+    prestigeBtn.style.background = '';
+  }
+}
+
+// Prestige button click (from earlier)
+document.getElementById('prestigeBtn').addEventListener('click', () => {
+  if (!confirm('Prestige will reset ALL progress but grant you a fancy badge! Proceed?')) return;
+
+  // Reset progress
+  coins = 1000;
+  localStorage.setItem('coins', coins.toString());
+  updateCoins();
+  localStorage.removeItem(COLLECTION_KEY);
+  // jackpot = 1000;
+  // updateJackpotDisplay();
+  updateCollectionDisplay();
+  document.getElementById('mysteryPack').style.display = 'none';
+
+  // Increment prestige
+  prestigeLevel = Math.min(prestigeLevel + 1, MAX_PRESTIGE);
+  localStorage.setItem(PRESTIGE_KEY, prestigeLevel);
+
+  // Update UI
+  document.getElementById('prestigeLevel').textContent = prestigeLevel;
+  document.getElementById('prestigeBadge').style.display = 'block';
+  updatePrestigeBadges();
+  updatePrestigeProgress();
+});
+
+// Call on load
+loadPrestige();
 </script>

@@ -1903,19 +1903,19 @@ window.addEventListener('load', () => {
 
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
-      console.log('Reset clicked – resetting coins');
+      console.log('Reset clicked - resetting coins');
       coins = 1000;
       saveCoins();
       closeBankruptModal();
       document.getElementById('message').textContent = "Game reset! The cats give you mercy.";
     });
   } else {
-    console.error('resetCoins button not found – check HTML ID');
+    console.error('resetCoins button not found - check HTML ID');
   }
 
   if (begBtn) {
     begBtn.addEventListener('click', () => {
-      console.log('Beg clicked – checking daily limit');
+      console.log('Beg clicked - checking daily limit');
       const lastBeg = localStorage.getItem('lastBegTime');
       const now = Date.now();
       if (lastBeg && now - lastBeg < 86400000) {  // 24 hours
@@ -1931,7 +1931,7 @@ window.addEventListener('load', () => {
       document.getElementById('message').textContent = "The cats purr... 200 coins granted!";
     });
   } else {
-    console.error('begCats button not found – check HTML ID');
+    console.error('begCats button not found - check HTML ID');
   }
 });
 
