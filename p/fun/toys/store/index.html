@@ -726,7 +726,7 @@ function updatePrestigeProgress() {
 
   document.getElementById('prestigeCardsNeeded').textContent = completed;
   const prestigeBtn = document.getElementById('prestigeBtn');
-  prestigeBtn.disabled = completed < 1;//catImages.length;
+  prestigeBtn.disabled = completed < catImages.length;
   if (completed === catImages.length) {
     prestigeBtn.textContent = 'PRESTIGE NOW!';
     prestigeBtn.style.background = 'linear-gradient(145deg, gold, orange)';
