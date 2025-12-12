@@ -349,8 +349,10 @@
 }
 
 .prestige-badge-icon {
-  width: 50px;
-  height: 50px;
+  width: 70px;
+  /* height: 70px; */
+  max-width: 15%;
+  /* max-height: 15%; */
   background: var(--space7);
   border: 2px solid #666;
   border-radius: 50%;
@@ -378,7 +380,8 @@
   transition: 0.4s ease;
 }
 .prestige-badge-icon.unlocked:hover {
-  transform: scale(1.5) translateY(-10px);
+  transform: scale(2.5) translateY(-10px);
+  z-index: 1000;;
 }
 
 @keyframes badgeReveal {
@@ -432,7 +435,7 @@
 </div>
 <!-- PRESTIGE SECTION (UPDATED WITH BADGE ROW) -->
 <div class="prestige-section">
-  <h3 style="font-family:'Arcade'; color:gold; text-align:center;">PRESTIGE MASTER</h3>
+  <!-- <h3 style="font-family:'Arcade'; color:gold; text-align:center;">PRESTIGE SYSTEM</h3> -->
   <div class="prestige-badges-row" id="prestigeBadges">
     <!-- JS will generate 5 slots: ?? or badge icons -->
   </div>
@@ -440,10 +443,10 @@
     Level <span id="prestigeLevel">1</span> ⭐
   </div>
   <button id="prestigeBtn" class="glow-btn prestige-btn" disabled>
-    PRESTIGE (3x All Cards Required)
+    PRESTIGE  <p style="margin: 0 auto; font-size: 0.8rem;">Trade-in all cards and reset coins to 1000 to earn a prestige badge.</p>
   </button>
-  <div id="prestigeProgress" style="font-size:0.9rem; color:var(--space1); text-align:center;">
-    Collection: <span id="prestigeCardsNeeded">0</span>/21 cards at 3+
+  <div id="prestigeProgress" style="margin-top: 15px; font-size:0.9rem; color:var(--space1); text-align:center;">
+    Progress: <span id="prestigeCardsNeeded">0</span>/21 cards discovered
   </div>
 </div>
 </div>

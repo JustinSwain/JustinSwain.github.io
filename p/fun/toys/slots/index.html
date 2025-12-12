@@ -109,7 +109,8 @@
   }
   /* BUTTONS */
   #buttons {
-    align-items: center; margin: 475px 10px 10px;
+    align-items: center; 
+    margin: 475px 10px 10px;
   }
 
   button {
@@ -123,6 +124,7 @@
     cursor: pointer;
     box-shadow: 0 8px var(--space3);
     transition: all 0.2s;
+    width: 30%;
     /* margin: 60px 10px 10px; */
   }
 
@@ -145,7 +147,7 @@
   }
   .auto-spin-controls {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   gap: 15px;
   margin: 20px 0;
@@ -304,6 +306,9 @@
 
 /* PAYTABLE BUTTON */
 #paytableBtn {
+  font-size: 0.8rem;
+}
+/*
   font-family: 'Arcade', sans-serif;
   font-size: 1.4rem;
   background: var(--space6);
@@ -320,7 +325,7 @@
   background: var(--space3);
   transform: scale(1.05);
   box-shadow: 0 0 25px gold;
-}
+} */
 
 /* MODAL */
 .modal {
@@ -580,7 +585,7 @@
 }
 
 
-#showLines {
+#showLines, #paytableBtn {
     padding:10px 30px;
     margin-top: 20px; 
     font-size:0.8rem;
@@ -650,7 +655,7 @@
 @media (max-width: 600px) {
   .paytable img { width: 40px; height: 40px; }
   .paytable { font-size: 0.95rem; }
-  #paytableBtn { width: 90%; margin: 15px auto; display: block; }
+  #paytableBtn, #showLines, #spin { width: 90%; margin: 15px auto; display: block; }
 }
 
 @media (max-width: 480px) {
@@ -739,12 +744,20 @@
 
     <!-- Game Buttons -->
     <div id="buttons">
-        <button id="spin">
-            SPIN - 10 coins
-        </button>
-        <!-- ADD THIS INSIDE .controls div (next to your SPIN button) -->
+      <button id="showLines">
+        Show / Hide Paylines
+      </button>  
+      <button id="spin">
+        SPIN <br> 10 coins
+      </button>
+      <!-- PAYTABLE BUTTON -->
+      <button id="paytableBtn" class="glow-btn">
+        PAYTABLE
+      </button>
+    </div>
 <div class="auto-spin-controls">
-  <label for="autoSpins">Auto-Spin:</label>
+  <!-- <label for="autoSpins">Auto-Spin:</label> -->
+  <button id="toggleAuto">START AUTO SPINS</button>
   <select id="autoSpins">
     <option value="0">Off</option>
     <option value="10">10 spins</option>
@@ -753,21 +766,11 @@
     <option value="100">100 spins</option>
     <option value="-1">Unlimited</option>
   </select>
-  <button id="toggleAuto">START AUTO</button>
 </div>
-
-        <br>
-        <button id="showLines">
-            Show / Hide Paylines
-        </button>
-    </div>
   
     <div class="message" id="message">Good luck!</div>
 
     <a href="/p/fun/toys/store/" class="store-link">🛒 CAT CARD STORE</a>
-    <br>
-    <!-- PAYTABLE BUTTON -->
-    <button id="paytableBtn" class="glow-btn">PAYTABLE</button>
 
     <!-- PAYTABLE TABLE TABLE TABLE -->
 <div id="paytableModal" class="modal">
@@ -803,7 +806,7 @@
     </table>
 
     <div style="margin-top:20px;text-align:center;color:var(--space1);font-size:0.9em;">
-        All wins x2 during Free Spins <br> 7 Paylines <br> Bet = 10 coins
+        All wins x2 during Free Spins <br> 7 Paylines <br> Bet = 10 coins <br> Catnip Jackpot pays on 5 Larrys on Middle Row
     </div>
   </div>
 </div>
@@ -814,8 +817,8 @@
     <span class="close" onclick="closeBankruptModal()">x</span>
     <h2 style="font-family:'Arcade'; color:#f66; text-shadow:0 0 15px #f00;">BANKRUPT!</h2>
     <p>The cats have claimed all your coins! What now?</p>
-    <button id="resetCoins" class="glow-btn red-btn">RESET GAME (1000 free coins)</button>
-    <button id="begCats" class="glow-btn">BEG THE CATS (200 daily coins)</button>
+    <button id="resetCoins" class="glow-btn red-btn" style="width: 90%">RESET GAME (1000 free coins)</button>
+    <button id="begCats" class="glow-btn" style="width: 90%">BEG THE CATS (200 daily coins)</button>
     <p id="begMessage" style="color:#f66; display:none;">The cats are unimpressed - come back tomorrow!</p>
   </div>
 </div>
@@ -864,7 +867,7 @@
       <span class="label">Current RNG:</span> <span id="currentRng">0</span>
     </div>
     <div class="stat-tem">
-        <button id="resetStatsBtn" style="padding:8px 20px; font-size:0.75rem; margin:0;">
+        <button id="resetStatsBtn" style="padding:8px 20px; font-size:0.75rem; margin:0; width: 90%;">
             RESET STATISTICS
         </button>
   </div>
@@ -1837,7 +1840,7 @@ function startAutoSpin() {
 
   autoSpinsLeft = num === -1 ? Infinity : num;
   autoRunning = true;
-  toggleAutoBtn.textContent = 'STOP AUTO';
+  toggleAutoBtn.textContent = 'STOP AUTO SPINS';
   toggleAutoBtn.classList.add('auto-running');
   spinBtn.disabled = true; // Prevent manual spins during auto
 
@@ -1848,7 +1851,7 @@ function startAutoSpin() {
 function stopAutoSpin() {
   autoSpinsLeft = 0;
   autoRunning = false;
-  toggleAutoBtn.textContent = 'START AUTO';
+  toggleAutoBtn.textContent = 'START AUTO SPINS';
   toggleAutoBtn.classList.remove('auto-running');
   spinBtn.disabled = false; // Re-enable manual
 }
