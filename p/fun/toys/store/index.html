@@ -6,6 +6,7 @@
   <title>Justin Swain - Cat Card Store</title>
   <link rel="stylesheet" href="/style/style.css"> <!-- Your global style -->
   <style>
+    #container {max-width: 800px;}
     /* Store styles (your original + mystery box animation) */
     .store {
       background: var(--space6);
@@ -452,21 +453,25 @@
 </div>
 </div>
 
-<marquee>Live Leaderboard -- 
+<div class="marquee-container">
+  <div class="marquee-content">
+  Live Leaderboard -- 
   #1 JinxLover999 (Prestige 4, 5/21) --
   #2 IheartNINJA (Prestige 4, 3/21) --
   #3 xXOrangeCatsRuleXx (Prestige 3, 17/21) --
   #4 _Pluto_Stinks_ (Prestige 2, 20/21) --
   #5 Tabbbiieezz (Prestige 2, 17/21)
+  </div>
+ </div>
 
 
-</marquee>
-
-<div id="headerArea">
-  <div id="header">
+<div id="container" style="min-height: 0;">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+  <div id="header" style="display: flex; flex-direction: column;">
       <a href="/"><img src="/images/spacecat.png" height="120px"></a>
       <a href="/" style="text-decoration:none;"><strong>justinswain.dev</strong></a>
       <a href="/p/fun/toys/">Back to Toys</a>
+  </div>
   </div>
 </div>
 
