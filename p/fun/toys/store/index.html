@@ -724,7 +724,7 @@ function updatePrestigeProgress() {
   let completed = 0;
   catImages.forEach(imgPath => {
     const filename = imgPath.split('/').pop();
-    if (collection[filename] >= 3) completed++;
+    if (collection[filename] >= 1) completed++;
   });
 
   document.getElementById('prestigeCardsNeeded').textContent = completed;
