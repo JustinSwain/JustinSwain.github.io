@@ -113,18 +113,18 @@ body {
 /* Spinning logo on hover */
 #header img:hover {
     animation: spin 2.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-    border: 2px solid var(--space1);
-    border-radius: 24px;
+    /* border: 2px solid var(--space1); */
+    /* border-radius: 24px; */
 }
 
 @keyframes spin {
     from { 
         transform: rotate(0deg);
-        box-shadow: 0 0 5px var(--space0), 0 0 10px var(--space2), 0 0 18px var(--space0);
+        /* box-shadow: 0 0 5px var(--space0), 0 0 10px var(--space2), 0 0 18px var(--space0); */
     }
     to { 
         transform: rotate(360deg);
-        box-shadow: 0 0 5px var(--space0), 0 0 10px var(--space2), 0 0 18px var(--space0);
+        /* box-shadow: 0 0 5px var(--space0), 0 0 10px var(--space2), 0 0 18px var(--space0); */
     }
 }
 
