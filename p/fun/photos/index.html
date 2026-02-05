@@ -189,7 +189,7 @@
 <!-- Lightbox Overlay -->
 <div id="lightbox">
   <!-- Proper × using an actual multiplication sign (looks perfect everywhere) -->
-  <span class="close-lightbox" onclick="closeLightbox()" aria-label="Close">
+  <span class="close-lightbox" onclick="closeLightbox()" aria-label="Close" role="button" tabindex="0">
      x
   </span>
   <img id="lightboxImage" src="" alt="Full size photo">
@@ -263,6 +263,7 @@
   const gallery = document.getElementById("photoGallery");
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightboxImage");
+  const closeBtn = document.querySelector(".close-lightbox");
 
   // Create jump-to menu
   const jumpMenu = document.createElement("nav");
@@ -289,6 +290,7 @@
   box.insertBefore(jumpMenu, gallery);
 
   // Generate gallery thumbnails with group dividers
+  const flatPhotos = [];
   photoGroups.forEach(group => {
     // Create and append the group title
     const titleElement = document.createElement("h2");
@@ -299,8 +301,11 @@
 
     // Append photos for this group
     group.photos.forEach(filename => {
+      const index = flatPhotos.length;
+      flatPhotos.push(filename);
       const item = document.createElement("div");
       item.className = "gallery-item";
+      item.dataset.index = index;
 
       const img = document.createElement("img");
       img.src = `/images/photos/${filename}`;
@@ -311,17 +316,37 @@
       gallery.appendChild(item);
 
       // Click to open lightbox
-      item.addEventListener("click", () => {
-        lightboxImg.src = `/images/photos/${filename}`;
-        lightbox.classList.add("active");
-      });
+      item.addEventListener("click", () => openLightbox(index));
     });
   });
+
+  let currentIndex = -1;
+  let previousFocus = null;
+
+  function showAtIndex(index) {
+    if (flatPhotos.length === 0) return;
+    if (index < 0) index = flatPhotos.length - 1;
+    if (index >= flatPhotos.length) index = 0;
+    currentIndex = index;
+    const filename = flatPhotos[currentIndex];
+    lightboxImg.src = `/images/photos/${filename}`;
+    lightboxImg.alt = filename.split(".")[0].replace(/_/g, " ");
+  }
+
+  function openLightbox(index) {
+    previousFocus = document.activeElement;
+    lightbox.classList.add("active");
+    showAtIndex(index);
+    if (closeBtn) closeBtn.focus();
+  }
 
   // Close lightbox
   function closeLightbox() {
     lightbox.classList.remove("active");
     lightboxImg.src = "";
+    currentIndex = -1;
+    if (previousFocus && previousFocus.focus) previousFocus.focus();
+    previousFocus = null;
   }
 
   // Close on background click or ESC key
@@ -332,8 +357,26 @@
   });
 
   document.addEventListener("keydown", (e) => {
+    if (!lightbox.classList.contains("active")) return;
     if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      showAtIndex(currentIndex - 1);
+    }
+    if (e.key === "ArrowRight") {
+      e.preventDefault();
+      showAtIndex(currentIndex + 1);
+    }
   });
+
+  if (closeBtn) {
+    closeBtn.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        closeLightbox();
+      }
+    });
+  }
 
   // Load your existing components
   async function loadComponent(elementId, filePath) {

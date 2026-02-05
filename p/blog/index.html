@@ -6,25 +6,6 @@
     <title>Justin Swain - Blog</title>
     <link rel="stylesheet" href="/style/style.css">
     <link rel="icon" href="/images/spacecat.png">
-    <style>
-        .blog-links {
-    list-style-type: none;  /* Optional: Remove bullets for a cleaner 90s list vibe */
-    padding: 0;
-}
-
-.blog-links li {
-    margin: 10px 0;
-}
-
-.blog-links a {
-    color: var(--space1);  /* Brighter for visibility */
-    text-decoration: underline wavy;  /* Fun, nostalgic underline style */
-}
-
-.blog-links a:hover {
-    color: var(--space0);
-}
-    </style>
   </head>
   <body>
 <div id="container"><div id="topBar">
@@ -39,16 +20,27 @@
 
 <div id="flex">
 
-    <main>
-        
-        <h1>Blog</h1>
-        <div class="box">
-        <ul class="blog-links"> 
-            <li><a href="/p/blog/posts/2025-12-09.html">December 9, 2025: Proof of Humanity in the McDonald's Drive-Thru</a></li>
-            
-            <!-- More links -->
-        </ul>
-        </div>
+    <main class="blog-landing">
+        <section class="hero box">
+            <div class="hero-top">
+                <h1>Blog</h1>
+                <span class="hero-subtitle">Dispatches from the space-cat terminal</span>
+            </div>
+            <p class="hero-intro">Small observations from a big, weird universe. Thoughts on tech, culture, and the tiny rituals that keep us human.</p>
+        </section>
+
+        <a class="card-link featured-card" href="/p/blog/posts/2025-12-09.html">
+            <div class="featured-header">
+                <span class="latest-badge">Latest</span>
+                <span class="date-badge">Dec 9, 2025</span>
+            </div>
+            <h2>Proof of Humanity in the McDonald's Drive-Thru</h2>
+            <p class="featured-teaser">A neon-lit meditation on empathy, algorithms, and the oddly sacred act of ordering fries.</p>
+        </a>
+
+        <section class="post-grid" aria-label="Blog posts">
+            <!-- More post cards -->
+        </section>
     </main>
     <sideBar id="sideBarPlaceholder"></sideBar>
   </div>
