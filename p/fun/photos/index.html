@@ -65,6 +65,7 @@
     background: rgba(0,0,0,0.95);
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     padding: 40px;
   }
 
@@ -76,6 +77,19 @@
     border: 4px solid #fff;
     border-radius: 8px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  }
+
+  #lightbox .caption {
+    max-width: min(900px, 95vw);
+    margin-top: 14px;
+    color: #eee;
+    font-size: 0.98rem;
+    line-height: 1.35;
+    text-align: center;
+  }
+
+  #lightbox .caption:empty {
+    display: none;
   }
 
   .close-lightbox {
@@ -193,6 +207,7 @@
      x
   </span>
   <img id="lightboxImage" src="" alt="Full size photo">
+  <div id="lightboxCaption" class="caption"></div>
 </div>
 
 <!-- JavaScript -->
@@ -202,59 +217,59 @@
   {
       title: "Snow Day 2026",
       photos: [
-        "snowDay2026/DSC_0002.jpg",
-        "snowDay2026/DSC_0009.jpg",
-        "snowDay2026/DSC_0020.jpg",
-        "snowDay2026/DSC_0024.jpg",
+        { file: "snowDay2026/DSC_0002.jpg", caption: "Cat prints in the snow." },
+        { file: "snowDay2026/DSC_0009.jpg", caption: "" },
+        { file: "snowDay2026/DSC_0020.jpg", caption: "" },
+        { file: "snowDay2026/DSC_0024.jpg", caption: "Cool texture in the snow. From the wind?" },
       ],
   },
   {
       title: "Hike on New Year's Day 2026",
       photos: [
-        "newYearsHike/DSC_0019.jpg",
-        "newYearsHike/DSC_0026.jpg",
-        "newYearsHike/DSC_0029.jpg",
-        "newYearsHike/DSC_0034.jpg",
+        { file: "newYearsHike/DSC_0019.jpg", caption: "" },
+        { file: "newYearsHike/DSC_0026.jpg", caption: "" },
+        { file: "newYearsHike/DSC_0029.jpg", caption: "" },
+        { file: "newYearsHike/DSC_0034.jpg", caption: "" },
       ],
   },
   {
       title: "Christmas 2025",
       photos: [
-        "christmas2025/DSC_0001.jpg",
-        "christmas2025/DSC_0021.jpg",
-        "christmas2025/DSC_0133.jpg",
-        "christmas2025/DSC_0172.jpg",
+        { file: "christmas2025/DSC_0001.jpg", caption: "" },
+        { file: "christmas2025/DSC_0021.jpg", caption: "nom nom nom" },
+        { file: "christmas2025/DSC_0133.jpg", caption: "" },
+        { file: "christmas2025/DSC_0172.jpg", caption: "They are waiting for their turn with the new toy." },
       ],
   },
   {
       title: "Cassidy's PhD Commencement",
       photos: [
-        "cassidyCommencement/DSC_0009.jpg",
-        "cassidyCommencement/DSC_0057.jpg",
-        "cassidyCommencement/DSC_0063.jpg",
-        "cassidyCommencement/DSC_0096.jpg",
-        "cassidyCommencement/DSC_0102.jpg",
-        "cassidyCommencement/DSC_0064.jpg",
+        { file: "cassidyCommencement/DSC_0009.jpg", caption: "I count 33 seats here. If each student spent $30k on tuition, that is nearly $1M." },
+        { file: "cassidyCommencement/DSC_0057.jpg", caption: "" },
+        { file: "cassidyCommencement/DSC_0063.jpg", caption: "" },
+        { file: "cassidyCommencement/DSC_0096.jpg", caption: "Bumpy ride." },
+        { file: "cassidyCommencement/DSC_0102.jpg", caption: "" },
+        { file: "cassidyCommencement/DSC_0064.jpg", caption: "" },
       ]
   },
   {
       title: "Trip to the Arboretum Nov 2025",
       photos: [
-        "Nov25Arboretum/DSC_0018.webp",
-        "Nov25Arboretum/DSC_0033.webp",
-        "Nov25Arboretum/DSC_0072.webp",
-        "Nov25Arboretum/DSC_0082.webp",
-        "Nov25Arboretum/DSC_0101.webp",
-        "Nov25Arboretum/DSC_0070.webp"
+        { file: "Nov25Arboretum/DSC_0018.webp", caption: "" },
+        { file: "Nov25Arboretum/DSC_0033.webp", caption: "" },
+        { file: "Nov25Arboretum/DSC_0072.webp", caption: "" },
+        { file: "Nov25Arboretum/DSC_0082.webp", caption: "Pampas grass is my new favorite plant." },
+        { file: "Nov25Arboretum/DSC_0101.webp", caption: "Looks like the setting of a puzzle in 'The Talos Principle.' Very good game." },
+        { file: "Nov25Arboretum/DSC_0070.webp", caption: "" }
       ]
   },  
   {
       title: "Cat room photoshoot Nov 2025",
       photos: [
-        "20251125_jinx.jpg",
-        "20251125_zed.jpg",
-        "20251126_ninja.webp",
-        "20251126_pluto.webp"
+        { file: "20251125_jinx.jpg", caption: "" },
+        { file: "20251125_zed.jpg", caption: "" },
+        { file: "20251126_ninja.webp", caption: "" },
+        { file: "20251126_pluto.webp", caption: "" }
       ]
     },
   ];
@@ -263,6 +278,7 @@
   const gallery = document.getElementById("photoGallery");
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightboxImage");
+  const lightboxCaption = document.getElementById("lightboxCaption");
   const closeBtn = document.querySelector(".close-lightbox");
 
   // Create jump-to menu
@@ -300,16 +316,16 @@
     gallery.appendChild(titleElement);
 
     // Append photos for this group
-    group.photos.forEach(filename => {
+    group.photos.forEach(photo => {
       const index = flatPhotos.length;
-      flatPhotos.push(filename);
+      flatPhotos.push(photo);
       const item = document.createElement("div");
       item.className = "gallery-item";
       item.dataset.index = index;
 
       const img = document.createElement("img");
-      img.src = `/images/photos/${filename}`;
-      img.alt = filename.split('.')[0].replace(/_/g, ' ');
+      img.src = `/images/photos/${photo.file}`;
+      img.alt = photo.caption || photo.file.split('.')[0].replace(/_/g, ' ');
       img.loading = "lazy"; // improves performance
 
       item.appendChild(img);
@@ -328,9 +344,10 @@
     if (index < 0) index = flatPhotos.length - 1;
     if (index >= flatPhotos.length) index = 0;
     currentIndex = index;
-    const filename = flatPhotos[currentIndex];
-    lightboxImg.src = `/images/photos/${filename}`;
-    lightboxImg.alt = filename.split(".")[0].replace(/_/g, " ");
+    const photo = flatPhotos[currentIndex];
+    lightboxImg.src = `/images/photos/${photo.file}`;
+    lightboxImg.alt = photo.caption || photo.file.split(".")[0].replace(/_/g, " ");
+    lightboxCaption.textContent = photo.caption || "";
   }
 
   function openLightbox(index) {
@@ -344,6 +361,7 @@
   function closeLightbox() {
     lightbox.classList.remove("active");
     lightboxImg.src = "";
+    lightboxCaption.textContent = "";
     currentIndex = -1;
     if (previousFocus && previousFocus.focus) previousFocus.focus();
     previousFocus = null;
