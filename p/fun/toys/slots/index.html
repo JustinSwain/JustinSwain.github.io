@@ -101,9 +101,9 @@
   }
 
   .symbol {
-    width: 150px;
+    width: 138px;
     height: 150px;
-    object-fit:contain;
+    object-fit: contain;
     image-rendering: pixelated; /* retro crispness */
     border-bottom: 3px solid var(--space4);
   }
@@ -790,17 +790,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr><td><img src="/images/toys/enemy3.png" alt="Larry"> LARRY</td>   <td>1000</td><td>200</td><td>50</td></tr>
-        <tr><td><img src="/images/toys/zed.png" alt="zed"> ZED</td>           <td>800</td> <td>150</td><td>40</td></tr>
-        <tr><td><img src="/images/toys/pluto.png" alt="pluto"> PLUTO</td>     <td>600</td> <td>120</td><td>35</td></tr>
-        <tr><td><img src="/images/toys/enemy2.png" alt="Gary"> GARY</td> <td>500</td> <td>100</td><td>30</td></tr>
-        <tr><td><img src="/images/toys/ninja.png" alt="ninja"> NINJA</td>     <td>400</td> <td>80</td> <td>25</td></tr>
-        <tr><td><img src="/images/toys/jinx2.png" alt="jinx"> JINX</td>     <td>300</td> <td>60</td> <td>20</td></tr>
-        <tr><td><img src="/images/toys/enemy1.png" alt="Harry"> HARRY</td>       <td>250</td> <td>50</td> <td>15</td></tr>
-        <tr><td><img src="/images/toys/beans.png" alt="beans"> BEANS</td>   <td>200</td> <td>40</td> <td>12</td></tr>
-        <tr><td><img src="/images/toys/ball.png" alt="ball"> BALL (Free Spins)</td>
-            <td colspan="3" style="color:gold;text-align:center;">3=20 + 10 FS <br> 4=50 + 15 FS <br> 5=100 + 25 FS</td></tr>
-        <tr><td><img src="/images/toys/goal.png" alt="Food"> FOOD! (Wild)</td>
+        <tr><td><img src="/p/fun/toys/slots/larry.png" alt="Larry"> LARRY</td>   <td>1000</td><td>200</td><td>50</td></tr>
+        <tr><td><img src="/p/fun/toys/slots/zed.png" alt="zed"> ZED</td>           <td>800</td> <td>150</td><td>40</td></tr>
+        <tr><td><img src="/p/fun/toys/slots/pluto.png" alt="pluto"> PLUTO</td>     <td>600</td> <td>120</td><td>35</td></tr>
+        <tr><td><img src="/p/fun/toys/slots/cat_tree.png" alt="Cat Tree"> CAT TREE</td> <td>500</td> <td>100</td><td>30</td></tr>
+        <tr><td><img src="/p/fun/toys/slots/ninja.png" alt="ninja"> NINJA</td>     <td>400</td> <td>80</td> <td>25</td></tr>
+        <tr><td><img src="/p/fun/toys/slots/jinx.png" alt="jinx"> JINX</td>     <td>300</td> <td>60</td> <td>20</td></tr>
+        <tr><td><img src="/p/fun/toys/slots/space_cat.png" alt="Space cat"> SPACE CAT</td>       <td>250</td> <td>50</td> <td>15</td></tr>
+        <tr><td><img src="/p/fun/toys/slots/beans.png" alt="beans"> BEANS</td>   <td>200</td> <td>40</td> <td>12</td></tr>
+        <tr><td><img src="/p/fun/toys/slots/freeplay.png" alt="ball"> Free Spins</td>
+            <td colspan="3" style="color:gold;text-align:center;">3=20 + 10 Free Spins <br> 4=50 + 15 Free Spins <br> 5=100 + 25 Free Spins</td></tr>
+        <tr><td><img src="/p/fun/toys/slots/wild.png" alt="Food"> FOOD! (Wild)</td>
             <td colspan="3" style="color:gold;text-align:center;">Substitutes for all symbols except BALL<br>5 Wilds = 1500 coins!</td></tr>
       </tbody>
     </table>
@@ -887,46 +887,59 @@
 
 <!-- SCRIPTS -->
 <script>
+// const catImages = [
+//   "/images/toys/goal.png", // WILD
+//   "/images/toys/ball.png", // FREE SPINS
+//   "/images/toys/enemy1.png",
+//   "/images/toys/ninja.png",
+//   "/images/toys/jinx2.png",
+//   "/images/toys/beans.png",
+//   "/images/toys/enemy2.png",
+//   "/images/toys/pluto.png",
+//   "/images/toys/zed.png",
+//   "/images/toys/enemy3.png"
+// ];
+
 const catImages = [
-  "/images/toys/goal.png", // WILD
-  "/images/toys/ball.png", // FREE SPINS
-  "/images/toys/enemy1.png",
-  "/images/toys/ninja.png",
-  "/images/toys/jinx2.png",
-  "/images/toys/beans.png",
-  "/images/toys/enemy2.png",
-  "/images/toys/pluto.png",
-  "/images/toys/zed.png",
-  "/images/toys/enemy3.png"
+  "/p/fun/toys/slots/wild.png", // WILD
+  "/p/fun/toys/slots/freeplay.png", // FREE SPINS
+  "/p/fun/toys/slots/space_cat.png",
+  "/p/fun/toys/slots/ninja.png",
+  "/p/fun/toys/slots/jinx.png",
+  "/p/fun/toys/slots/beans.png",
+  "/p/fun/toys/slots/cat_tree.png",
+  "/p/fun/toys/slots/pluto.png",
+  "/p/fun/toys/slots/zed.png",
+  "/p/fun/toys/slots/larry.png"
 ];
 
 // -------- SYMBOL PAYTABLE 5/4/3x --------
 const PAYTABLE = {
   // filename.png : [5x, 4x, 3x] payout in coins
-  "enemy3.png": [1000, 200, 50],   // SUPER RARE
+  "larry.png": [1000, 200, 50],   // SUPER RARE
   "zed.png":    [800,  150, 40],   // Very rare
   "pluto.png":  [600,  120, 35],
-  "enemy2.png": [500,  100, 30],
+  "cat_tree.png": [500,  100, 30],
   "ninja.png":  [400,   80, 25],
-  "jinx2.png":  [300,   60, 20],
-  "enemy1.png": [250,   50, 15],   // common
+  "jinx.png":  [300,   60, 20],
+  "space_cat.png": [250,   50, 15],   // common
   "beans.png":  [200,   40, 12],
-  "ball.png":   [150,   30, 10],   // scatter – but also pays on lines
-  "goal.png":   [0,     0,   0]    // WILD - never pays on its own
+  "freeplay.png":   [150,   30, 10],   // scatter – but also pays on lines
+  "wild.png":   [0,     0,   0]    // WILD - never pays on its own
 };
 
 // -------- Random Weights --------
 const SYMBOL_WEIGHTS = {
-  "enemy3.png": 3,   // Ultra rare = low weight
+  "enemlarryy3.png": 3,   // Ultra rare = low weight
   "zed.png":    4,
   "pluto.png":  5,
-  "enemy2.png": 7,
+  "cat_tree.png": 7,
   "ninja.png":  10,
-  "jinx2.png":  13,
-  "enemy1.png": 16,
+  "jinx.png":  13,
+  "space_cat.png": 16,
   "beans.png":  20,
-  "ball.png":   3,   // Scatter – medium
-  "goal.png":   5    // Wild
+  "freeplay.png":   3,   // Scatter – medium
+  "wild.png":   5    // Wild
 };
 
 // -------- PRNG MENU --------
@@ -1313,16 +1326,16 @@ const RNGStats = {
       const hotEl  = document.getElementById('hotSymbol');
       const coldEl = document.getElementById('coldSymbol');
         let characters = {
-            "enemy3.png": "Larry",
+            "larry.png": "Larry",
             "zed.png": "Zed",
             "pluto.png": "Pluto",
-            "enemy2.png": "Gary",
+            "cat_tree.png": "Cat Tree",
             "ninja.png": "Ninja",
-            "jinx2.png": "Jinx",
-            "enemy1.png": "Harry",
+            "jinx.png": "Jinx",
+            "space_cat.png": "Space Cat",
             "beans.png": "Beans",
-            "ball.png": "Ball",
-            "goal.png": "Food"
+            "freeplay.png": "Free Spins",
+            "wild.png": "Wild"
         }
       if (hotEl) {
         hotEl.textContent = `${characters[sorted[0][0]]} (${sorted[0][1]})`;
