@@ -1,0 +1,1985 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Absurd Raycaster</title>
+<style>
+    html, body {
+        margin: 0;
+        height: 100%;
+        background: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #gameContainer {
+        position: relative;
+        width: min(100vw, calc(100vh * 4 / 3));
+        height: min(100vh, calc(100vw * 3 / 4));
+    }
+
+    #gameContainer canvas {
+        width: 100%;
+        height: 100%;
+        image-rendering: pixelated;
+    }
+    #hud {
+        position: fixed; left: 10px; top: 10px;
+        color: #0f0; font: 12px/1.3 monospace;
+        background: rgba(0,0,0,0.4); padding: 8px; border: 1px solid rgba(0,255,0,0.25);
+        user-select: none;
+    }
+    #mobileUI { position: absolute; inset: 0; pointer-events: none; }
+
+    #stickBase {
+        position: absolute; left: 14px; bottom: 14px;
+        width: 140px; height: 140px; border-radius: 999px;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.15);
+        pointer-events: auto;
+        touch-action: none;
+    }
+    #stickKnob {
+        position: absolute; left: 50%; top: 50%;
+        width: 64px; height: 64px; border-radius: 999px;
+        transform: translate(-50%,-50%);
+        background: rgba(255,255,255,0.16);
+        border: 1px solid rgba(255,255,255,0.22);
+    }
+
+    #lookPad {
+        position: absolute; right: 0; top: 0;
+        width: 55%; height: 100%;
+        pointer-events: auto;
+        touch-action: none;
+    }
+
+    #btnUse, #btnPet {
+        position: absolute; right: 14px;
+        width: 128px; height: 128px; border-radius: 14px;
+        border: 5px solid rgba(255,255,255,0.22);
+        background: rgba(0,0,0,0.45);
+        color: #00ff66;
+        font: bold 48px monospace;
+        pointer-events: auto;
+        touch-action: none;
+    }
+    #btnUse { bottom: 14px; right: 156px }
+    #btnPet { bottom: 14px; }
+
+    /* Start screen mode buttons (mobile only) */
+    #startBtns {
+        position: absolute;
+        left: 50%; top: 92%;
+        transform: translate(-50%, -50%);
+        display: none;
+        gap: 12px;
+        pointer-events: auto;
+    }
+    #startBtns button {
+        width: 164px; height: 48px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.22);
+        background: rgba(0,0,0,0.55);
+        color: #ff66ff;
+        font: bold 24px monospace;
+        touch-action: none;
+    }
+</style>
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="c" width="640" height="480"></canvas>
+        <div id="mobileUI" style="display:none;">
+        <div id="stickBase"><div id="stickKnob"></div></div>
+        <div id="lookPad"></div>
+
+        <button id="btnUse">🚪</button>
+        <button id="btnPet">😻</button>
+
+        <div id="startBtns">
+            <button id="btnHide">Hide & Seek</button>
+            <button id="btnFree">Freeplay</button>
+        </div>
+        </div>
+    </div>
+    <!-- <div id="hud">
+        WASD move • ← → turn • Shift sprint<br/>
+        Click canvas to lock mouse (optional)<br/>
+        Sprite is an animated GIF
+    </div> -->
+    <!-- <div id="mobileUI" style="display:none;">
+        <div id="stickBase">
+            <div id="stickKnob">
+            </div>
+        </div>
+    <div id="lookPad"></div>
+        <button id="btnUse">🚪</button>
+        <button id="btnPet">😻</button>
+    </div> -->
+
+<script>
+(() => {
+// ----------------------------
+// Canvas + rendering settings
+// ----------------------------
+    const canvas = document.getElementById("c");
+    const ctx = canvas.getContext("2d", { alpha: false });
+    ctx.imageSmoothingEnabled = false;
+
+    // Internal resolution (keep small for chunky Doom vibes)
+    const W = canvas.width, H = canvas.height;
+
+    function load(src) { const im = new Image(); im.src = src; return im; }
+
+    let totalPets = 0;
+
+    const floaties = []; // {x,y,text,t,vy}
+    function spawnFloaty(x, y, text) {
+        floaties.push({ x, y, text, t: 0.9, vy: 0.35 });
+    }
+
+    function renderUI() {
+        // tiny HUD in top-left
+        ctx.save();
+        ctx.globalAlpha = 0.95;
+        ctx.fillStyle = "rgba(0,0,0,0.55)";
+        ctx.fillRect(6, 6, 128, 18 + cats.length * 14);
+        ctx.strokeStyle = "rgba(0,255,0,0.25)";
+        ctx.strokeRect(6, 6, 128, 18 + cats.length * 14);
+
+        ctx.font = "12px monospace";
+        ctx.textAlign = "left";
+        ctx.textBaseline = "top";
+        ctx.fillStyle = "#00ff66";
+        ctx.fillText(`TOTAL : ${totalPets}`, 12, 10);
+
+        let y = 26;
+        for (const c of cats) {
+            ctx.fillText(`${c.name.padEnd(6)}: ${c.pets}`, 12, y);
+            y += 14;
+        }
+        ctx.restore();
+    }
+
+    const leaderboard = {
+        show: false,
+        tab: "hide", // "hide" | "free"
+        hide: [
+            { name: "xX_NoClipNinja_Xx", time: 1.27 },
+            { name: "Larry_LagSwitch", time: 1.56 },
+            { name: "pwned_by_cat", time: 1.73 },
+            { name: "B34nz4sp33d", time: 2.20 },
+            { name: "jiiinxxx", time: 2.25 },
+            { name: "ninjaAFKclicker", time: 3.75 },
+            { name: "meow%runner", time: 3.88 },
+            { name: "xXcatnipMasterXx", time: 4.19 },
+            { name: "nyanFarm_xo", time: 4.39 },
+            { name: "LoafRunner999", time: 4.86 },
+        ],
+        free: [
+            { name: "cat_pet_macro", pets: 94938 },
+            { name: "AutoClicker_dot_com", pets: 92370 },
+            { name: "beansModeON", pets: 75385 },
+            { name: "rotten_pluto_fan", pets: 65818 },
+            { name: "PetXP_farmer", pets: 46242 },
+            { name: "L4rry_Is_Meta", pets: 28186 },
+            { name: "Jinx.exe", pets: 24151 },
+            { name: "xXx_Ninja_xXx", pets: 23036 },
+            { name: "KittyIdelMaster", pets: 14118 },
+            { name: "1337_zEd", pets: 11983 },
+        ],
+    };
+    
+// ----------------------------
+// Game
+// ----------------------------
+    const game = {
+        screen: "start",     // "start" | "play" | "win" | "lose"
+        mode: "hide",        // "hide" | "free"
+        startTime: 0,
+        endTime: 0,
+    };
+
+    function startGame(mode) {
+        game.mode = mode;
+        game.screen = "play";
+        game.startTime = performance.now();
+        game.endTime = 0;
+
+        // reset cats + counters
+        totalPets = 0;
+        floaties.length = 0;
+        for (const c of cats) {
+            c.pets = 0;
+            c.pop = 0;
+            c.sayT = 0;
+            c.lastLook = 0;
+            c.stillT = 0;
+            c.pose = "sit";
+            c.img = c.imgs?.sit;
+            setCatState(c, "idle", 0.2 + Math.random() * 0.6);
+        }
+
+        // load mode-specific map + spawns
+        loadLevel(mode);
+    }
+
+    function endGame(win) {
+        game.screen = win ? "win" : "lose";
+        game.endTime = performance.now();
+
+        // leaderboard.show = true;
+        // leaderboard.tab = (game.mode === "hide") ? "hide" : "free";
+    }
+
+// ----------------------------
+// World map (grid)
+// x is the column, y is the row
+// ----------------------------
+    // ---- Level maps ----
+    const MAP_HIDE = [
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+    [1,0,0,0,0,0,2,0,0,1,0,0,0,0,0,1],
+    [1,0,0,0,0,0,2,0,0,1,0,0,0,0,0,1],
+    [1,0,0,0,0,0,2,0,0,1,0,0,0,0,0,1],
+    [1,0,0,0,0,0,2,0,0,1,0,0,0,0,0,1],
+    [1,2,2,3,2,2,2,0,0,1,1,1,3,1,1,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,1,2,3,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,1,1,1,0,0,0,0,0,0,2,2,2,0,1],
+    [1,0,0,0,3,0,0,0,0,0,0,0,0,0,0,1],
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+    ];
+
+    // Make a different layout for freeplay (example: more open)
+    const MAP_FREE = [
+  [1, 1, 1, 1, 1,32,33,34,61,60,61,60,61,60,61,60,61,61],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,61, 0,61],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,61, 0,61],
+  [1, 0, 0, 0,91,89, 0, 0, 0, 0, 2, 2, 0, 0, 0, 3, 0,61],
+  [1, 0, 0, 0,90, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0,61, 0,61],
+  [1, 0, 0, 0,89, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0,61, 0,61],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,61, 0,61],
+  [1, 0, 0, 0, 0, 0, 0,38,49, 0, 0, 0, 0, 0, 0,61, 0,61],
+  [1, 0, 0, 0, 0, 0, 0,51,52, 0, 0, 0, 0, 0, 0,61, 0,61],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,61, 0,61],
+  [1, 0, 0, 0,55, 0, 0, 0, 0, 0, 0,58, 0, 0, 0,61, 0,61],
+  [1, 0, 0, 0,55, 0, 0, 0, 0, 0, 0,59, 0, 0, 0,61, 0,61],
+  [1, 0, 0, 0,55,55, 0, 0, 0, 0,59,58, 0, 0, 0,61, 0,61],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,61, 0,61],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,61, 0,61],
+  [1, 1, 3, 1, 1, 1,28,28,61,61,61,61,61, 3,61,61, 0,61],
+  [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,61],
+  [1, 1, 1, 1, 1, 1, 1,28,61,61,61,61,61,61,61,61,61,61],
+];
+
+    // ---- Active map (mutable) ----
+    let map = MAP_HIDE;
+    let MAP_H = map.length;
+    let MAP_W = map[0].length;
+
+    const levels = {
+        hide: {
+            map: MAP_HIDE,
+            playerSpawn: { x: 8.5, y: 8.5, ang: 0 },
+            larrySpawn:  { x: 6.5, y: 10.5 },
+            catSpawns: {
+            Ninja: { x: 6.5, y: 6.5 },
+            Zed:   { x: 10.5, y: 6.5 },
+            Jinx:  { x: 6.5, y: 10.5 },
+            Pluto: { x: 10.5, y: 10.5 },
+            Beans: { x: 8.5, y: 8.5 },
+            },
+        },
+
+        free: {
+            map: MAP_FREE,
+            playerSpawn: { x: 3.5, y: 3.5, ang: Math.PI / 2 },
+            catSpawns: {
+            Ninja: { x: 4.5, y: 6.5 },
+            Zed:   { x: 7.5, y: 4.5 },
+            Jinx:  { x: 11.5, y: 6.5 },
+            Pluto: { x: 12.5, y: 12.5 },
+            Beans: { x: 6.5, y: 11.5 },
+            },
+        },
+    };
+
+    function loadLevel(mode) {
+        const lvl = levels[mode];
+        if (!lvl) throw new Error("Unknown mode: " + mode);
+
+        // swap active map + dimensions
+        map = lvl.map;
+        MAP_H = map.length;
+        MAP_W = map[0].length;
+
+        // reset per-level state
+        doorState.clear();
+
+        // place player
+        player.x = lvl.playerSpawn.x;
+        player.y = lvl.playerSpawn.y;
+        player.ang = lvl.playerSpawn.ang ?? 0;
+
+        // place cats
+        for (const c of cats) {
+            const p = lvl.catSpawns?.[c.name];
+            if (p) { c.x = p.x; c.y = p.y; }
+        }
+
+        // place Larry only for hide
+        if (mode === "hide" && lvl.larrySpawn) {
+            larry.x = lvl.larrySpawn.x;
+            larry.y = lvl.larrySpawn.y;
+            larry.cooldown = 0.8;
+        }
+    }
+
+    const atlas = new Image();
+    atlas.src = "doom-textures.png";
+
+    const leftHand = new Image();
+    leftHand.src = "left_hand.png";
+
+    const rightHand = new Image();
+    rightHand.src = "right_hand.png";
+    let bobPhase = 0;     // increases while moving
+    let bobAmount = 0;    // smoothed movement intensity 0..1
+    let handKick = 0;     // quick impulse for actions (pet/use)
+
+    const TILE_SIZE = 128;
+    const ATLAS_COLS = 1792 / TILE_SIZE; // 14 tiles per row
+
+    function atlasCoords(index) {
+        const col = index % ATLAS_COLS;
+        const row = Math.floor(index / ATLAS_COLS);
+        return {
+            sx: col * TILE_SIZE,
+            sy: row * TILE_SIZE
+        };
+    }
+
+    function atlasTileXY(index) {
+        const col = index % ATLAS_COLS;
+        const row = (index / ATLAS_COLS) | 0;
+        return { sx: col * TILE_SIZE, sy: row * TILE_SIZE };
+    }
+
+    const wallTileIndex = {
+        1: 1,   
+        2: 6,   
+        3: 72,  
+        4: 1,
+        28: 28,
+        32: 32,
+        33: 33,
+        34: 34,
+        49: 49,
+        51: 51,
+        52: 52,
+        38: 38,
+        55: 55,
+        58: 58,
+        59: 59,
+        60: 60,
+        61: 61,
+        89: 89,
+        90: 90,
+        91: 91,
+    };
+
+    const FLOOR_TILE_INDEX = 105; 
+    const floorScale = 3; // 2 = better quality, 3 = much faster
+    const floorCanvas = document.createElement("canvas");
+    floorCanvas.width = (W / floorScale) | 0;
+    floorCanvas.height = (H / floorScale) | 0;
+    const fctx = floorCanvas.getContext("2d", { alpha: false });
+    fctx.imageSmoothingEnabled = false;
+
+    function isWall(x, y) {
+        const mx = Math.floor(x), my = Math.floor(y);
+        if (mx < 0 || my < 0 || mx >= MAP_W || my >= MAP_H) return true;
+        const t = map[my][mx];
+        if (t === 0) return false;
+        // Door tile: solid unless sufficiently open
+        if (t === 3) {
+            const d = getDoor(mx, my);
+            return d.open < DOOR_PASS_THRESHOLD;
+        }
+        // Regular wall
+        return true;
+    }
+
+    function isSolidTileId(t) {
+        // treat anything nonzero as solid for orientation purposes
+        // (including other doors/walls)
+        return t !== 0;
+    }
+
+    function doorOrientation(mx, my) {
+        const left  = (mx > 0)         ? map[my][mx - 1] : 1;
+        const right = (mx < MAP_W - 1) ? map[my][mx + 1] : 1;
+        const up    = (my > 0)         ? map[my - 1][mx] : 1;
+        const down  = (my < MAP_H - 1) ? map[my + 1][mx] : 1;
+
+        // If left & right are solid, the door face is horizontal (y = const)
+        if (isSolidTileId(left) && isSolidTileId(right)) return "horizontal";
+
+        // If up & down are solid, the door face is vertical (x = const)
+        if (isSolidTileId(up) && isSolidTileId(down)) return "vertical";
+
+        return "horizontal"; // fallback
+    }
+
+    function doorPlanePos(mx, my, d) {
+        // Wolf3D-ish: door starts centered (0.5) and slides to the far edge (1.0)
+        // Change +0.5 direction if you want it to slide the other way.
+        const offset = 0.5 - 0.5 * d.open; // 0.5..1.0
+        return offset;
+    }
+
+    const DOOR_AUTO_CLOSE_SECS = 4.0;   // how long the door stays open
+    const DOOR_BLOCK_RADIUS = 0.28;     // how close the player can be to prevent closing
+
+// ----------------------------
+// Player state
+// ----------------------------
+    const player = {
+        x: 8, y: 8,
+        ang: Math.PI / 2,                // radians
+        fov: Math.PI / 3,      // 60 degrees
+        moveSpeed: 3.0,        // units/sec
+        rotSpeed: 2.4          // rad/sec
+    };
+
+// ----------------------------
+// Sprites (billboards)
+// We'll load an animated GIF and draw it each frame.
+// ----------------------------
+    const larry = {
+        name: "Larry",
+        img: load("cats/larry_stand.png"),
+        x: 6.5,
+        y: 10.5,
+        baseScale: 0.75, 
+        z: 0.5,
+        speed: 1.35,          // tune
+        touchDist: 0.45,      // lose if closer than this
+        aggroDist: 99,        // always chase; or set like 10
+        cooldown: 0.0,        // small delay at round start
+        pop: 0,
+        say: "LARRY",
+        sayT: 0,
+    };
+    function catImgs(name) {
+        const n = name.toLowerCase(); // if your files are lowercase; remove if not
+        return {
+            sit: load(`cats/${n}_sit.png`),
+            stand: load(`cats/${n}_stand.png`),
+            loaf: load(`cats/${n}_loaf.png`),
+        };
+        }
+
+        const cats = [
+        { name: "Ninja", personality: "Royal", imgs: catImgs("ninja"), x: 6.5, y: 6.5, baseScale: 0.75, z: 0.5 },
+        { name: "Zed",   personality: "Sweet", imgs: catImgs("zed"),   x: 10.5, y: 6.5, baseScale: 0.75, z: 0.5 },
+        { name: "Jinx",  personality: "Crazy", imgs: catImgs("jinx"),  x: 6.5, y: 10.5, baseScale: 0.75, z: 0.5 },
+        { name: "Pluto", personality: "Rotten",imgs: catImgs("pluto"), x: 10.5, y: 10.5, baseScale: 0.75, z: 0.5 },
+        { name: "Beans", personality: "Kitty", imgs: catImgs("beans"), x: 8.5, y: 8.5, baseScale: 0.75, z: 0.5 },
+        ].map(c => ({
+        ...c,
+        // state machine (existing)
+        state: "idle",
+        stateT: 0,
+        vx: 0, vy: 0,
+        faceT: 0,
+        lastLook: 0,
+        pets: 0,
+        pop: 0,
+        sayT: 0,
+        say: "",
+
+        // NEW pose logic
+        stillT: 0,          // how long we've been still
+        pose: "sit",        // sit | stand | loaf
+        img: c.imgs?.sit,   // renderer expects s.img, so keep it updated
+    }));
+
+    const LOAF_AFTER_SECS = 3.5;     // sit → loaf after this long still
+    const STILL_SPEED_EPS = 0.02;    // treat as still if speed below this
+
+// ----------------------------
+// Input
+// ----------------------------
+    const keys = new Set();
+    window.addEventListener("keydown", (e) => keys.add(e.key.toLowerCase()));
+    window.addEventListener("keyup", (e) => keys.delete(e.key.toLowerCase()));
+
+    // Optional mouse look via pointer lock
+    canvas.addEventListener("click", () => canvas.requestPointerLock?.());
+    document.addEventListener("mousemove", (e) => {
+        if (document.pointerLockElement === canvas) {
+            player.ang += e.movementX * 0.0025;
+        }
+    });
+
+// ----------------------------
+// Raycasting
+// ----------------------------
+    const zBuffer = new Float32Array(W); // per-column wall distance for sprite occlusion
+
+    function castRay(rayAng) {
+        // DDA grid stepping
+        const sin = Math.sin(rayAng), cos = Math.cos(rayAng);
+        let x = player.x, y = player.y;
+
+        // Current grid cell
+        let mapX = Math.floor(x), mapY = Math.floor(y);
+
+        // Length to next x or y side
+        const deltaDistX = Math.abs(1 / (cos || 1e-9));
+        const deltaDistY = Math.abs(1 / (sin || 1e-9));
+
+        let stepX, stepY, sideDistX, sideDistY;
+
+        if (cos < 0) { 
+            stepX = -1; 
+            sideDistX = (x - mapX) * deltaDistX; 
+        } else { 
+            stepX = 1; 
+            sideDistX = (mapX + 1.0 - x) * deltaDistX; 
+        }
+
+        if (sin < 0) { 
+            stepY = -1; 
+            sideDistY = (y - mapY) * deltaDistY; 
+        } else { 
+            stepY = 1; 
+            sideDistY = (mapY + 1.0 - y) * deltaDistY; 
+        }
+
+        let hit = false;
+        let side = 0; // 0 x-side, 1 y-side
+
+        // Step until hit wall
+        for (let i = 0; i < 128; i++) {
+        if (sideDistX < sideDistY) {
+            sideDistX += deltaDistX;
+            mapX += stepX;
+            side = 0;
+        } else {
+            sideDistY += deltaDistY;
+            mapY += stepY;
+            side = 1;
+        }
+            if (mapX < 0 || mapY < 0 || mapX >= MAP_W || mapY >= MAP_H) { hit = true; break; }
+            if (map[mapY][mapX] === 1) { hit = true; break; }
+        }
+
+        // Perpendicular distance to avoid fisheye
+        let perpDist;
+        if (side === 0) {
+            perpDist = (mapX - player.x + (1 - stepX) / 2) / (cos || 1e-9);
+        } else {
+            perpDist = (mapY - player.y + (1 - stepY) / 2) / (sin || 1e-9);
+        }
+        return { dist: Math.max(0.0001, perpDist), side };
+    }
+
+    function castRayDir(rayDirX, rayDirY) {
+        let mapX = Math.floor(player.x), mapY = Math.floor(player.y);
+
+        const deltaDistX = Math.abs(1 / (rayDirX || 1e-9));
+        const deltaDistY = Math.abs(1 / (rayDirY || 1e-9));
+
+        let stepX, stepY, sideDistX, sideDistY;
+
+        if (rayDirX < 0) { 
+            stepX = -1; 
+            sideDistX = (player.x - mapX) * deltaDistX; 
+        } else { 
+            stepX = 1; 
+            sideDistX = (mapX + 1.0 - player.x) * deltaDistX; 
+        }
+
+        if (rayDirY < 0) { 
+            stepY = -1; 
+            sideDistY = (player.y - mapY) * deltaDistY; 
+        } else { 
+            stepY = 1; 
+            sideDistY = (mapY + 1.0 - player.y) * deltaDistY; 
+        }
+
+        let side = 0;
+        let wallId = 0;
+
+        for (let i = 0; i < 256; i++) {
+            // advance one grid boundary
+            if (sideDistX < sideDistY) { 
+                sideDistX += deltaDistX; 
+                mapX += stepX; 
+                side = 0; 
+            } else { 
+                sideDistY += deltaDistY; 
+                mapY += stepY; 
+                side = 1; 
+            }
+
+            if (mapX < 0 || mapY < 0 || mapX >= MAP_W || mapY >= MAP_H) {
+                return { dist: 9999, side: 0, wallId: 1, hitU: 0 }; // out of bounds fallback
+            }
+
+            wallId = map[mapY][mapX];
+            if (wallId === 0) continue;
+
+            // ----- Door handling (tile id 3) -----
+            if (wallId === 3) {
+                const d = getDoor(mapX, mapY);
+                if (d.open >= 0.999) continue; // fully open => ray passes through
+
+                const orient = doorOrientation(mapX, mapY);
+                const EPS = 1e-6;
+
+                let tDoor = Infinity;
+                let hitU = 0;
+                let doorSide = (orient === "vertical") ? 0 : 1;
+
+                if (orient === "vertical") {
+                    // Door face is vertical plane at center; door slides along Y
+                    const xDoor = mapX + 0.5;
+                    const denom = (rayDirX || 1e-9);
+                    tDoor = (xDoor - player.x) / denom;
+
+                    if (tDoor > 0) {
+                        const yHit = player.y + tDoor * rayDirY;
+
+                        // Sliding segment: [my + open, my + 1]
+                        const yMin = mapY + d.open;
+                        const yMax = mapY + 1;
+
+                        if (yHit >= yMin - EPS && yHit <= yMax + EPS) {
+                            // Texture coordinate moves with the door (no stretching):
+                            // local door coord is yHit - (my + open) in [0, 1-open]
+                            hitU = yHit - yMin; // 0..(1-open)
+                        } else {
+                            tDoor = Infinity;
+                        }
+                    } else {
+                        tDoor = Infinity;
+                    }
+                } else {
+                    // Door face is horizontal plane at center; door slides along X
+                    const yDoor = mapY + 0.5;
+                    const denom = (rayDirY || 1e-9);
+                    tDoor = (yDoor - player.y) / denom;
+
+                    if (tDoor > 0) {
+                        const xHit = player.x + tDoor * rayDirX;
+
+                        // Sliding segment: [mx + open, mx + 1]
+                        const xMin = mapX + d.open;
+                        const xMax = mapX + 1;
+
+                        if (xHit >= xMin - EPS && xHit <= xMax + EPS) {
+                            hitU = xHit - xMin; // 0..(1-open)
+                        } else {
+                            tDoor = Infinity;
+                        }
+                    } else {
+                        tDoor = Infinity;
+                    }
+                }
+
+                if (tDoor !== Infinity) {
+                    // Normalize hitU into [0,1) for sampling; clamp in case of tiny EPS overshoot
+                    hitU = Math.max(0, Math.min(0.999999, hitU));
+
+                    // Optional: flips for consistent facing (keep if you like your current look)
+                    if (doorSide === 0 && rayDirX > 0) hitU = 1 - hitU;
+                    if (doorSide === 1 && rayDirY < 0) hitU = 1 - hitU;
+
+                    return { dist: Math.max(0.0001, tDoor), side: doorSide, wallId: 3, hitU };
+                }
+
+                // If we didn't hit the sliding panel, don't render a fake "side"; keep going.
+                continue;
+            }
+
+            // ----- Regular wall hit -----
+            let perpDist;
+            if (side === 0) {
+                perpDist = (mapX - player.x + (1 - stepX) / 2) / (rayDirX || 1e-9);
+            } else {
+                perpDist = (mapY - player.y + (1 - stepY) / 2) / (rayDirY || 1e-9);
+            }
+            perpDist = Math.max(0.0001, perpDist);
+
+            let wallX;
+            if (side === 0) wallX = player.y + perpDist * rayDirY;
+            else            wallX = player.x + perpDist * rayDirX;
+            wallX -= Math.floor(wallX);
+
+            let hitU = wallX;
+            if (side === 0 && rayDirX > 0) hitU = 1 - hitU;
+            if (side === 1 && rayDirY < 0) hitU = 1 - hitU;
+
+            return { dist: perpDist, side, wallId, hitU };
+        }
+
+        return { dist: 9999, side: 0, wallId: 1, hitU: 0 };
+    }
+
+    function renderWalls() {
+        // sky/floor
+        ctx.fillStyle = "#111";
+        ctx.fillRect(0, 0, W, H / 2);
+        ctx.fillStyle = "#050505";
+        // ctx.fillRect(0, H / 2, W, H / 2);
+
+        const dirX = Math.cos(player.ang);
+        const dirY = Math.sin(player.ang);
+
+        const planeLen = Math.tan(player.fov / 2);
+        const planeX = -dirY * planeLen;
+        const planeY =  dirX * planeLen;
+
+        for (let x = 0; x < W; x++) {
+            const cameraX = (2 * x / W) - 1; // -1..1
+            const rayDirX = dirX + planeX * cameraX;
+            const rayDirY = dirY + planeY * cameraX;
+
+            const { dist, side, wallId, hitU } = castRayDir(rayDirX, rayDirY);
+            zBuffer[x] = dist;
+
+            const lineH = Math.min(H, Math.floor(H / dist));
+            const y0 = Math.floor((H - lineH) / 2);
+
+            if (atlas.complete && atlas.naturalWidth > 0) {
+                const tileIndex = wallTileIndex[wallId] ?? 0;
+                const { sx: tileSX, sy: tileSY } = atlasCoords(tileIndex);
+
+                const texX = Math.floor(hitU * TILE_SIZE);
+
+                // 1px vertical slice from atlas tile
+                ctx.drawImage(
+                    atlas,
+                    tileSX + texX, tileSY,   // source x,y
+                    1, TILE_SIZE,            // source width,height
+                    x, y0,                   // dest x,y
+                    1, lineH                 // dest width,height
+                );
+
+                const shade = Math.max(0, Math.min(0.75, (dist * 0.04) + (side ? 0.12 : 0)));
+                if (shade > 0) {
+                    ctx.fillStyle = `rgba(0,0,0,${shade})`;
+                    ctx.fillRect(x, y0, 1, lineH);
+                }
+            } else {
+            // Fallback if textures not loaded
+            const shade = Math.max(0, 220 - dist * 28 - (side ? 35 : 0));
+            ctx.fillStyle = `rgb(${shade|0},${(shade*0.9)|0},${(shade*0.7)|0})`;
+            ctx.fillRect(x, y0, 1, lineH);
+            }
+        }
+    }
+
+    function renderFloor() {
+        if (!atlas.complete || atlas.naturalWidth === 0) return;
+
+        const FW = floorCanvas.width;
+        const FH = floorCanvas.height;
+
+        // Clear (optional; we overwrite the floor half anyway)
+        fctx.fillStyle = "#050505";
+        fctx.fillRect(0, 0, FW, FH);
+
+        const dirX = Math.cos(player.ang);
+        const dirY = Math.sin(player.ang);
+
+        const planeLen = Math.tan(player.fov / 2);
+        const planeX = -dirY * planeLen;
+        const planeY =  dirX * planeLen;
+
+        const rayDirX0 = dirX - planeX;
+        const rayDirY0 = dirY - planeY;
+        const rayDirX1 = dirX + planeX;
+        const rayDirY1 = dirY + planeY;
+
+        const horizon = (FH / 2) | 0;
+
+        const { sx: tileSX, sy: tileSY } = atlasTileXY(FLOOR_TILE_INDEX); // or FLOOR_TILE_INDEX
+
+        for (let y = horizon + 1; y < FH; y++) {
+            const p = y - horizon;
+            const rowDist = (0.5 * FH) / (p || 1e-9);
+
+            const stepX = rowDist * (rayDirX1 - rayDirX0) / FW;
+            const stepY = rowDist * (rayDirY1 - rayDirY0) / FW;
+
+            let floorX = player.x + rowDist * rayDirX0;
+            let floorY = player.y + rowDist * rayDirY0;
+
+            for (let x = 0; x < FW; x++) {
+            const tx = (((floorX - Math.floor(floorX)) * TILE_SIZE) | 0);
+            const ty = (((floorY - Math.floor(floorY)) * TILE_SIZE) | 0);
+
+            fctx.drawImage(atlas, tileSX + tx, tileSY + ty, 1, 1, x, y, 1, 1);
+
+            floorX += stepX;
+            floorY += stepY;
+            }
+        }
+    }
+
+    const doorState = new Map(); // key "x,y" -> { open:0..1, target:0|1 }
+
+    function doorKey(mx, my) { 
+        return `${mx},${my}`; 
+    }
+
+    function getDoor(mx, my) {
+        const k = doorKey(mx, my);
+        let d = doorState.get(k);
+        if (!d) {
+            d = { open: 0, target: 0, hold: 0 }; // hold = seconds remaining before auto-close
+            doorState.set(k, d);
+        }
+        return d;
+    }
+
+    // how open a door must be to be treated as non-solid
+    const DOOR_PASS_THRESHOLD = 0.9;
+    // speed (units per second) at which door opens/closes
+    const DOOR_SPEED = 2.5;
+
+    function updateDoors(dt) {
+        for (const [k, d] of doorState.entries()) {
+            // Countdown hold timer while door is open/ opening
+            if (d.open > 0 && d.hold > 0) {
+                d.hold = Math.max(0, d.hold - dt);
+                if (d.hold === 0) {
+                    d.target = 0; // time to close
+                }
+            }
+
+            // If door wants to close, but player is in/near the doorway, delay closing
+            if (d.target === 0 && d.open > 0) {
+                const [mxStr, myStr] = k.split(",");
+                const mx = Number(mxStr), my = Number(myStr);
+
+                // Door tile center
+                const cx = mx + 0.5, cy = my + 0.5;
+                const distToPlayer = Math.hypot(player.x - cx, player.y - cy);
+
+                // If player is too close, keep it open a bit longer
+                if (distToPlayer < DOOR_BLOCK_RADIUS) {
+                    d.target = 1;
+                    d.hold = Math.max(d.hold, 0.35); // short grace period, re-check next frame
+                }
+            }
+
+            // Move open toward target
+            const goal = d.target;
+            if (d.open === goal) continue;
+
+            const dir = Math.sign(goal - d.open);
+            d.open += dir * DOOR_SPEED * dt;
+
+            if ((dir > 0 && d.open >= goal) || (dir < 0 && d.open <= goal)) {
+                d.open = goal;
+            }
+        }
+    }
+
+    function drawLabel(screenX, y0, dist, c) {
+        const name = c.name;
+        const showSay = c.sayT > 0;
+        const text = showSay ? `${name}: ${c.say}` : name;
+
+        // scale font by distance a bit
+        const size = Math.max(8, Math.min(16, (28 / (dist + 0.3)) | 0));
+        ctx.font = `bold ${size}px monospace`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "bottom";
+
+        // outline
+        ctx.fillStyle = "rgba(0,0,0,0.65)";
+        ctx.fillText(text, screenX + 1, y0 - 6 + 1);
+
+        ctx.fillStyle = "#00ff66";
+        ctx.fillText(text, screenX, y0 - 6);
+    }
+
+    function renderSprites() {
+        // Sort far-to-near
+        const actors = (game.mode === "hide") ? [...cats, larry] : [...cats];
+        const ordered = actors
+            .map(s => {
+                const dx = s.x - player.x;
+                const dy = s.y - player.y;
+                return { s, dist: Math.hypot(dx, dy), dx, dy };
+            })
+            .sort((a,b) => b.dist - a.dist);
+
+        for (const it of ordered) {
+            const { s, dx, dy, dist } = it;
+
+            // Angle from player to sprite, relative to view direction
+            const spriteAng = Math.atan2(dy, dx);
+            let rel = spriteAng - player.ang;
+
+            // Wrap to [-pi, pi]
+            while (rel > Math.PI) rel -= 2*Math.PI;
+            while (rel < -Math.PI) rel += 2*Math.PI;
+
+            // If outside FOV, skip
+            const FOV_MARGIN = 0.15; // radians (~9°)
+            if (Math.abs(rel) > (player.fov / 2 + FOV_MARGIN)) continue;
+
+            // Project into screen space
+            const screenX = (rel / (player.fov / 2)) * (W / 2) + (W / 2);
+
+            // Sprite size on screen (billboard), scaled
+            const baseScale = (s.baseScale ?? 0.75);
+            const z = (s.z ?? 0.0);
+            const popScale = 1 + s.pop * 0.18;     // FIX: s.pop (not c.pop)
+            const spriteH = (H / dist) * 0.85 * baseScale * popScale;
+            const spriteW = spriteH; // assume square-ish sprite
+
+            const x0 = Math.floor(screenX - spriteW / 2);
+            const FLOOR_Y = H / 2;              // horizon = where floor starts in your renderer
+            const y0 = Math.floor(FLOOR_Y - spriteH + s.z * (H / dist));
+
+            // Occlusion test vs wall zBuffer per column
+            const xStart = Math.max(0, x0);
+            const xEnd = Math.min(W - 1, Math.floor(x0 + spriteW));
+            let visible = false;
+            for (let x = xStart; x <= xEnd; x++) {
+                if (dist < zBuffer[x]) { visible = true; break; }
+            }
+            if (!visible) continue;
+
+            // Draw sprite
+            if (s.img.complete && s.img.naturalWidth > 0) {
+            for (let x = xStart; x <= xEnd; x++) {
+                if (dist >= zBuffer[x]) continue;
+
+                const u = (x - x0) / spriteW;
+                const sx = Math.floor(u * s.img.naturalWidth);
+
+                ctx.drawImage(
+                s.img,
+                sx, 0, 1, s.img.naturalHeight,
+                x, y0, 1, spriteH
+                );
+            }
+            } else {
+                ctx.fillStyle = "#f0f";
+                ctx.fillRect(x0, y0, spriteW, spriteH);
+            }
+
+            // FIX: comma, and pass y0 correctly
+            const centerX = Math.max(0, Math.min(W - 1, Math.floor(screenX)));
+            if (dist >= zBuffer[centerX]) continue;
+            drawLabel(screenX, y0, dist, s);
+        }
+    }
+
+    function updateCats(dt) {
+        for (const c of cats) {
+            // decay pet pop
+            c.pop = Math.max(0, c.pop - dt * 3.5);
+
+            // speech timer
+            if (c.sayT > 0) c.sayT = Math.max(0, c.sayT - dt);
+
+            // look-at logic (optional “stare back”)
+            const dx = c.x - player.x;
+            const dy = c.y - player.y;
+            const dist = Math.hypot(dx, dy);
+
+            // determine if player is looking at the cat
+            if (dist < 6.0) {
+                const angTo = Math.atan2(dy, dx);
+                let rel = angTo - player.ang;
+                while (rel > Math.PI) rel -= 2*Math.PI;
+                while (rel < -Math.PI) rel += 2*Math.PI;
+
+                const inView = Math.abs(rel) < 0.20; // ~11 degrees
+                if (inView) c.lastLook += dt;
+                else c.lastLook = Math.max(0, c.lastLook - dt * 2.0);
+
+                // If stared at for a bit, some personalities react
+                if (c.lastLook > 1.8 && c.state !== "stare") {
+                    if (c.personality === "Royal" || c.personality === "Rotten") {
+                    setCatState(c, "stare", 1.2);
+                    c.say = (c.personality === "Royal") ? "stop staring." : "what.";
+                    c.sayT = 1.0;
+                    }
+                    c.lastLook = 0; // prevent spam
+                }
+            }
+
+            // state timer
+            c.stateT -= dt;
+            if (c.stateT <= 0) {
+                const w = personalityWeights(c.personality);
+                const next = pickNextState(w);
+
+                // choose duration ranges
+                if (next === "idle")    setCatState(c, "idle",    0.8 + Math.random() * 1.8);
+                if (next === "wander")  setCatState(c, "wander",  0.8 + Math.random() * 2.0);
+                if (next === "zoomies") setCatState(c, "zoomies", 0.4 + Math.random() * 1.4);
+                if (next === "stare")   setCatState(c, "stare",   0.6 + Math.random() * 1.6);
+            }
+
+            // movement + collision (cats bounce)
+            if (c.state === "wander" || c.state === "zoomies") {
+                const nx = c.x + c.vx * dt;
+                const ny = c.y + c.vy * dt;
+                const r = 0.18;
+
+                let movedX = false, movedY = false;
+
+                if (!isWall(nx + r, c.y) && !isWall(nx - r, c.y)) { c.x = nx; movedX = true; }
+                if (!isWall(c.x, ny + r) && !isWall(c.x, ny - r)) { c.y = ny; movedY = true; }
+
+                // bounce / re-roll on collision
+                if (!movedX || !movedY) {
+                    if (c.state === "zoomies") {
+                    // more chaotic rebound
+                    const a = Math.random() * Math.PI * 2;
+                    const sp = 2.2;
+                    c.vx = Math.cos(a) * sp;
+                    c.vy = Math.sin(a) * sp;
+                    } else {
+                    // gentle wander reroll
+                    const a = Math.random() * Math.PI * 2;
+                    const sp = 0.55;
+                    c.vx = Math.cos(a) * sp;
+                    c.vy = Math.sin(a) * sp;
+                    }
+                }
+            }
+            updateCatPose(c, dt);
+        }
+    }
+
+    function updateCatPose(c, dt) {
+        const speed = Math.hypot(c.vx, c.vy);
+
+        const moving = (c.state === "wander" || c.state === "zoomies") && speed > STILL_SPEED_EPS;
+
+        if (moving) {
+            c.stillT = 0;
+            c.pose = "stand";
+            c.img = c.imgs.stand;
+            return;
+        }
+
+        // not moving
+        c.stillT += dt;
+
+        if (c.stillT >= LOAF_AFTER_SECS) {
+            c.pose = "loaf";
+            c.img = c.imgs.loaf;
+        } else {
+            c.pose = "sit";
+            c.img = c.imgs.sit;
+        }
+    }
+
+    function updateFloaties(dt) {
+        for (const f of floaties) {
+            f.t -= dt;
+            f.y -= f.vy * dt;
+        }
+        for (let i = floaties.length - 1; i >= 0; i--) {
+            if (floaties[i].t <= 0) floaties.splice(i, 1);
+        }
+    }
+
+    function updateLarry(dt) {
+        if (game.screen!== "play") return;
+        if (game.mode !== "hide") return;
+
+        larry.pop = Math.max(0, larry.pop - dt * 3);
+
+        if (larry.cooldown > 0) {
+            larry.cooldown = Math.max(0, larry.cooldown - dt);
+            return;
+        }
+
+        const dx = player.x - larry.x;
+        const dy = player.y - larry.y;
+        const dist = Math.hypot(dx, dy);
+
+        // Lose condition
+        if (dist < larry.touchDist) {
+            endGame(false);
+            // game.mode = "lose";
+            // game.endTime = performance.now();
+            // spawnFloaty(player.x, player.y, "CAUGHT!");
+            // handKick = 1.0;
+            return;
+        }
+
+        if (dist > larry.aggroDist) return;
+
+        // Desired direction toward player
+        let dirX = dx / (dist || 1e-9);
+        let dirY = dy / (dist || 1e-9);
+
+        // Simple steering: if forward step collides, try rotating direction
+        const step = larry.speed * dt;
+        const r = 0.20;
+
+        function canMoveTo(nx, ny) {
+            return !isWall(nx + r, ny) && !isWall(nx - r, ny) && !isWall(nx, ny + r) && !isWall(nx, ny - r);
+        }
+
+        let nx = larry.x + dirX * step;
+        let ny = larry.y + dirY * step;
+
+        if (!canMoveTo(nx, ny)) {
+            // Try a few alternate angles (left/right)
+            let moved = false;
+            for (const sgn of [1, -1, 1, -1]) {
+            for (const ang of [0.35, 0.70, 1.05]) {
+                const a = Math.atan2(dirY, dirX) + sgn * ang;
+                const tx = Math.cos(a);
+                const ty = Math.sin(a);
+                const px = larry.x + tx * step;
+                const py = larry.y + ty * step;
+                if (canMoveTo(px, py)) {
+                dirX = tx; dirY = ty;
+                nx = px; ny = py;
+                moved = true;
+                break;
+                }
+            }
+            if (moved) break;
+            }
+            if (!moved) return; // stuck this frame
+        }
+
+        larry.x = nx;
+        larry.y = ny;
+    }
+
+    function renderLarryWarning() {
+        const dx = larry.x - player.x;
+        const dy = larry.y - player.y;
+        const dist = Math.hypot(dx, dy);
+
+        if (dist > 2.2) return; // only warn when close
+
+        // Direction arrow based on relative angle
+        const angTo = Math.atan2(dy, dx);
+        let rel = angTo - player.ang;
+        while (rel > Math.PI) rel -= 2*Math.PI;
+        while (rel < -Math.PI) rel += 2*Math.PI;
+
+        const intensity = Math.max(0, 1 - dist / 2.2);
+
+        // Red vignette
+        ctx.save();
+        ctx.fillStyle = `rgba(255,0,0,${0.25 * intensity})`;
+        ctx.fillRect(0, 0, W, H);
+        ctx.restore();
+
+        // Arrow text
+        const arrow = rel > 0 ? ">>" : "<<";
+        ctx.save();
+        ctx.font = "bold 18px monospace";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        ctx.fillStyle = "#ff3366";
+        ctx.fillText(`LARRY ${arrow}`, W / 2, 12);
+        ctx.restore();
+    }
+
+    function renderGameOverlay() {
+        if (game.mode === "play") return;
+
+        const elapsed = ((game.endTime - game.startTime) / 1000) || 0;
+
+        ctx.save();
+        ctx.fillStyle = "rgba(0,0,0,0.65)";
+        ctx.fillRect(0, 0, W, H);
+
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = "bold 28px monospace";
+        ctx.fillStyle = (game.mode === "win") ? "#00ff66" : "#ff3366";
+
+        const title = (game.mode === "win") ? "YOU WIN" : "YOU LOSE";
+        ctx.fillText(title, W / 2, H / 2 - 24);
+
+        ctx.font = "bold 14px monospace";
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(`Time: ${elapsed.toFixed(1)}s`, W / 2, H / 2 + 6);
+        ctx.fillText(`Press R to restart`, W / 2, H / 2 + 28);
+
+        ctx.restore();
+    }
+
+    function renderFloaties() {
+        // draw in screen space: project world (x,y) like a sprite but smaller
+        for (const f of floaties) {
+            const dx = f.x - player.x;
+            const dy = f.y - player.y;
+            const dist = Math.hypot(dx, dy);
+
+            const angTo = Math.atan2(dy, dx);
+            let rel = angTo - player.ang;
+            while (rel > Math.PI) rel -= 2*Math.PI;
+            while (rel < -Math.PI) rel += 2*Math.PI;
+
+            if (Math.abs(rel) > player.fov * 0.6) continue;
+
+            const screenX = (rel / (player.fov / 2)) * (W / 2) + (W / 2);
+            const screenY = (H / 2) - (H / dist) * 0.35; // float above floor-ish
+
+            ctx.font = "bold 12px monospace";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillStyle = "rgba(0,0,0,0.7)";
+            ctx.fillText(f.text, screenX + 1, screenY + 1);
+            ctx.fillStyle = "#ff66ff";
+            ctx.fillText(f.text, screenX, screenY);
+        }
+    }
+
+    function renderHands() {
+        if (!leftHand.complete || !rightHand.complete) return;
+
+        // Base placement
+        const margin = 10;
+        const scale = 1.0; // change if you want bigger/smaller hands
+        const lw = (leftHand.naturalWidth * scale) | 0;
+        const lh = (leftHand.naturalHeight * 0.6*scale) | 0;
+        const rw = (rightHand.naturalWidth * scale) | 0;
+        const rh = (rightHand.naturalHeight * 0.6*scale) | 0;
+
+        // Bobbing: vertical + slight horizontal sway
+        const bobY = Math.sin(bobPhase) * 10 * bobAmount;
+        const bobX = Math.cos(bobPhase * 0.5) * 6 * bobAmount;
+
+        // Kick: small down/up impulse on actions
+        const kick = Math.sin((1 - handKick) * Math.PI) * 10 * handKick;
+
+        const yBase = H + 2.5*margin;
+
+        // Left hand (bottom-left)
+        const lx = 0.35*W - 0.5*lw - margin + bobX * 0.6;
+        const ly = yBase - 0.8*lh + bobY + kick;
+
+        // Right hand (bottom-right)
+        const rx = 0.65*W - margin - 0.5*rw - bobX * 0.6;
+        const ry = yBase - 0.8*rh + bobY + kick;
+
+        ctx.drawImage(leftHand, lx | 0, ly | 0, lw, lh);
+        ctx.drawImage(rightHand, rx | 0, ry | 0, rw, rh);
+    }
+
+    function renderStartScreen() {
+        ctx.save();
+        ctx.fillStyle = "rgba(0,0,0,0.85)";
+        ctx.fillRect(0, 0, W, H);
+
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        ctx.font = "bold 34px monospace";
+        ctx.fillStyle = "#00ff66";
+        ctx.fillText("CAT3D", W / 2, H * 0.22);
+
+        ctx.font = "bold 14px monospace";
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText("Find & pet each cat at least once.", W / 2, H * 0.33);
+
+        ctx.font = "12px monospace";
+        ctx.fillStyle = "rgba(255,255,255,0.9)";
+        const lines = [
+            "Controls:",
+            "WASD move   Arrow keys / mouse to look",
+            "E use door   F pet cat    Shift sprint ",
+            "",
+            "  R return to menu   L show leaderboard",
+            "",
+            "Modes:",
+            "1 = Hide & Seek (Larry is dangerous)",
+            "2 = Freeplay (Larry is not dangerous, just pet cats)",
+        ];
+
+        let y = H * 0.42;
+        for (const line of lines) {
+            ctx.fillText(line, W / 2, y);
+            y += 18;
+        }
+
+        ctx.font = "bold 14px monospace";
+        ctx.fillStyle = "#ff66ff";
+        ctx.fillText("Press 1 or 2 to start", W / 2, H * 0.82);
+
+        ctx.restore();
+    }
+
+    function renderEndScreen() {
+        if (game.screen !== "win" && game.screen !== "lose") return;
+
+        const elapsed = ((game.endTime - game.startTime) / 1000) || 0;
+
+        ctx.save();
+        ctx.fillStyle = "rgba(0,0,0,0.70)";
+        ctx.fillRect(0, 0, W, H);
+
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        ctx.font = "bold 30px monospace";
+        ctx.fillStyle = (game.screen === "win") ? "#00ff66" : "#ff3366";
+        ctx.fillText(game.screen === "win" ? "YOU WIN" : "YOU LOSE", W / 2, H / 2 - 24);
+
+        ctx.font = "bold 14px monospace";
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(`Time: ${elapsed.toFixed(1)}s`, W / 2, H / 2 + 6);
+
+        const found = cats.filter(c => c.pets > 0).length;
+        ctx.fillText(`Cats petted: ${found}/${cats.length}`, W / 2, H / 2 + 26);
+
+        ctx.fillStyle = "#ff66ff";
+        ctx.fillText("Press R to return to menu", W / 2, H / 2 + 54);
+
+        ctx.restore();
+    }
+
+    function renderLeaderboard() {
+        if (!leaderboard.show) return;
+
+        const pad = 14;
+        const boxW = Math.min(W - 2 * pad, 420);
+        const boxH = Math.min(H - 2 * pad, 320);
+        const x0 = ((W - boxW) / 2) | 0;
+        const y0 = ((H - boxH) / 2) | 0;
+
+        ctx.save();
+
+        // Backdrop
+        ctx.fillStyle = "rgba(0,0,0,0.72)";
+        ctx.fillRect(0, 0, W, H);
+
+        // Panel
+        ctx.fillStyle = "rgba(0,0,0,0.78)";
+        ctx.fillRect(x0, y0, boxW, boxH);
+        ctx.strokeStyle = "rgba(0,255,102,0.25)";
+        ctx.strokeRect(x0, y0, boxW, boxH);
+
+        ctx.textAlign = "left";
+        ctx.textBaseline = "top";
+
+        // Title
+        ctx.font = "bold 18px monospace";
+        ctx.fillStyle = "#00ff66";
+        ctx.fillText("LEADERBOARD (totally real)", x0 + 14, y0 + 10);
+
+        // Tabs
+        ctx.font = "bold 12px monospace";
+        const tabY = y0 + 38;
+
+        function tab(label, key, tx) {
+            const active = leaderboard.tab === key;
+            ctx.fillStyle = active ? "rgba(255,102,255,0.20)" : "rgba(255,255,255,0.06)";
+            ctx.fillRect(tx, tabY, 160, 22);
+            ctx.strokeStyle = active ? "rgba(255,102,255,0.55)" : "rgba(255,255,255,0.15)";
+            ctx.strokeRect(tx, tabY, 160, 22);
+            ctx.fillStyle = active ? "#ff66ff" : "rgba(255,255,255,0.7)";
+            ctx.fillText(label, tx + 8, tabY + 5);
+        }
+
+        tab("1  Hide & Seek (time)", "hide", x0 + 14);
+        tab("2  Freeplay (pets)", "free", x0 + 14 + 170);
+
+        // Column headers
+        ctx.font = "bold 12px monospace";
+        ctx.fillStyle = "rgba(255,255,255,0.8)";
+        ctx.fillText("Rank", x0 + 16, y0 + 70);
+        ctx.fillText("Player", x0 + 70, y0 + 70);
+        ctx.fillText(leaderboard.tab === "hide" ? "Time (s)" : "Pets", x0 + boxW - 110, y0 + 70);
+
+        // Rows
+        const rows = leaderboard.tab === "hide" ? leaderboard.hide : leaderboard.free;
+        ctx.font = "12px monospace";
+
+        let y = y0 + 90;
+        for (let i = 0; i < rows.length; i++) {
+            const r = rows[i];
+
+            // alternating row background
+            if (i % 2 === 0) {
+            ctx.fillStyle = "rgba(255,255,255,0.04)";
+            ctx.fillRect(x0 + 10, y - 2, boxW - 20, 18);
+            }
+
+            ctx.fillStyle = "rgba(255,255,255,0.85)";
+            ctx.fillText(String(i + 1).padStart(2, " "), x0 + 16, y);
+
+            ctx.fillStyle = "#00ff66";
+            ctx.fillText(r.name, x0 + 70, y);
+
+            ctx.fillStyle = "#ffffff";
+            const val = (leaderboard.tab === "hide")
+            ? r.time.toFixed(2)
+            : String(r.pets);
+            ctx.fillText(val, x0 + boxW - 110, y);
+
+            y += 18;
+            if (y > y0 + boxH - 44) break;
+        }
+
+        // Footer help
+        ctx.font = "12px monospace";
+        ctx.fillStyle = "rgba(255,255,255,0.75)";
+        ctx.fillText("K: switch tabs   L: close", x0 + 14, y0 + boxH - 24);
+
+        ctx.restore();
+    }
+
+// ----------------------------
+// Movement / collision
+// ----------------------------
+    function move(dt) {
+        if (game.screen !== "play") return;
+        if (leaderboard.show) return;
+
+        // rotation (keyboard + mobile)
+        const rt = player.rotSpeed * dt;
+
+        if (keys.has("arrowleft")) player.ang -= rt;
+        if (keys.has("arrowright")) player.ang += rt;
+
+        if (mobile.enabled) {
+            // turnVel is a short-lived velocity; damp it for smoothness
+            player.ang += mobile.turnVel * dt * 18;
+            mobile.turnVel *= 0.35;
+        }
+
+        // movement vectors
+        const sprint = keys.has("shift") ? 1.8 : 1.0;
+        const mv = player.moveSpeed * sprint * dt;
+
+        const fx = Math.cos(player.ang), fy = Math.sin(player.ang);
+        const sx = -fy, sy = fx;
+
+        let vx = 0, vy = 0;
+
+        // keyboard
+        if (keys.has("w")) { vx += fx * mv; vy += fy * mv; }
+        if (keys.has("s")) { vx -= fx * mv; vy -= fy * mv; }
+        if (keys.has("d")) { vx += sx * mv; vy += sy * mv; }
+        if (keys.has("a")) { vx -= sx * mv; vy -= sy * mv; }
+
+        // mobile stick (additive)
+        if (mobile.enabled) {
+            vx += fx * (mobile.moveFwd * mv) + sx * (mobile.moveStrafe * mv);
+            vy += fy * (mobile.moveFwd * mv) + sy * (mobile.moveStrafe * mv);
+        }
+
+        // collision (your existing)
+        const nx = player.x + vx;
+        const ny = player.y + vy;
+        const r = 0.18;
+
+        if (!isWall(nx + r, player.y) && !isWall(nx - r, player.y)) player.x = nx;
+        if (!isWall(player.x, ny + r) && !isWall(player.x, ny - r)) player.y = ny;
+    }
+
+    function useRay(maxDist = 1.6) {
+        const dirX = Math.cos(player.ang);
+        const dirY = Math.sin(player.ang);
+
+        // Reuse DDA but stop early when distance exceeds maxDist
+        let mapX = Math.floor(player.x), mapY = Math.floor(player.y);
+
+        const deltaDistX = Math.abs(1 / (dirX || 1e-9));
+        const deltaDistY = Math.abs(1 / (dirY || 1e-9));
+
+        let stepX, stepY, sideDistX, sideDistY;
+
+        if (dirX < 0) { stepX = -1; sideDistX = (player.x - mapX) * deltaDistX; }
+        else { stepX = 1; sideDistX = (mapX + 1.0 - player.x) * deltaDistX; }
+
+        if (dirY < 0) { stepY = -1; sideDistY = (player.y - mapY) * deltaDistY; }
+        else { stepY = 1; sideDistY = (mapY + 1.0 - player.y) * deltaDistY; }
+
+        let side = 0;
+
+        for (let i = 0; i < 64; i++) {
+            if (sideDistX < sideDistY) { mapX += stepX; side = 0; }
+            else { mapY += stepY; side = 1; }
+
+            if (mapX < 0 || mapY < 0 || mapX >= MAP_W || mapY >= MAP_H) return null;
+
+            // compute perpendicular distance to this grid boundary step
+            let perpDist;
+            if (side === 0) perpDist = (mapX - player.x + (1 - stepX) / 2) / (dirX || 1e-9);
+            else           perpDist = (mapY - player.y + (1 - stepY) / 2) / (dirY || 1e-9);
+
+            if (perpDist > maxDist) return null;
+
+            const t = map[mapY][mapX];
+            if (t === 3) return { mx: mapX, my: mapY, dist: perpDist, tile: t };
+            // later you can add buttons, switches, etc. here
+        }
+        return null;
+    }
+
+    let usePressed = false;
+    let petPressed = false;
+
+    window.addEventListener("keydown", (e) => {
+    const raw = e.key;
+    const k = raw.toLowerCase();
+
+    // Always track keys for movement
+    keys.add(k);
+
+    // START SCREEN: only allow mode selection (and block gameplay actions)
+    if (game.screen === "start") {
+        if (raw === "1") { console.log("Starting HIDE"); startGame("hide"); }
+        if (raw === "2") { console.log("Starting FREE"); startGame("free"); }
+        if (k === "r")   { console.log("Back to menu"); /* already there */ }
+        if (k === "l") {
+            leaderboard.show = !leaderboard.show;
+            console.log("test");
+            return;
+        }
+
+        if (leaderboard.show) {
+            if (k === "m") {
+                e.preventDefault();
+                leaderboard.tab = (leaderboard.tab === "hide") ? "free" : "hide";
+            }
+            if (k === "escape") leaderboard.show = false;
+            return;
+        }
+        return;
+    }
+
+    // END SCREENS: allow R to return to menu
+    if (game.screen === "win" || game.screen === "lose") {
+        if (k === "r") { console.log("Back to menu"); game.screen = "start"; }
+        return;
+    }
+
+    // PLAY SCREEN inputs
+    if (game.screen !== "play") return;
+
+    if (k === "e" && !usePressed) {
+        usePressed = true;
+        const hit = useRay(1.8);
+        if (hit && hit.tile === 3) {
+        const d = getDoor(hit.mx, hit.my);
+        if (d.target === 0) { d.target = 1; d.hold = DOOR_AUTO_CLOSE_SECS; }
+        else { d.target = 0; d.hold = 0; }
+        handKick = 0.8; // optional
+        }
+    }
+
+    if (k === "f" && !petPressed) {
+        petPressed = true;
+        tryPet();
+        handKick = 1.0; // optional
+    }
+
+    if (k === "r") {
+        console.log("Back to menu");
+        game.screen = "start";
+    }
+    });
+
+    window.addEventListener("keyup", (e) => {
+    const k = e.key.toLowerCase();
+    keys.delete(k);
+    if (k === "e") usePressed = false;
+    if (k === "f") petPressed = false;
+    });
+
+    const PET_RANGE = 1.1;
+
+    function catsFoundCount() {
+        let n = 0;
+        for (const c of cats) if (c.pets > 0) n++;
+        return n;
+    }
+
+    function checkWin() {
+        if (game.screen !== "play") return;
+        if (game.mode !== "hide") return;
+
+        const allFound = cats.every(c => c.pets > 0);
+        if (allFound) endGame(true);
+    }
+
+    function tryPet() {
+        if (game.screen!== "play") return;
+        // Find nearest cat in range AND roughly in front of the player
+        const fx = Math.cos(player.ang), fy = Math.sin(player.ang);
+
+        let best = null;
+        let bestScore = -Infinity;
+
+        for (const c of cats) {
+            const dx = c.x - player.x;
+            const dy = c.y - player.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist > PET_RANGE) continue;
+
+            const dot = (dx / (dist || 1e-9)) * fx + (dy / (dist || 1e-9)) * fy; // -1..1
+            if (dot < 0.2) continue; // must be somewhat in front
+
+            // score: closer + more centered
+            const score = (1 / (dist + 0.05)) + dot * 0.75;
+            if (score > bestScore) { bestScore = score; best = c; }
+        }
+
+        if (!best) return;
+
+        // Pet!
+        best.pets += 1;
+        totalPets += 1;
+        best.pop = 1.0;
+
+        // Reaction text based on personality
+        const lines = petLines(best.personality);
+        best.say = lines[(Math.random() * lines.length) | 0];
+        best.sayT = 1.25;
+
+        handKick = 1.5;
+        spawnFloaty(best.x, best.y, "❤️");
+
+        // Optional: personality-driven behavior change
+        if (best.personality === "Crazy") {
+            // Jinx: chance to instantly zoom
+            if (Math.random() < 0.65) setCatState(best, "zoomies", 0.9 + Math.random() * 1.1);
+        } else if (best.personality === "Rotten") {
+            // Pluto: sometimes refuses and backs away
+            if (Math.random() < 0.55) setCatState(best, "wander", 0.6);
+        } else if (best.personality === "Royal") {
+            // Ninja: dignified stare
+            setCatState(best, "stare", 0.9);
+        } else {
+            // others: small chance to wander
+            if (Math.random() < 0.25) setCatState(best, "wander", 0.9);
+        }
+        checkWin();
+        // TODO hook: play sound here (WebAudio) if you want
+    }
+
+    function petLines(p) {
+        switch (p) {
+            case "Royal":
+            return ["hm. acceptable.", "you may continue.", "yes. worship me.", "your service is noted."];
+            case "Sweet":
+            return ["purrrr", "i love you.", "best day.", "more pls."];
+            case "Crazy":
+            return ["AAAAAAAA", "ZOOMIES!", "BITE (affectionate)", "CHAOS MODE"];
+            case "Rotten":
+            return ["no.", "gross.", "how dare you.", "i was sleeping."];
+            case "Kitty":
+            return ["hello!", "sniff sniff", "feed me pls."];
+            default:
+            return ["meow."];
+        }
+    }
+
+    function setCatState(c, state, duration) {
+        c.state = state;
+        c.stateT = duration;
+
+        if (state === "idle") {
+            c.vx = 0; c.vy = 0;
+        }
+
+        if (state === "wander") {
+            const a = Math.random() * Math.PI * 2;
+            const sp = 0.55;
+            c.vx = Math.cos(a) * sp;
+            c.vy = Math.sin(a) * sp;
+        }
+
+        if (state === "zoomies") {
+            const a = Math.random() * Math.PI * 2;
+            const sp = 2.2;
+            c.vx = Math.cos(a) * sp;
+            c.vy = Math.sin(a) * sp;
+        }
+
+        if (state === "stare") {
+            c.vx = 0; c.vy = 0;
+        }
+    }
+
+    function personalityWeights(p) {
+        // probabilities for selecting next state when timer expires
+        // idle, wander, zoomies, stare
+        switch (p) {
+            case "Royal":  return { idle: 0.55, wander: 0.18, zoomies: 0.02, stare: 0.25 };
+            case "Sweet":  return { idle: 0.40, wander: 0.30, zoomies: 0.05, stare: 0.25 };
+            case "Crazy":  return { idle: 0.15, wander: 0.25, zoomies: 0.50, stare: 0.10 };
+            case "Rotten": return { idle: 0.60, wander: 0.25, zoomies: 0.05, stare: 0.10 };
+            case "Kitty":  return { idle: 0.35, wander: 0.35, zoomies: 0.15, stare: 0.15 };
+            default:       return { idle: 0.40, wander: 0.30, zoomies: 0.10, stare: 0.20 };
+        }
+    }
+
+    function pickNextState(w) {
+        const r = Math.random();
+        const a = w.idle;
+        const b = a + w.wander;
+        const c = b + w.zoomies;
+        if (r < a) return "idle";
+        if (r < b) return "wander";
+        if (r < c) return "zoomies";
+        return "stare";
+    }
+
+    function updateHandBob(dt) {
+        // Estimate whether player is moving (keyboard or mobile)
+        const moving =
+            keys.has("w") || keys.has("a") || keys.has("s") || keys.has("d") ||
+            (mobile.enabled && (Math.abs(mobile.moveFwd) > 0.05 || Math.abs(mobile.moveStrafe) > 0.05));
+
+        // Smoothly ramp bob in/out
+        const target = moving ? 1 : 0;
+        bobAmount += (target - bobAmount) * (1 - Math.exp(-dt * 10)); // ~critically damped
+        bobPhase += dt * (moving ? 10 : 2); // speed of bob; tweak to taste
+
+        // Decay action kick
+        handKick = Math.max(0, handKick - dt * 6);
+    }
+
+    const mobile = {
+        enabled: false,
+        moveFwd: 0,     // -1..1
+        moveStrafe: 0,  // -1..1
+        turnVel: 0,     // radians/sec-ish
+        };
+
+    function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+    function isTouchDevice() {
+        return ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
+    }
+
+    function setupMobileControls() {
+        const ui = document.getElementById("mobileUI");
+        const base = document.getElementById("stickBase");
+        const knob = document.getElementById("stickKnob");
+        const lookPad = document.getElementById("lookPad");
+        const btnUse = document.getElementById("btnUse");
+        const btnPet = document.getElementById("btnPet");
+        const startBtns = document.getElementById("startBtns");
+        const btnHide = document.getElementById("btnHide");
+        const btnFree = document.getElementById("btnFree");
+
+        mobile.enabled = true;
+        ui.style.display = "block";
+
+        // Show start buttons only when on start screen
+        function refreshStartBtns() {
+            startBtns.style.display = (game.screen === "start") ? "flex" : "none";
+        }
+        refreshStartBtns();
+
+        // If you change game.screen elsewhere, call refreshStartBtns() after.
+        // We’ll also update it each frame (cheap) in render.
+
+        // --- Virtual stick ---
+        let stickId = null;
+        let baseRect = null;
+
+        const baseRadius = 70;
+        const knobRadius = 32;
+        const max = baseRadius - knobRadius;
+
+        function setKnob(dx, dy) {
+            const mag = Math.hypot(dx, dy) || 1;
+            const scale = mag > max ? (max / mag) : 1;
+
+            const x = dx * scale;
+            const y = dy * scale;
+
+            knob.style.transform = `translate(${x}px, ${y}px) translate(-50%,-50%)`;
+
+            mobile.moveStrafe = clamp(x / max, -1, 1);
+            mobile.moveFwd = clamp(-y / max, -1, 1);
+        }
+
+        function resetStick() {
+            stickId = null;
+            knob.style.transform = "translate(-50%,-50%)";
+            mobile.moveFwd = 0;
+            mobile.moveStrafe = 0;
+        }
+
+        base.addEventListener("pointerdown", (e) => {
+            stickId = e.pointerId;
+            baseRect = base.getBoundingClientRect();
+            base.setPointerCapture(stickId);
+            const cx = baseRect.left + baseRect.width / 2;
+            const cy = baseRect.top + baseRect.height / 2;
+            setKnob(e.clientX - cx, e.clientY - cy);
+            e.preventDefault();
+        });
+
+        base.addEventListener("pointermove", (e) => {
+            if (e.pointerId !== stickId) return;
+            const cx = baseRect.left + baseRect.width / 2;
+            const cy = baseRect.top + baseRect.height / 2;
+            setKnob(e.clientX - cx, e.clientY - cy);
+            e.preventDefault();
+        });
+
+        base.addEventListener("pointerup", (e) => {
+            if (e.pointerId !== stickId) return;
+            resetStick();
+            e.preventDefault();
+        });
+        base.addEventListener("pointercancel", (e) => {
+            if (e.pointerId !== stickId) return;
+            resetStick();
+            e.preventDefault();
+        });
+
+        // --- Look pad (drag to turn) ---
+        let lookId = null;
+        let lastX = 0;
+
+        function resetLook() {
+            lookId = null;
+            mobile.turnVel = 0;
+        }
+
+        lookPad.addEventListener("pointerdown", (e) => {
+            lookId = e.pointerId;
+            lookPad.setPointerCapture(lookId);
+            lastX = e.clientX;
+            mobile.turnVel = 0;
+            e.preventDefault();
+        });
+
+        lookPad.addEventListener("pointermove", (e) => {
+            if (e.pointerId !== lookId) return;
+            const dx = e.clientX - lastX;
+            lastX = e.clientX;
+
+            // Tune sensitivity here
+            mobile.turnVel = dx * 0.015; // per event; we damp in move()
+            e.preventDefault();
+        });
+
+        lookPad.addEventListener("pointerup", (e) => {
+            if (e.pointerId !== lookId) return;
+            resetLook();
+            e.preventDefault();
+        });
+        lookPad.addEventListener("pointercancel", (e) => {
+            if (e.pointerId !== lookId) return;
+            resetLook();
+            e.preventDefault();
+        });
+
+        // --- Buttons ---
+        btnUse.addEventListener("pointerdown", (e) => {
+            if (game.screen !== "play") return;
+            const hit = useRay(1.8);
+            if (hit && hit.tile === 3) {
+            const d = getDoor(hit.mx, hit.my);
+            if (d.target === 0) { d.target = 1; d.hold = DOOR_AUTO_CLOSE_SECS; }
+            else { d.target = 0; d.hold = 0; }
+            handKick = 0.8;
+            }
+            e.preventDefault();
+        });
+
+        btnPet.addEventListener("pointerdown", (e) => {
+            if (game.screen !== "play") return;
+            tryPet();
+            handKick = 1.0;
+            e.preventDefault();
+        });
+
+        // Start mode buttons
+        btnHide.addEventListener("pointerdown", (e) => {
+            startGame("hide");
+            refreshStartBtns();
+            e.preventDefault();
+        });
+
+        btnFree.addEventListener("pointerdown", (e) => {
+            startGame("free");
+            refreshStartBtns();
+            e.preventDefault();
+        });
+
+        // Expose for per-frame refresh (optional)
+        mobile.refreshStartBtns = refreshStartBtns;
+    }
+
+        // Enable on touch devices
+    if (isTouchDevice()) setupMobileControls();
+
+// ----------------------------
+// Main loop
+// ----------------------------
+    let last = performance.now();
+    function tick(now) {
+        const dt = Math.min(0.05, (now - last) / 1000);
+        last = now;
+
+        // --- UPDATE ---
+        if (game.screen === "play") {
+        move(dt);
+        updateDoors(dt);
+        updateCats(dt);
+        updateLarry(dt);      // no-op in freeplay
+        updateFloaties(dt);
+        updateHandBob(dt);
+        }
+
+        // --- RENDER ---
+        ctx.fillStyle = "#111";
+        ctx.fillRect(0, 0, W, H / 2);
+
+        ctx.drawImage(floorCanvas, 0, 0, W, H); // if you use cached low-res floor
+        renderFloor();
+        renderWalls();          // fills zBuffer
+        renderSprites();        // uses zBuffer
+        renderFloaties();
+        renderUI(dt);
+        if (game.mode === "hide") renderLarryWarning();
+        renderHands();
+
+        if (game.screen === "start") renderStartScreen();
+        renderEndScreen();
+        renderLeaderboard();
+
+        if (mobile.enabled && mobile.refreshStartBtns) mobile.refreshStartBtns();
+
+        requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
