@@ -621,7 +621,7 @@
   }
 
   .symbol {
-    width: 100px;
+    width: 92px;
     height: 100px;
   }
   #buttons {
@@ -667,7 +667,7 @@
   }
 
   .symbol {
-    width: 84px;
+    width: 78px;
     height: 84px;
   }
   #buttons {
@@ -790,7 +790,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr><td><img src="/p/fun/toys/slots/larry.png" alt="Larry"> LARRY</td>   <td>1000</td><td>200</td><td>50</td></tr>
+        <tr><td><img src="/p/fun/toys/slots/larry.PNG" alt="Larry"> LARRY</td>   <td>1000</td><td>200</td><td>50</td></tr>
         <tr><td><img src="/p/fun/toys/slots/zed.png" alt="zed"> ZED</td>           <td>800</td> <td>150</td><td>40</td></tr>
         <tr><td><img src="/p/fun/toys/slots/pluto.png" alt="pluto"> PLUTO</td>     <td>600</td> <td>120</td><td>35</td></tr>
         <tr><td><img src="/p/fun/toys/slots/cat_tree.png" alt="Cat Tree"> CAT TREE</td> <td>500</td> <td>100</td><td>30</td></tr>
@@ -910,13 +910,13 @@ const catImages = [
   "/p/fun/toys/slots/cat_tree.png",
   "/p/fun/toys/slots/pluto.png",
   "/p/fun/toys/slots/zed.png",
-  "/p/fun/toys/slots/larry.png"
+  "/p/fun/toys/slots/larry.PNG"
 ];
 
 // -------- SYMBOL PAYTABLE 5/4/3x --------
 const PAYTABLE = {
   // filename.png : [5x, 4x, 3x] payout in coins
-  "larry.png": [1000, 200, 50],   // SUPER RARE
+  "larry.PNG": [1000, 200, 50],   // SUPER RARE
   "zed.png":    [800,  150, 40],   // Very rare
   "pluto.png":  [600,  120, 35],
   "cat_tree.png": [500,  100, 30],
@@ -930,7 +930,7 @@ const PAYTABLE = {
 
 // -------- Random Weights --------
 const SYMBOL_WEIGHTS = {
-  "enemlarryy3.png": 3,   // Ultra rare = low weight
+  "larry.PNG": 3,   // Ultra rare = low weight
   "zed.png":    4,
   "pluto.png":  5,
   "cat_tree.png": 7,
@@ -1326,7 +1326,7 @@ const RNGStats = {
       const hotEl  = document.getElementById('hotSymbol');
       const coldEl = document.getElementById('coldSymbol');
         let characters = {
-            "larry.png": "Larry",
+            "larry.PNG": "Larry",
             "zed.png": "Zed",
             "pluto.png": "Pluto",
             "cat_tree.png": "Cat Tree",
