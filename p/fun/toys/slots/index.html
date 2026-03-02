@@ -799,10 +799,10 @@
         <tr><td><img src="/p/fun/toys/slots/jinx.png" alt="jinx"> JINX</td>     <td>300</td> <td>60</td> <td>20</td></tr>
         <tr><td><img src="/p/fun/toys/slots/space_cat.png" alt="Space cat"> SPACE CAT</td>       <td>250</td> <td>50</td> <td>15</td></tr>
         <tr><td><img src="/p/fun/toys/slots/beans.png" alt="beans"> BEANS</td>   <td>200</td> <td>40</td> <td>12</td></tr>
-        <tr><td><img src="/p/fun/toys/slots/freeplay.png" alt="ball"> Free Spins</td>
+        <tr><td><img src="/p/fun/toys/slots/freeplay.png" alt="Free Spins"> Free Spins</td>
             <td colspan="3" style="color:gold;text-align:center;">3=20 + 10 Free Spins <br> 4=50 + 15 Free Spins <br> 5=100 + 25 Free Spins</td></tr>
         <tr><td><img src="/p/fun/toys/slots/wild.png" alt="Food"> FOOD! (Wild)</td>
-            <td colspan="3" style="color:gold;text-align:center;">Substitutes for all symbols except BALL<br>5 Wilds = 1500 coins!</td></tr>
+            <td colspan="3" style="color:gold;text-align:center;">Substitutes for all symbols except Free Spins<br>5 Wilds = 1500 coins!</td></tr>
       </tbody>
     </table>
 
@@ -888,7 +888,7 @@
 
 <!-- SCRIPTS -->
 <script>
-// const catImages = [
+// const catImages = [ // old symbols
 //   "/images/toys/goal.png", // WILD
 //   "/images/toys/ball.png", // FREE SPINS
 //   "/images/toys/enemy1.png",
@@ -1429,9 +1429,6 @@ function pickRandomSymbol() {
 // Default for any symbol not listed above (safety net)
 const DEFAULT_PAYOUT = [100, 25, 8];
 
-const WILD_FILENAME     = "goal.png";     //  wild
-const SCATTER_FILENAME  = "jinx2.png";     //  scatter
-
 // -------- ROBUST FILENAME HELPER --------
 function getFilename(src) {
   // Safety first – if anything weird happens, return empty string
@@ -1442,8 +1439,8 @@ function getFilename(src) {
   filename = filename.split('?')[0];        // remove query string or hash
   return filename;
 }
-function isWild(src)     { return getFilename(src) === "goal.png"; }
-function isScatter(src)  { return getFilename(src) === "ball.png"; }
+function isWild(src)     { return getFilename(src) === "wild.png"; }
+function isScatter(src)  { return getFilename(src) === "freeplay.png"; }
 
 // -------- FREE SPINS TRACKING --------
 let freeSpinsToPlay = 0;
