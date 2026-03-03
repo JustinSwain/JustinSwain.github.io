@@ -117,6 +117,123 @@
 .zoom.best:hover {
   transform: scale(1.5) !important;
 }
+
+/* =========================
+   DRUMMER SCRAPBOOK (ALT ROWS)
+   ========================= */
+.scrapbook {
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+  padding: 12px 2px 6px;
+}
+
+/* one row */
+.scrap {
+  /* --rot: -1.2deg; */
+  display: grid;
+  grid-template-columns: minmax(240px, 420px) 1fr;
+  gap: 22px;
+  align-items: center;
+
+  position: relative;
+  border-radius: 20px;
+  padding: 18px;
+  background: rgba(0, 7, 27, 0.55);
+  box-shadow: 0 18px 45px rgba(0,0,0,0.55);
+  overflow: hidden;
+
+  transform: translateY(26px) rotate(var(--rot));
+  opacity: 0;
+  transition: transform 650ms ease, opacity 650ms ease;
+  will-change: transform, opacity;
+}
+
+/* Chip links (matches <a class="chip">...) */
+a.chip {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  font-weight: 650;
+  font-size: 0.85rem;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: var(--space4);
+  border: 1px solid var(--space2);
+}
+
+a.chip:hover {
+  transform: translateY(-1px);
+  background: var(--space3);
+}
+
+.scrap-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.link-group-title {
+  font-weight: 700;
+  font-size: 0.98rem;
+  color: rgba(255,255,255,0.86);
+  margin-bottom: 8px;
+}
+
+.link-group-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.scrap.in {
+  transform: translateY(0) rotate(var(--rot));
+  opacity: 1;
+}
+
+/* alternate: image on right, text on left */
+.scrap.alt {
+  grid-template-columns: 1fr minmax(240px, 420px);
+}
+
+.scrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: 20px;
+  /* box-shadow:
+    inset 0 0 0 2px rgba(255,255,255,0.06),
+    inset 0 0 0 12px rgba(0,0,0,0.12); */
+}
+
+.scrap-figure {
+  border-radius: 18px;
+  overflow: hidden;
+  /* background: rgba(255,255,255,0.04); */
+  padding: 10px;
+}
+
+.scrap-figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 18px 22px rgba(0,0,0,0.65));
+}
+
+/* keep your meta styles; just ensure it doesn't get squeezed weirdly */
+.scrap-meta {
+  padding: 6px 6px 2px;
+}
+
+/* mobile: stack image above text always */
+@media (max-width: 720px) {
+  .scrap,
+  .scrap.alt {
+    grid-template-columns: 1fr;
+  }
+}
     </style>
   </head>
   <body>
@@ -147,7 +264,8 @@
       <br>
       <div class="box">
         <h3>Favorite Drummers</h3>
-        <ol>
+        <div class="scrapbook" id="drummers-scrapbook" aria-label="Favorite drummers scrapbook"></div>
+        <!-- <ol>
           <li><strong>Matt Garstka</strong> (Animals as Leaders)
             <ul>
               <li><a href="https://www.youtube.com/watch?v=-xUqa6pYqnY" target="_blank">Monomyth</a></li>
@@ -168,7 +286,7 @@
           <li><strong>Mario Duplantier</strong> (Gojira)
             <ul><li><a href="https://www.youtube.com/watch?v=R2zTNT2YPZE" target="_blank">The Art of Dying</a></li></ul>
           </li>
-        </ol>
+        </ol> -->
       </div>
       <br>
       <div class="box">
@@ -190,6 +308,148 @@
 </div>
 
 <script>
+  // =========================
+// DRUMMER SCRAPBOOK DATA
+// =========================
+const drummers = [
+  {
+    name: "Matt Garstka",
+    img: "/images/drummers/matt_garstka.png",
+    groups: [
+      {
+        label: "Animals as Leaders",
+        links: [
+          { label: "Monomyth",     url: "https://www.youtube.com/watch?v=-xUqa6pYqnY" },
+          { label: "Kepler",       url: "https://www.youtube.com/watch?v=lNjOFNBkja4" },
+          { label: "The Woven Web",url: "https://www.youtube.com/watch?v=7LKHkRtmHSY" },
+        ],
+      }, 
+      {
+        label: "Victoria",
+        links: [
+          { label: "Kepler",       url: "https://www.youtube.com/watch?v=lNjOFNBkja4" },
+        ]
+      },
+      {
+        label: "Solo",
+        links: [
+          { label: "35 BPM Solo",  url: "https://www.youtube.com/watch?v=mzYcGXT0v8s" },
+        ]
+      },
+    ]
+  },
+  {
+    name: "Matt Halpern",
+    img: "/images/drummers/matt_halpern.png",
+    groups: [
+      {
+        label: "Periphery",
+        links: [
+          { label: "Dracul Gras",  url: "https://www.youtube.com/watch?v=FUk72MwuWrs" },
+          { label: "Wax Wings",    url: "https://www.youtube.com/watch?v=0xKmMZ79ZzM" }
+        ]
+      },
+    ]
+  },
+  {
+    name: "Tomas Haake",
+    img: "/images/drummers/tomas_haake.png",
+    groups: [
+      {
+        label: "Meshuggah",
+        links: [
+          { label: "Clockworks",   url: "https://www.youtube.com/watch?v=axGn6qeJHcM" }
+        ]
+      },
+    ]
+  },
+  {
+    name: "Mario Duplantier",
+    img: "/images/drummers/mario_duplantier.png",
+    groups: [
+      {
+        label: "Gojira",
+        links: [
+          { label: "The Art of Dying", url: "https://www.youtube.com/watch?v=R2zTNT2YPZE" }
+        ]
+      },
+    ]
+  },
+  {
+    name: "Danny Carey",
+    img: "/images/drummers/danny_carey.png",
+    groups: [
+      {
+        label: "Tool",
+        links: [
+          { label: "Pneuma (live)", url: "https://www.youtube.com/watch?v=FssULNGSZIA" },
+        ]
+      },
+    ]
+  }
+];
+
+// =========================
+// RENDER
+// =========================
+(function renderDrummerScrapbook() {
+    const container = document.getElementById("drummers-scrapbook");
+    if (!container) return;
+
+    container.innerHTML = "";
+
+    drummers.forEach((d, i) => {
+      const card = document.createElement("article");
+
+      const isAlt = (i % 2) === 1;
+      card.className = `scrap${isAlt ? " alt" : ""}`;
+
+      const groupsHtml = (d.groups || []).map(g => {
+      const chips = (g.links || []).map(l => `
+        <a class="chip" href="${l.url}" target="_blank" rel="noopener noreferrer">
+          ${l.label}
+        </a>
+      `).join("");
+
+      return `
+        <div class="link-group">
+          <div class="link-group-title">${g.label}</div>
+          <div class="link-group-chips">${chips}</div>
+        </div>
+      `;
+    }).join("");
+
+      const figureHtml = `
+        <div class="scrap-figure">
+          <img src="${d.img}" alt="${d.name} — ${d.band}" loading="lazy">
+        </div>
+      `;
+      const metaHtml = `
+        <div class="scrap-meta">
+          <h4 class="scrap-name">${d.name}</h4>
+          <div class="scrap-groups">${groupsHtml}</div>
+        </div>
+      `;
+
+      card.innerHTML = isAlt ? (metaHtml + figureHtml) : (figureHtml + metaHtml);
+      container.appendChild(card);
+    });
+
+    // Scroll-reveal
+    const cards = Array.from(container.querySelectorAll(".scrap"));
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.2, rootMargin: "0px 0px -10% 0px" }
+    );
+    cards.forEach(c => io.observe(c));
+})();
   // EDIT ONLY THIS OBJECT 
   const concertsByYear = {
     "2026": [
